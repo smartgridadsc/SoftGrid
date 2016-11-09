@@ -1,0 +1,927 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SCL xsi:schemaLocation="http://www.iec.ch/61850/2003/SCL  SCL.xsd" xmlns="http://www.iec.ch/61850/2003/SCL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <Header id="HWAVIEW" toolID="XMLSpy" nameStructure="IEDName">
+        <History>
+            <Hitem version="1.0" revision="0" when="2016-07-27" who="Lzm" what="Used for Joyway"></Hitem>
+        </History>
+    </Header>
+    <Substation name="Sub_a">
+        <VoltageLevel name="10kV">
+            <Bay name="Field1"></Bay>
+        </VoltageLevel>
+    </Substation>
+    <Communication>
+        <SubNetwork name="LAN1" type="8-MMS/TCP">
+            <BitRate unit="b/s" multiplier="M">100</BitRate>
+            <ConnectedAP iedName="ANIED" apName="S1">
+                <Address>
+                    <P type="OSI-AP-Title">1 3 9999 106</P>
+                    <P type="OSI-AE-Qualifier">33</P>
+                    <P type="OSI-PSEL">00 00 00 01</P>
+                    <P type="OSI-SSEL">00 01</P>
+                    <P type="OSI-TSEL">00 01</P>
+                    <P type="IP">192.168.0.114</P>
+                    <P type="PORT">10003</P>
+                </Address>
+            </ConnectedAP>
+            <ConnectedAP iedName="ANIED2" apName="S2">
+                <Address>
+                    <P type="OSI-AP-Title">1 3 9999 106</P>
+                    <P type="OSI-AE-Qualifier">33</P>
+                    <P type="OSI-PSEL">00 00 00 01</P>
+                    <P type="OSI-SSEL">00 01</P>
+                    <P type="OSI-TSEL">00 01</P>
+                    <P type="IP">192.168.0.114</P>
+                    <P type="PORT">10004</P>
+                </Address>
+            </ConnectedAP>
+        </SubNetwork>
+    </Communication>
+    <IED name="ANIED" type="HWAVIEW" manufacturer="ADSC" configVersion="1.0">
+        <Services>
+            <DynAssociation></DynAssociation>
+            <GetDirectory></GetDirectory>
+            <GetDataObjectDefinition></GetDataObjectDefinition>
+            <DataObjectDirectory></DataObjectDirectory>
+            <GetDataSetValue></GetDataSetValue>
+            <DataSetDirectory></DataSetDirectory>
+            <ConfDataSet max="15" maxAttributes="800"></ConfDataSet>
+            <DynDataSet max="15" maxAttributes="800"></DynDataSet>
+            <ReadWrite></ReadWrite>
+            <ConfReportControl max="16"></ConfReportControl>
+            <GetCBValues></GetCBValues>
+            <ReportSettings cbName="Fix" datSet="Fix" rptID="Fix" optFields="Dyn" bufTime="Dyn" trgOps="Dyn" intgPd="Dyn"></ReportSettings>
+            <LogSettings cbName="Fix" datSet="Dyn" logEna="Dyn" trgOps="Dyn" intgPd="Dyn"></LogSettings>
+            <ConfLogControl max="1"></ConfLogControl>
+            <FileHandling></FileHandling>
+            <ConfLNs fixPrefix="true" fixLnInst="true"></ConfLNs>
+        </Services>
+        <AccessPoint name="S1">
+            <Server>
+                <Authentication none="true"></Authentication>
+                <LDevice inst="MONT" desc="辅助设备监控系统">
+                    <LN0 inst="" lnClass="LLN0" lnType="AN_LLN0">
+                        <DataSet name="dsMeasure" desc="测量量数据集">
+                            <FCDA ldInst="MONT" prefix="" lnInst="1" lnClass="SIMG" doName="SF6" fc="MX"></FCDA>
+                            <FCDA ldInst="MONT" prefix="" lnInst="1" lnClass="SIMG" doName="O2" fc="MX"></FCDA>
+                            <FCDA ldInst="MONT" prefix="" lnInst="1" lnClass="SIMG" doName="SF61" fc="MX"></FCDA>
+                            <FCDA ldInst="MONT" prefix="" lnInst="1" lnClass="SIMG" doName="O21" fc="MX"></FCDA>
+                            <FCDA ldInst="MONT" prefix="pump" lnInst="1" lnClass="GGIO" doName="AnIn1" fc="MX"></FCDA>
+                        </DataSet>
+                        <DataSet name="dsState" desc="状态量数据集">
+                            <FCDA ldInst="MONT" prefix="body" lnInst="1" lnClass="GGIO" doName="Alm1" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="body" lnInst="1" lnClass="GGIO" doName="Alm2" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="body" lnInst="1" lnClass="GGIO" doName="Alm3" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="body" lnInst="1" lnClass="GGIO" doName="Alm4" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="smoke" lnInst="1" lnClass="GGIO" doName="Alm1" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="smoke" lnInst="1" lnClass="GGIO" doName="Alm2" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="smoke" lnInst="1" lnClass="GGIO" doName="Alm3" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="smoke" lnInst="1" lnClass="GGIO" doName="Alm4" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="fan" lnInst="1" lnClass="GGIO" doName="Ind1" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="fan" lnInst="1" lnClass="GGIO" doName="Alm1" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="light" lnInst="1" lnClass="GGIO" doName="Ind1" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="light" lnInst="1" lnClass="GGIO" doName="Alm1" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="hum" lnInst="1" lnClass="GGIO" doName="Ind1" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="hum" lnInst="1" lnClass="GGIO" doName="Alm1" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="hum" lnInst="1" lnClass="GGIO" doName="Alm2" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="pump" lnInst="1" lnClass="GGIO" doName="Ind1" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="pump" lnInst="1" lnClass="GGIO" doName="Alm1" fc="ST"></FCDA>
+                        </DataSet>
+                        <ReportControl name="urcbMeasure" desc="测量量数据集" datSet="dsMeasure" rptID="urcbMeasure" confRev="1" buffered="false" intgPd="5000">
+                            <TrgOps dchg="true" qchg="false" period="true"></TrgOps>
+                            <OptFields seqNum="true" timeStamp="true" dataSet="true" reasonCode="true" dataRef="true" entryID="true" configRef="true"></OptFields>
+                            <RptEnabled max="16"></RptEnabled>
+                        </ReportControl>
+                        <ReportControl name="brcbState" desc="状态量报告" datSet="dsState" rptID="brcbState" confRev="1" buffered="true">
+                            <TrgOps dchg="true" qchg="false" period="false"></TrgOps>
+                            <OptFields seqNum="true" timeStamp="true" dataSet="true" reasonCode="true" dataRef="true" entryID="true" configRef="true"></OptFields>
+                            <RptEnabled max="16"></RptEnabled>
+                        </ReportControl>
+                    </LN0>
+                    <LN inst="1" prefix="" desc="设备描述" lnClass="LPHD" lnType="AN_LPHD_1"></LN>
+                    <LN inst="1" prefix="" desc="配电所SF6和O2气体变送器" lnClass="SIMG" lnType="AN_SIMG">
+                        <DOI name="SF6" desc="配电所#1.SF6气体含量">
+                            <SDI name="mag">
+                                <DAI name="f" sAddr="yc 0 0"></DAI>
+                            </SDI>
+                            <DAI name="dU">
+                                <Val>配电所#1.SF6气体含量</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="O2" desc="配电所#1.O2含量">
+                            <SDI name="mag">
+                                <DAI name="f" sAddr="yc 0 1"></DAI>
+                            </SDI>
+                            <DAI name="dU">
+                                <Val>配电所#1.O2含量</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="SF61" desc="配电所#2.SF6气体含量">
+                            <SDI name="mag">
+                                <DAI name="f" sAddr="yc 0 2"></DAI>
+                            </SDI>
+                            <DAI name="dU">
+                                <Val>配电所#2.SF6气体含量</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="O21" desc="配电所#2.O2含量">
+                            <SDI name="mag">
+                                <DAI name="f" sAddr="yc 0 3"></DAI>
+                            </SDI>
+                            <DAI name="dU">
+                                <Val>配电所#2.O2含量</Val>
+                            </DAI>
+                        </DOI>
+                    </LN>
+                    <LN inst="1" prefix="body" desc="配电所红外" lnClass="GGIO" lnType="AN_GGIO_BODY4">
+                        <DOI name="Alm1" desc="配电所红外1">
+                            <DAI name="stVal" sAddr="yx 0 0"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所红外1</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm2" desc="配电所红外2">
+                            <DAI name="stVal" sAddr="yx 0 1"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所红外2</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm3" desc="配电所红外3(预留)">
+                            <DAI name="stVal" sAddr="yx 0 8"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所红外3(预留)</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm4" desc="配电所红外4(预留)">
+                            <DAI name="stVal" sAddr="yx 0 9"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所红外4(预留)</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="SPCSO1" desc="配电所布防(预留)">
+                            <SDI name="Oper">
+                                <DAI name="ctlVal" sAddr="ykexe 0 0"></DAI>
+                            </SDI>
+                            <DAI name="ctlModel">
+                                <Val>direct-with-normal-security</Val>
+                            </DAI>
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所布防(预留)</Val>
+                            </DAI>
+                        </DOI>
+                    </LN>
+                    <LN inst="1" prefix="smoke" desc="配电所烟感感" lnClass="GGIO" lnType="AN_GGIO_SMOKE4">
+                        <DOI name="Alm1" desc="配电所烟雾1">
+                            <DAI name="stVal" sAddr="yx 0 4"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所烟雾1</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm2" desc="配电所烟雾2">
+                            <DAI name="stVal" sAddr="yx 0 5"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所烟雾2</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm3" desc="配电所烟雾3">
+                            <DAI name="stVal" sAddr="yx 0 6"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所烟雾3</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm4" desc="配电所烟雾4">
+                            <DAI name="stVal" sAddr="yx 0 7"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所烟雾4</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="SPCSO1" desc="烟感告警复位(预留)">
+                            <SDI name="Oper">
+                                <DAI name="ctlVal"></DAI>
+                            </SDI>
+                            <DAI name="ctlModel">
+                                <Val>direct-with-normal-security</Val>
+                            </DAI>
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>烟感告警复位(预留)</Val>
+                            </DAI>
+                        </DOI>
+                    </LN>
+                    <LN inst="1" prefix="fan" desc="配电所风机" lnClass="GGIO" lnType="AN_GGIO_FAN">
+                        <DOI name="Ind1" desc="配电所风机">
+                            <DAI name="stVal" sAddr="yx 0 17"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所风机</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm1" desc="风机异常(预留)">
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>风机异常(预留)</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="SPCSO1" desc="配电所风机">
+                            <SDI name="Oper">
+                                <DAI name="ctlVal" sAddr="ykexe 0 2"></DAI>
+                            </SDI>
+                            <DAI name="ctlModel">
+                                <Val>direct-with-normal-security</Val>
+                            </DAI>
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所风机</Val>
+                            </DAI>
+                        </DOI>
+                    </LN>
+                    <LN inst="1" prefix="light" desc="配电所灯具" lnClass="GGIO" lnType="AN_GGIO_LIGHT">
+                        <DOI name="Ind1" desc="配电所照明">
+                            <DAI name="stVal" sAddr="yx 0 19"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所照明</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm1" desc="灯具异常(预留)">
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>灯具异常(预留)</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="SPCSO1" desc="配电所照明">
+                            <SDI name="Oper">
+                                <DAI name="ctlVal" sAddr="ykexe 0 1"></DAI>
+                            </SDI>
+                            <DAI name="ctlModel">
+                                <Val>direct-with-normal-security</Val>
+                            </DAI>
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所照明</Val>
+                            </DAI>
+                        </DOI>
+                    </LN>
+                    <LN inst="1" prefix="hum" desc="配电所除湿机" lnClass="GGIO" lnType="AN_GGIO_HUM">
+                        <DOI name="Ind1" desc="配电所除湿">
+                            <DAI name="stVal" sAddr="yx 0 18"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所除湿</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm1" desc="除湿机异常(预留)">
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>除湿机异常(预留)</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm2" desc="除湿机水满(预留)">
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>除湿机水满(预留)</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="SPCSO1" desc="配电所除湿">
+                            <SDI name="Oper">
+                                <DAI name="ctlVal" sAddr="ykexe 0 3"></DAI>
+                            </SDI>
+                            <DAI name="ctlModel">
+                                <Val>direct-with-normal-security</Val>
+                            </DAI>
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所除湿</Val>
+                            </DAI>
+                        </DOI>
+                    </LN>
+                    <LN inst="1" prefix="pump" desc="配电所水位和水泵" lnClass="GGIO" lnType="AN_GGIO_PUMP">
+                        <DOI name="AnIn1" desc="配电所水位高度">
+                            <SDI name="mag">
+                                <DAI name="f" sAddr="yc 0 4"></DAI>
+                            </SDI>
+                            <DAI name="dU">
+                                <Val>配电所水位高度</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Ind1" desc="配电所水泵">
+                            <DAI name="stVal" sAddr="yx 0 21"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所水泵</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm1" desc="水泵异常(预留)">
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>水泵异常(预留)</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="SPCSO1" desc="水泵开关控制(预留)">
+                            <SDI name="Oper">
+                                <DAI name="ctlVal"></DAI>
+                            </SDI>
+                            <DAI name="ctlModel">
+                                <Val>direct-with-normal-security</Val>
+                            </DAI>
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>水泵开关控制(预留)</Val>
+                            </DAI>
+                        </DOI>
+                    </LN>
+                </LDevice>
+            </Server>
+        </AccessPoint>
+    </IED>
+    <IED name="ANIED2" type="HWAVIEW" manufacturer="ADSC" configVersion="1.0">
+
+
+        <Services>
+            <DynAssociation></DynAssociation>
+            <GetDirectory></GetDirectory>
+            <GetDataObjectDefinition></GetDataObjectDefinition>
+            <DataObjectDirectory></DataObjectDirectory>
+            <GetDataSetValue></GetDataSetValue>
+            <DataSetDirectory></DataSetDirectory>
+            <ConfDataSet max="15" maxAttributes="800"></ConfDataSet>
+            <DynDataSet max="15" maxAttributes="800"></DynDataSet>
+            <ReadWrite></ReadWrite>
+            <ConfReportControl max="16"></ConfReportControl>
+            <GetCBValues></GetCBValues>
+            <ReportSettings cbName="Fix" datSet="Fix" rptID="Fix" optFields="Dyn" bufTime="Dyn" trgOps="Dyn" intgPd="Dyn"></ReportSettings>
+            <LogSettings cbName="Fix" datSet="Dyn" logEna="Dyn" trgOps="Dyn" intgPd="Dyn"></LogSettings>
+            <ConfLogControl max="1"></ConfLogControl>
+            <FileHandling></FileHandling>
+            <ConfLNs fixPrefix="true" fixLnInst="true"></ConfLNs>
+        </Services>
+        <AccessPoint name="S1">
+            <Server>
+                <Authentication none="true"></Authentication>
+                <LDevice inst="MONT" desc="辅助设备监控系统">
+                    <LN0 inst="" lnClass="LLN0" lnType="AN_LLN0">
+                        <DataSet name="dsMeasure" desc="测量量数据集">
+                            <FCDA ldInst="MONT" prefix="" lnInst="1" lnClass="SIMG" doName="SF6" fc="MX"></FCDA>
+                            <FCDA ldInst="MONT" prefix="" lnInst="1" lnClass="SIMG" doName="O2" fc="MX"></FCDA>
+                            <FCDA ldInst="MONT" prefix="" lnInst="1" lnClass="SIMG" doName="SF61" fc="MX"></FCDA>
+                            <FCDA ldInst="MONT" prefix="" lnInst="1" lnClass="SIMG" doName="O21" fc="MX"></FCDA>
+                            <FCDA ldInst="MONT" prefix="pump" lnInst="1" lnClass="GGIO" doName="AnIn1" fc="MX"></FCDA>
+                        </DataSet>
+                        <DataSet name="dsState" desc="状态量数据集">
+                            <FCDA ldInst="MONT" prefix="body" lnInst="1" lnClass="GGIO" doName="Alm1" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="body" lnInst="1" lnClass="GGIO" doName="Alm2" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="body" lnInst="1" lnClass="GGIO" doName="Alm3" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="body" lnInst="1" lnClass="GGIO" doName="Alm4" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="smoke" lnInst="1" lnClass="GGIO" doName="Alm1" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="smoke" lnInst="1" lnClass="GGIO" doName="Alm2" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="smoke" lnInst="1" lnClass="GGIO" doName="Alm3" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="smoke" lnInst="1" lnClass="GGIO" doName="Alm4" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="fan" lnInst="1" lnClass="GGIO" doName="Ind1" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="fan" lnInst="1" lnClass="GGIO" doName="Alm1" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="light" lnInst="1" lnClass="GGIO" doName="Ind1" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="light" lnInst="1" lnClass="GGIO" doName="Alm1" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="hum" lnInst="1" lnClass="GGIO" doName="Ind1" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="hum" lnInst="1" lnClass="GGIO" doName="Alm1" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="hum" lnInst="1" lnClass="GGIO" doName="Alm2" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="pump" lnInst="1" lnClass="GGIO" doName="Ind1" fc="ST"></FCDA>
+                            <FCDA ldInst="MONT" prefix="pump" lnInst="1" lnClass="GGIO" doName="Alm1" fc="ST"></FCDA>
+                        </DataSet>
+                        <ReportControl name="urcbMeasure" desc="测量量数据集" datSet="dsMeasure" rptID="urcbMeasure" confRev="1" buffered="false" intgPd="5000">
+                            <TrgOps dchg="true" qchg="false" period="true"></TrgOps>
+                            <OptFields seqNum="true" timeStamp="true" dataSet="true" reasonCode="true" dataRef="true" entryID="true" configRef="true"></OptFields>
+                            <RptEnabled max="16"></RptEnabled>
+                        </ReportControl>
+                        <ReportControl name="brcbState" desc="状态量报告" datSet="dsState" rptID="brcbState" confRev="1" buffered="true">
+                            <TrgOps dchg="true" qchg="false" period="false"></TrgOps>
+                            <OptFields seqNum="true" timeStamp="true" dataSet="true" reasonCode="true" dataRef="true" entryID="true" configRef="true"></OptFields>
+                            <RptEnabled max="16"></RptEnabled>
+                        </ReportControl>
+                    </LN0>
+                    <LN inst="1" prefix="" desc="设备描述" lnClass="LPHD" lnType="AN_LPHD_1"></LN>
+                    <LN inst="1" prefix="" desc="配电所SF6和O2气体变送器" lnClass="SIMG" lnType="AN_SIMG">
+                        <DOI name="SF6" desc="配电所#1.SF6气体含量">
+                            <SDI name="mag">
+                                <DAI name="f" sAddr="yc 0 0"></DAI>
+                            </SDI>
+                            <DAI name="dU">
+                                <Val>配电所#1.SF6气体含量</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="O2" desc="配电所#1.O2含量">
+                            <SDI name="mag">
+                                <DAI name="f" sAddr="yc 0 1"></DAI>
+                            </SDI>
+                            <DAI name="dU">
+                                <Val>配电所#1.O2含量</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="SF61" desc="配电所#2.SF6气体含量">
+                            <SDI name="mag">
+                                <DAI name="f" sAddr="yc 0 2"></DAI>
+                            </SDI>
+                            <DAI name="dU">
+                                <Val>配电所#2.SF6气体含量</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="O21" desc="配电所#2.O2含量">
+                            <SDI name="mag">
+                                <DAI name="f" sAddr="yc 0 3"></DAI>
+                            </SDI>
+                            <DAI name="dU">
+                                <Val>配电所#2.O2含量</Val>
+                            </DAI>
+                        </DOI>
+                    </LN>
+                    <LN inst="1" prefix="body" desc="配电所红外" lnClass="GGIO" lnType="AN_GGIO_BODY4">
+                        <DOI name="Alm1" desc="配电所红外1">
+                            <DAI name="stVal" sAddr="yx 0 0"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所红外1</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm2" desc="配电所红外2">
+                            <DAI name="stVal" sAddr="yx 0 1"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所红外2</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm3" desc="配电所红外3(预留)">
+                            <DAI name="stVal" sAddr="yx 0 8"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所红外3(预留)</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm4" desc="配电所红外4(预留)">
+                            <DAI name="stVal" sAddr="yx 0 9"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所红外4(预留)</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="SPCSO1" desc="配电所布防(预留)">
+                            <SDI name="Oper">
+                                <DAI name="ctlVal" sAddr="ykexe 0 0"></DAI>
+                            </SDI>
+                            <DAI name="ctlModel">
+                                <Val>direct-with-normal-security</Val>
+                            </DAI>
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所布防(预留)</Val>
+                            </DAI>
+                        </DOI>
+                    </LN>
+                    <LN inst="1" prefix="smoke" desc="配电所烟感感" lnClass="GGIO" lnType="AN_GGIO_SMOKE4">
+                        <DOI name="Alm1" desc="配电所烟雾1">
+                            <DAI name="stVal" sAddr="yx 0 4"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所烟雾1</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm2" desc="配电所烟雾2">
+                            <DAI name="stVal" sAddr="yx 0 5"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所烟雾2</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm3" desc="配电所烟雾3">
+                            <DAI name="stVal" sAddr="yx 0 6"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所烟雾3</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm4" desc="配电所烟雾4">
+                            <DAI name="stVal" sAddr="yx 0 7"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所烟雾4</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="SPCSO1" desc="烟感告警复位(预留)">
+                            <SDI name="Oper">
+                                <DAI name="ctlVal"></DAI>
+                            </SDI>
+                            <DAI name="ctlModel">
+                                <Val>direct-with-normal-security</Val>
+                            </DAI>
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>烟感告警复位(预留)</Val>
+                            </DAI>
+                        </DOI>
+                    </LN>
+                    <LN inst="1" prefix="fan" desc="配电所风机" lnClass="GGIO" lnType="AN_GGIO_FAN">
+                        <DOI name="Ind1" desc="配电所风机">
+                            <DAI name="stVal" sAddr="yx 0 17"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所风机</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm1" desc="风机异常(预留)">
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>风机异常(预留)</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="SPCSO1" desc="配电所风机">
+                            <SDI name="Oper">
+                                <DAI name="ctlVal" sAddr="ykexe 0 2"></DAI>
+                            </SDI>
+                            <DAI name="ctlModel">
+                                <Val>direct-with-normal-security</Val>
+                            </DAI>
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所风机</Val>
+                            </DAI>
+                        </DOI>
+                    </LN>
+                    <LN inst="1" prefix="light" desc="配电所灯具" lnClass="GGIO" lnType="AN_GGIO_LIGHT">
+                        <DOI name="Ind1" desc="配电所照明">
+                            <DAI name="stVal" sAddr="yx 0 19"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所照明</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm1" desc="灯具异常(预留)">
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>灯具异常(预留)</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="SPCSO1" desc="配电所照明">
+                            <SDI name="Oper">
+                                <DAI name="ctlVal" sAddr="ykexe 0 1"></DAI>
+                            </SDI>
+                            <DAI name="ctlModel">
+                                <Val>direct-with-normal-security</Val>
+                            </DAI>
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所照明</Val>
+                            </DAI>
+                        </DOI>
+                    </LN>
+                    <LN inst="1" prefix="hum" desc="配电所除湿机" lnClass="GGIO" lnType="AN_GGIO_HUM">
+                        <DOI name="Ind1" desc="配电所除湿">
+                            <DAI name="stVal" sAddr="yx 0 18"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所除湿</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm1" desc="除湿机异常(预留)">
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>除湿机异常(预留)</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm2" desc="除湿机水满(预留)">
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>除湿机水满(预留)</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="SPCSO1" desc="配电所除湿">
+                            <SDI name="Oper">
+                                <DAI name="ctlVal" sAddr="ykexe 0 3"></DAI>
+                            </SDI>
+                            <DAI name="ctlModel">
+                                <Val>direct-with-normal-security</Val>
+                            </DAI>
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所除湿</Val>
+                            </DAI>
+                        </DOI>
+                    </LN>
+                    <LN inst="1" prefix="pump" desc="配电所水位和水泵" lnClass="GGIO" lnType="AN_GGIO_PUMP">
+                        <DOI name="AnIn1" desc="配电所水位高度">
+                            <SDI name="mag">
+                                <DAI name="f" sAddr="yc 0 4"></DAI>
+                            </SDI>
+                            <DAI name="dU">
+                                <Val>配电所水位高度</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Ind1" desc="配电所水泵">
+                            <DAI name="stVal" sAddr="yx 0 21"></DAI>
+                            <DAI name="dU">
+                                <Val>配电所水泵</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="Alm1" desc="水泵异常(预留)">
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>水泵异常(预留)</Val>
+                            </DAI>
+                        </DOI>
+                        <DOI name="SPCSO1" desc="水泵开关控制(预留)">
+                            <SDI name="Oper">
+                                <DAI name="ctlVal"></DAI>
+                            </SDI>
+                            <DAI name="ctlModel">
+                                <Val>direct-with-normal-security</Val>
+                            </DAI>
+                            <DAI name="stVal"></DAI>
+                            <DAI name="dU">
+                                <Val>水泵开关控制(预留)</Val>
+                            </DAI>
+                        </DOI>
+                    </LN>
+                </LDevice>
+            </Server>
+        </AccessPoint>
+    </IED>
+    <DataTypeTemplates>
+        <!-- 1、逻辑节点定义区 -->
+        <LNodeType id="AN_LLN0" desc="An_llno" lnClass="LLN0">
+            <DO name="Mod" desc="Mod" type="AN_INC_Mod_df"></DO>
+            <DO name="Beh" desc="Beh" type="AN_INS_Beh_df"></DO>
+            <DO name="Health" desc="Health" type="AN_INS_Health_df"></DO>
+            <DO name="NamPlt" desc="Health" type="AN_LPL_NamPlt_LLN0_df"></DO>
+        </LNodeType>
+        <LNodeType id="AN_LPHD_1" desc="Health" lnClass="LPHD">
+            <DO name="PhyNam" desc="HealthHealth" type="AN_DPL_PhyNam_df"></DO>
+            <DO name="PhyHealth" desc="HealthHealth" type="AN_INS_Health_df"></DO>
+            <DO name="Proxy" desc="Health" type="AN_SPS_Proxy_df"></DO>
+        </LNodeType>
+        <LNodeType id="AN_SENV" desc="Health" lnClass="SENV">
+            <DO name="EnvTmp" desc="Health" type="AN_MV_F"></DO>
+            <DO name="EnvHum" desc="Health" type="AN_MV_F"></DO>
+        </LNodeType>
+        <LNodeType id="AN_SIMG" desc="Health" lnClass="SIMG">
+            <DO name="SF6" desc="Health" type="AN_MV_F"></DO>
+            <DO name="O2" desc="O" type="AN_MV_F"></DO>
+            <DO name="SF61" desc="SF6" type="AN_MV_F"></DO>
+            <DO name="O21" desc="O2" type="AN_MV_F"></DO>
+        </LNodeType>
+        <LNodeType id="AN_GGIO_FAN" desc="3. " lnClass="GGIO">
+            <DO name="Ind1" desc=" " type="AN_SPS"></DO>
+            <DO name="Alm1" desc=" " type="AN_SPS"></DO>
+            <DO name="SPCSO1" desc=" " type="AN_SPC_DC"></DO>
+        </LNodeType>
+        <LNodeType id="AN_GGIO_LIGHT" desc="4. " lnClass="GGIO">
+            <DO name="Ind1" desc=" " type="AN_SPS"></DO>
+            <DO name="Alm1" desc=" " type="AN_SPS"></DO>
+            <DO name="SPCSO1" desc=" " type="AN_SPC_DC"></DO>
+        </LNodeType>
+        <LNodeType id="AN_GGIO_HUM" desc="5. " lnClass="GGIO">
+            <DO name="Ind1" desc=" " type="AN_SPS"></DO>
+            <DO name="Alm1" desc=" " type="AN_SPS"></DO>
+            <DO name="Alm2" desc=" " type="AN_SPS"></DO>
+            <DO name="SPCSO1" desc=" " type="AN_SPC_DC"></DO>
+        </LNodeType>
+        <LNodeType id="AN_GGIO_AIR" desc="6. " lnClass="GGIO">
+            <DO name="Tmp" desc=" " type="AN_MV_I"></DO>
+            <DO name="Pwr" desc=" " type="AN_MV_I"></DO>
+            <DO name="Mode" desc=" " type="AN_MV_I"></DO>
+            <DO name="Fan" desc=" " type="AN_MV_I"></DO>
+            <DO name="Power" desc=" " type="AN_ASG_SP_I"></DO>
+            <DO name="SetTmp" desc=" " type="AN_ASG_SP_I"></DO>
+            <DO name="SetMode" desc=" " type="AN_ASG_SP_I"></DO>
+            <DO name="SetFan" desc=" " type="AN_ASG_SP_I"></DO>
+        </LNodeType>
+        <LNodeType id="AN_GGIO_PUMP" desc="7. " lnClass="GGIO">
+            <DO name="AnIn1" desc=" " type="AN_MV_F"></DO>
+            <DO name="Ind1" desc=" " type="AN_SPS"></DO>
+            <DO name="Alm1" desc=" " type="AN_SPS"></DO>
+            <DO name="SPCSO1" desc=" " type="AN_SPC_DC"></DO>
+        </LNodeType>
+        <LNodeType id="AN_GGIO_WATER" desc="8. " lnClass="GGIO">
+            <DO name="Alm1" desc=" " type="AN_SPS"></DO>
+            <DO name="Alm2" desc=" " type="AN_SPS"></DO>
+            <DO name="Alm3" desc=" " type="AN_SPS"></DO>
+            <DO name="Alm4" desc=" " type="AN_SPS"></DO>
+        </LNodeType>
+        <LNodeType id="AN_GGIO_BODY" desc="9.人体感应" lnClass="GGIO">
+            <DO name="Alm1" desc=" " type="AN_SPS"></DO>
+            <DO name="SPCSO1" desc=" " type="AN_SPC_DC"></DO>
+        </LNodeType>
+        <LNodeType id="AN_GGIO_BODY4" desc="9a. " lnClass="GGIO">
+            <DO name="Alm1" desc=" " type="AN_SPS"></DO>
+            <DO name="Alm2" desc=" " type="AN_SPS"></DO>
+            <DO name="Alm3" desc=" " type="AN_SPS"></DO>
+            <DO name="Alm4" desc=" " type="AN_SPS"></DO>
+            <DO name="SPCSO1" desc=" " type="AN_SPC_DC"></DO>
+        </LNodeType>
+        <LNodeType id="AN_GGIO_SMOKE" desc="10. " lnClass="GGIO">
+            <DO name="Alm1" desc=" " type="AN_SPS"></DO>
+            <DO name="SPCSO1" desc=" " type="AN_SPC_DC"></DO>
+        </LNodeType>
+        <LNodeType id="AN_GGIO_SMOKE4" desc="10a. " lnClass="GGIO">
+            <DO name="Alm1" desc=" " type="AN_SPS"></DO>
+            <DO name="Alm2" desc=" " type="AN_SPS"></DO>
+            <DO name="Alm3" desc=" " type="AN_SPS"></DO>
+            <DO name="Alm4" desc=" " type="AN_SPS"></DO>
+            <DO name="SPCSO1" desc=" " type="AN_SPC_DC"></DO>
+        </LNodeType>
+        <LNodeType id="AN_SPTR" desc="11. " lnClass="SPTR">
+            <DO name="TmpA" desc=" " type="AN_MV_F"></DO>
+            <DO name="TmpB" desc=" " type="AN_MV_F"></DO>
+            <DO name="TmpC" desc=" " type="AN_MV_F"></DO>
+            <DO name="Ind1" desc=" " type="AN_SPS"></DO>
+            <DO name="Alm1" desc=" " type="AN_SPS"></DO>
+            <DO name="SPCSO1" desc=" " type="AN_SPC_DC"></DO>
+        </LNodeType>
+        <LNodeType id="AN_GGIO_DOOR" desc="12 " lnClass="GGIO">
+            <DO name="Ind1" desc=" " type="AN_SPS"></DO>
+            <DO name="Ind2" desc=" " type="AN_SPS"></DO>
+            <DO name="Ind3" desc=" " type="AN_SPS"></DO>
+            <DO name="Ind4" desc=" " type="AN_SPS"></DO>
+            <DO name="SPCSO1" desc=" " type="AN_SPC_DC"></DO>
+            <DO name="SPCSO2" desc=" " type="AN_SPC_DC"></DO>
+            <DO name="SPCSO3" desc=" " type="AN_SPC_DC"></DO>
+            <DO name="SPCSO4" desc=" " type="AN_SPC_DC"></DO>
+        </LNodeType>
+        <DOType id="AN_DPL_PhyNam_df" cdc="DPL">
+            <DA name="vendor" bType="VisString255" fc="DC">
+                <Val>CZAN</Val>
+            </DA>
+            <DA name="hwRev" bType="VisString255" fc="DC">
+                <Val>CZAN</Val>
+            </DA>
+            <DA name="swRev" bType="VisString255" fc="DC">
+                <Val>v12.4.1</Val>
+            </DA>
+        </DOType>
+        <DOType id="AN_SPS_Proxy_df" cdc="SPS">
+            <DA name="stVal" bType="BOOLEAN" dchg="true" fc="ST">
+                <Val>false</Val>
+            </DA>
+            <DA name="q" bType="Quality" qchg="true" fc="ST"></DA>
+            <DA name="t" bType="Timestamp" fc="ST" sAddr="ti"></DA>
+        </DOType>
+        <DOType id="AN_INC_Mod_df" cdc="INC">
+            <DA name="stVal" bType="Enum" type="Mod" fc="ST">
+                <Val>on</Val>
+            </DA>
+            <DA name="q" bType="Quality" fc="ST"></DA>
+            <DA name="t" bType="Timestamp" fc="ST" sAddr="ti"></DA>
+            <DA name="ctlModel" bType="Enum" type="ctlModel" fc="CF">
+                <Val>status-only</Val>
+            </DA>
+        </DOType>
+        <DOType id="AN_INS_Beh_df" cdc="INS">
+            <DA name="stVal" bType="Enum" type="Beh" fc="ST">
+                <Val>on</Val>
+            </DA>
+            <DA name="q" bType="Quality" fc="ST"></DA>
+            <DA name="t" bType="Timestamp" fc="ST" sAddr="ti"></DA>
+        </DOType>
+        <DOType id="AN_INS_Health_df" cdc="INS">
+            <DA name="stVal" bType="Enum" type="Health" fc="ST">
+                <Val>Ok</Val>
+            </DA>
+            <DA name="q" bType="Quality" fc="ST"></DA>
+            <DA name="t" bType="Timestamp" fc="ST" sAddr="ti"></DA>
+        </DOType>
+        <DOType id="AN_LPL_NamPlt_LLN0_df" cdc="LPL">
+            <DA name="vendor" bType="VisString255" fc="DC">
+                <Val>CZAN</Val>
+            </DA>
+            <DA name="swRev" bType="VisString255" fc="DC">
+                <Val>v12.4.1</Val>
+            </DA>
+            <DA name="d" bType="VisString255" fc="DC">
+                <Val>CZAN</Val>
+            </DA>
+            <DA name="dU" bType="Unicode255" fc="DC">
+                <Val>CZAN</Val>
+            </DA>
+            <DA name="configRev" bType="VisString255" fc="DC">
+                <Val>2015-5-19</Val>
+            </DA>
+            <DA name="ldNs" bType="VisString255" fc="EX">
+                <Val>IEC61850-7-4:2007</Val>
+            </DA>
+        </DOType>
+        <DOType id="AN_LPL_NamPlt_df" cdc="LPL">
+            <DA name="vendor" bType="VisString255" fc="DC">
+                <Val>CZAN</Val>
+            </DA>
+            <DA name="swRev" bType="VisString255" fc="DC">
+                <Val>v12.4.1</Val>
+            </DA>
+            <DA name="d" bType="VisString255" fc="DC">
+                <Val>CZAN</Val>
+            </DA>
+            <DA name="configRev" bType="VisString255" fc="DC">
+                <Val>2015-5-21</Val>
+            </DA>
+        </DOType>
+        <DOType id="AN_MV_F" cdc="MV">
+            <DA name="mag" bType="Struct" type="AN_AnalogueValue_f" dchg="true" fc="MX"></DA>
+            <DA name="q" bType="Quality" qchg="true" fc="MX"></DA>
+            <DA name="t" bType="Timestamp" fc="MX"></DA>
+            <DA name="dU" bType="Unicode255" fc="DC"></DA>
+        </DOType>
+        <DOType id="AN_MV_I" cdc="MV">
+            <DA name="mag" bType="Struct" type="AN_AnalogueValue_i" dchg="true" fc="MX"></DA>
+            <DA name="q" bType="Quality" qchg="true" fc="MX"></DA>
+            <DA name="t" bType="Timestamp" fc="MX"></DA>
+            <DA name="dU" bType="Unicode255" fc="DC"></DA>
+        </DOType>
+        <DOType id="AN_CMV" cdc="CMV">
+            <DA name="cVal" bType="Struct" type="AN_Vector" dchg="true" fc="MX"></DA>
+            <DA name="q" bType="Quality" qchg="true" fc="MX"></DA>
+            <DA name="t" bType="Timestamp" fc="MX"></DA>
+            <DA name="dU" bType="Unicode255" fc="DC"></DA>
+        </DOType>
+        <DOType id="AN_SPS" cdc="SPS">
+            <DA name="stVal" bType="BOOLEAN" dchg="true" fc="ST"></DA>
+            <DA name="q" bType="Quality" qchg="true" fc="ST"></DA>
+            <DA name="t" bType="Timestamp" fc="ST"></DA>
+            <DA name="dU" bType="Unicode255" fc="DC"></DA>
+        </DOType>
+        <DOType id="AN_SPC_DC" cdc="SPC">
+            <DA name="Oper" bType="Struct" type="AN_SBOw_Oper_SDPC" fc="CO"></DA>
+            <DA name="stVal" bType="BOOLEAN" dchg="true" fc="ST"></DA>
+            <DA name="q" bType="Quality" qchg="true" fc="ST"></DA>
+            <DA name="t" bType="Timestamp" fc="ST" sAddr="ti"></DA>
+            <DA name="ctlModel" bType="Enum" type="ctlModel" fc="CF"></DA>
+            <DA name="dU" bType="Unicode255" fc="DC"></DA>
+        </DOType>
+        <DOType id="AN_ASG_SP_F" cdc="ASG">
+            <DA name="setMag" bType="Struct" type="AN_AnalogueValue_f" fc="SP"></DA>
+            <DA name="dU" bType="Unicode255" fc="DC"></DA>
+        </DOType>
+        <DOType id="AN_ASG_SP_I" cdc="ASG">
+            <DA name="setMag" bType="Struct" type="AN_AnalogueValue_i" fc="SP"></DA>
+            <DA name="dU" bType="Unicode255" fc="DC"></DA>
+        </DOType>
+        <DOType id="AN_ASG_SG_F" cdc="ASG">
+            <DA name="setMag" bType="Struct" type="AN_AnalogueValue_f" fc="SG"></DA>
+            <DA name="dU" bType="Unicode255" fc="DC"></DA>
+        </DOType>
+        <DOType id="AN_ASG_SG_I" cdc="ASG">
+            <DA name="setMag" bType="Struct" type="AN_AnalogueValue_i" fc="SG"></DA>
+            <DA name="dU" bType="Unicode255" fc="DC"></DA>
+        </DOType>
+        <!-- 3、数据属性定义区 -->
+        <DAType id="AN_Vector">
+            <BDA name="mag" bType="Struct" type="AN_AnalogueValue_f"></BDA>
+        </DAType>
+        <DAType id="AN_AnalogueValue_f">
+            <BDA name="f" bType="FLOAT32"></BDA>
+        </DAType>
+        <DAType id="AN_AnalogueValue_i">
+            <BDA name="i" bType="INT32"></BDA>
+        </DAType>
+        <DAType id="AN_SBOw_Oper_SDPC">
+            <BDA name="ctlVal" bType="BOOLEAN"></BDA>
+            <BDA name="origin" bType="Struct" type="AN_Originator"></BDA>
+            <BDA name="ctlNum" bType="INT8U"></BDA>
+            <BDA name="T" bType="Timestamp"></BDA>
+            <BDA name="Test" bType="BOOLEAN"></BDA>
+            <BDA name="Check" bType="Check"></BDA>
+        </DAType>
+        <DAType id="AN_Originator">
+            <BDA name="orCat" bType="Enum" type="orCategory"></BDA>
+            <BDA name="orIdent" bType="Octet64"></BDA>
+        </DAType>
+        <!-- 4、枚举类型定义区 -->
+        <EnumType id="acMode">
+            <EnumVal ord="0">auto</EnumVal>
+            <EnumVal ord="1">cold</EnumVal>
+            <EnumVal ord="2">humi</EnumVal>
+            <EnumVal ord="3">warm</EnumVal>
+            <EnumVal ord="4">fan</EnumVal>
+        </EnumType>
+        <EnumType id="ctlModel">
+            <EnumVal ord="0">status-only</EnumVal>
+            <EnumVal ord="1">direct-with-normal-security</EnumVal>
+            <EnumVal ord="2">sbo-with-normal-security</EnumVal>
+            <EnumVal ord="3">direct-with-enhanced-security</EnumVal>
+            <EnumVal ord="4">sbo-with-enhanced-security</EnumVal>
+        </EnumType>
+        <EnumType id="sboClass">
+            <EnumVal ord="0">operate-once</EnumVal>
+            <EnumVal ord="1">operate-many</EnumVal>
+        </EnumType>
+        <EnumType id="orCategory">
+            <EnumVal ord="0">not-supported</EnumVal>
+            <EnumVal ord="1">bay-control</EnumVal>
+            <EnumVal ord="2">station-control</EnumVal>
+            <EnumVal ord="3">remote-control</EnumVal>
+            <EnumVal ord="4">automatic-bay</EnumVal>
+            <EnumVal ord="5">automatic-station</EnumVal>
+            <EnumVal ord="6">automatic-remote</EnumVal>
+            <EnumVal ord="7">maintenance</EnumVal>
+            <EnumVal ord="8">process</EnumVal>
+        </EnumType>
+        <EnumType id="Mod">
+            <EnumVal ord="1">on</EnumVal>
+            <EnumVal ord="2">blocked</EnumVal>
+            <EnumVal ord="3">test</EnumVal>
+            <EnumVal ord="4">test/blocked</EnumVal>
+            <EnumVal ord="5">off</EnumVal>
+        </EnumType>
+        <EnumType id="Beh">
+            <EnumVal ord="1">on</EnumVal>
+            <EnumVal ord="2">blocked</EnumVal>
+            <EnumVal ord="3">test</EnumVal>
+            <EnumVal ord="4">test/blocked</EnumVal>
+            <EnumVal ord="5">off</EnumVal>
+        </EnumType>
+        <EnumType id="Health">
+            <EnumVal ord="1">Ok</EnumVal>
+            <EnumVal ord="2">Warning</EnumVal>
+            <EnumVal ord="3">Alarm</EnumVal>
+        </EnumType>
+    </DataTypeTemplates>
+</SCL>

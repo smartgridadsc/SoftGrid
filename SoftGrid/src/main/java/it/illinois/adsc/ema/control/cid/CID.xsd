@@ -1,0 +1,401 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.iec.ch/61850/2003/SCL">
+    <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" name="SCL" type="scl:SCLType"/>
+    <xs:complexType name="HitemType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:float" name="version"/>
+                <xs:attribute type="xs:byte" name="revision"/>
+                <xs:attribute type="xs:date" name="when"/>
+                <xs:attribute type="xs:string" name="who"/>
+                <xs:attribute type="xs:string" name="what"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="HistoryType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:HitemType" name="Hitem"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="HeaderType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:HistoryType" name="History"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="id"/>
+        <xs:attribute type="xs:string" name="toolID"/>
+        <xs:attribute type="xs:string" name="nameStructure"/>
+    </xs:complexType>
+    <xs:complexType name="BayType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="name"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="VoltageLevelType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:BayType" name="Bay"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name"/>
+    </xs:complexType>
+    <xs:complexType name="SubstationType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:VoltageLevelType" name="VoltageLevel"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name"/>
+    </xs:complexType>
+    <xs:complexType name="BitRateType">
+        <xs:simpleContent>
+            <xs:extension base="xs:byte">
+                <xs:attribute type="xs:string" name="unit"/>
+                <xs:attribute type="xs:string" name="multiplier"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="PType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="type" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="AddressType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:PType" name="P" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ConnectedAPType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:AddressType" name="Address"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="iedName" use="optional"/>
+        <xs:attribute type="xs:string" name="apName" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="SubNetworkType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:BitRateType" name="BitRate"/>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:ConnectedAPType" name="ConnectedAP" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="type"/>
+    </xs:complexType>
+    <xs:complexType name="CommunicationType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:SubNetworkType" name="SubNetwork"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ConfDataSetType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:byte" name="max" use="optional"/>
+                <xs:attribute type="xs:short" name="maxAttributes" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="DynDataSetType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:byte" name="max" use="optional"/>
+                <xs:attribute type="xs:short" name="maxAttributes" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="ConfReportControlType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:byte" name="max" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="ReportSettingsType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="cbName" use="optional"/>
+                <xs:attribute type="xs:string" name="datSet" use="optional"/>
+                <xs:attribute type="xs:string" name="rptID" use="optional"/>
+                <xs:attribute type="xs:string" name="optFields" use="optional"/>
+                <xs:attribute type="xs:string" name="bufTime" use="optional"/>
+                <xs:attribute type="xs:string" name="trgOps" use="optional"/>
+                <xs:attribute type="xs:string" name="intgPd" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="LogSettingsType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="cbName" use="optional"/>
+                <xs:attribute type="xs:string" name="datSet" use="optional"/>
+                <xs:attribute type="xs:string" name="logEna" use="optional"/>
+                <xs:attribute type="xs:string" name="trgOps" use="optional"/>
+                <xs:attribute type="xs:string" name="intgPd" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="ConfLogControlType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:byte" name="max" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="ConfLNsType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="fixPrefix" use="optional"/>
+                <xs:attribute type="xs:string" name="fixLnInst" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="ServicesType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="DynAssociation"/>
+            <xs:element type="xs:string" name="GetDirectory"/>
+            <xs:element type="xs:string" name="GetDataObjectDefinition"/>
+            <xs:element type="xs:string" name="DataObjectDirectory"/>
+            <xs:element type="xs:string" name="GetDataSetValue"/>
+            <xs:element type="xs:string" name="DataSetDirectory"/>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:ConfDataSetType" name="ConfDataSet"/>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:DynDataSetType" name="DynDataSet"/>
+            <xs:element type="xs:string" name="ReadWrite"/>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:ConfReportControlType" name="ConfReportControl"/>
+            <xs:element type="xs:string" name="GetCBValues"/>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:ReportSettingsType" name="ReportSettings"/>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:LogSettingsType" name="LogSettings"/>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:ConfLogControlType" name="ConfLogControl"/>
+            <xs:element type="xs:string" name="FileHandling"/>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:ConfLNsType" name="ConfLNs"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AuthenticationType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="none" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="FCDAType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="ldInst" use="optional"/>
+                <xs:attribute type="xs:string" name="prefix" use="optional"/>
+                <xs:attribute type="xs:byte" name="lnInst" use="optional"/>
+                <xs:attribute type="xs:string" name="lnClass" use="optional"/>
+                <xs:attribute type="xs:string" name="doName" use="optional"/>
+                <xs:attribute type="xs:string" name="fc" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="DataSetType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:FCDAType" name="FCDA" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="desc" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="TrgOpsType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="dchg" use="optional"/>
+                <xs:attribute type="xs:string" name="qchg" use="optional"/>
+                <xs:attribute type="xs:string" name="period" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="OptFieldsType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="seqNum" use="optional"/>
+                <xs:attribute type="xs:string" name="timeStamp" use="optional"/>
+                <xs:attribute type="xs:string" name="dataSet" use="optional"/>
+                <xs:attribute type="xs:string" name="reasonCode" use="optional"/>
+                <xs:attribute type="xs:string" name="dataRef" use="optional"/>
+                <xs:attribute type="xs:string" name="entryID" use="optional"/>
+                <xs:attribute type="xs:string" name="configRef" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="RptEnabledType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:byte" name="max" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="ReportControlType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:TrgOpsType" name="TrgOps"/>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:OptFieldsType" name="OptFields"/>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:RptEnabledType" name="RptEnabled"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="desc" use="optional"/>
+        <xs:attribute type="xs:string" name="datSet" use="optional"/>
+        <xs:attribute type="xs:string" name="rptID" use="optional"/>
+        <xs:attribute type="xs:byte" name="confRev" use="optional"/>
+        <xs:attribute type="xs:string" name="buffered" use="optional"/>
+        <xs:attribute type="xs:short" name="intgPd" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="LN0Type">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:DataSetType" name="DataSet" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:ReportControlType" name="ReportControl" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="inst" use="optional"/>
+        <xs:attribute type="xs:string" name="lnClass" use="optional"/>
+        <xs:attribute type="xs:string" name="lnType" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="LNType" mixed="true">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:DOIType" name="DOI" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:byte" name="inst" use="optional"/>
+        <xs:attribute type="xs:string" name="prefix" use="optional"/>
+        <xs:attribute type="xs:string" name="desc" use="optional"/>
+        <xs:attribute type="xs:string" name="lnClass" use="optional"/>
+        <xs:attribute type="xs:string" name="lnType" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="DAIType" mixed="true">
+        <xs:sequence>
+            <xs:element type="xs:string" name="Val" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="sAddr" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="SDIType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:DAIType" name="DAI"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="DOIType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:SDIType" name="SDI" minOccurs="0"/>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:DAIType" name="DAI" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="desc" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="LDeviceType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:LN0Type" name="LN0"/>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:LNType" name="LN" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="inst" use="optional"/>
+        <xs:attribute type="xs:string" name="desc" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="ServerType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:AuthenticationType" name="Authentication"/>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:LDeviceType" name="LDevice"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AccessPointType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:ServerType" name="Server"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="IEDType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:ServicesType" name="Services"/>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:AccessPointType" name="AccessPoint"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="type" use="optional"/>
+        <xs:attribute type="xs:string" name="manufacturer" use="optional"/>
+        <xs:attribute type="xs:float" name="configVersion" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="DOType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="name" use="optional"/>
+                <xs:attribute type="xs:string" name="desc" use="optional"/>
+                <xs:attribute type="xs:string" name="type" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="LNodeTypeType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:DOType" name="DO" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="id" use="optional"/>
+        <xs:attribute type="xs:string" name="desc" use="optional"/>
+        <xs:attribute type="xs:string" name="lnClass" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="DAType" mixed="true">
+        <xs:sequence>
+            <xs:element type="xs:string" name="Val" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="bType" use="optional"/>
+        <xs:attribute type="xs:string" name="fc" use="optional"/>
+        <xs:attribute type="xs:string" name="dchg" use="optional"/>
+        <xs:attribute type="xs:string" name="qchg" use="optional"/>
+        <xs:attribute type="xs:string" name="sAddr" use="optional"/>
+        <xs:attribute type="xs:string" name="type" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="DOTypeType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:DAType" name="DA" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="id" use="optional"/>
+        <xs:attribute type="xs:string" name="cdc" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="BDAType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="name" use="optional"/>
+                <xs:attribute type="xs:string" name="bType" use="optional"/>
+                <xs:attribute type="xs:string" name="type" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="DATypeType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:BDAType" name="BDA" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="id" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="EnumValType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:byte" name="ord" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="EnumTypeType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:EnumValType" name="EnumVal" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="id" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="DataTypeTemplatesType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:LNodeTypeType" name="LNodeType" maxOccurs="unbounded" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation> 1&#x3001;&#x903B;&#x8F91;&#x8282;&#x70B9;&#x5B9A;&#x4E49;&#x533A; </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:DOTypeType" name="DOType" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:DATypeType" name="DAType" maxOccurs="unbounded" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation> 3&#x3001;&#x6570;&#x636E;&#x5C5E;&#x6027;&#x5B9A;&#x4E49;&#x533A; </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:EnumTypeType" name="EnumType" maxOccurs="unbounded" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation> 4&#x3001;&#x679A;&#x4E3E;&#x7C7B;&#x578B;&#x5B9A;&#x4E49;&#x533A; </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SCLType">
+        <xs:sequence>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:HeaderType" name="Header"/>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:SubstationType" name="Substation"/>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:CommunicationType" name="Communication"/>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:IEDType" name="IED" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element xmlns:scl="http://www.iec.ch/61850/2003/SCL" type="scl:DataTypeTemplatesType" name="DataTypeTemplates"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

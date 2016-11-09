@@ -1,0 +1,14 @@
+Title : Transfer File
+URL : /transferfile
+Method : POST
+URL Params : 
+  Required:
+  auth=base64Encription[<username>:<password>]
+Data Param:
+Sample Data Param:
+Success Response:
+Sample Response:
+Error Reponse:
+Sample Call:
+Notes:
+  

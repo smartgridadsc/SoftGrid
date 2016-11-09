@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SCL xsi:schemaLocation="http://www.iec.ch/61850/2003/SCL  SCL.xsd" xmlns="http://www.iec.ch/61850/2003/SCL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <Header id="ADSC" toolID="XMLSpy" nameStructure="SubstationName">
+        <History>
+            <Hitem version="1.0" revision="0" when="2016-07-27" who="Prageeth" what="Used for ADSC"></Hitem>
+        </History>
+    </Header>
+    <Substation name="Sub_a">
+    </Substation>
+     <Communication>
+            <SubNetwork name="LAN1" type="8-MMS/TCP">
+                <BitRate unit="b/s" multiplier="M">100</BitRate>

@@ -1,0 +1,2 @@
+cd C:\SG\Releases\sourcecode\SoftGrid-master\SoftGrid-master\SoftGrid\.
+java -jar SoftGrid.jar Remote C:\SG\Releases\sourcecode\SoftGrid-master\SoftGrid-master\SoftGrid\archive\TestClient_4372728808481.PWB

@@ -1,0 +1,6 @@
+# SoftGrid WebService API Methods
+### [Experiment Request (Path : /experiment)](https://github.com/smartgridadsc/smartpower/wiki/Experiment-Request)
+### [Request File (Path : /request)](https://github.com/smartgridadsc/smartpower/wiki/Request-File)
+### [Transfer File (Path : /transfer)](https://github.com/smartgridadsc/smartpower/wiki/Transfer-File)
+
+![](https://github.com/smartgridadsc/smartpower/blob/master/API/Images/SoftGrid%20sequence%20diagrame.png)

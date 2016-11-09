@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/../openmuc/classes/production/SmartPower" />
+    <output-test url="file://$MODULE_DIR$/../openmuc/classes/test/SmartPower" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="ProxyServer" />
+    <orderEntry type="module" module-name="josistack" />
+    <orderEntry type="module" module-name="jositransport" />
+    <orderEntry type="module" module-name="openiec61850" />
+    <orderEntry type="module" module-name="openiec61850-clientgui" />
+    <orderEntry type="module" module-name="openiec61850-sample" />
+    <orderEntry type="module" module-name="openmuc" />
+    <orderEntry type="module" module-name="PWCom" />
+    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.7" level="project" />
+    <orderEntry type="library" name="weblaf-complete-1.28" level="project" />
+    <orderEntry type="library" name="apache-ant-1.7.0" level="project" />
+    <orderEntry type="library" name="jna-3.3.0-platform" level="project" />
+    <orderEntry type="module" module-name="Security" />
+  </component>
+</module>
+

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PWModel>
+    <proxyNode active="true">
+        <ip>192.168.0.242</ip>
+        <port>2404</port>
+        <iedNode active="true">
+            <PWCaseFileName>C:\\EMA\\SmartPower\\smartpower\\SmartPower\\scl\\CBIEDModel.icd</PWCaseFileName>
+            <ip>192.168.0.242</ip>
+            <port>10003</port>
+            <reference>IED_CircuiteBreakerlDevice1/MMXU1.BRANCH_CB_31_1_28</reference>
+            <device>Branch</device>
+            <parameters>
+                <key pwname="BusNum">31</key>
+                <key pwname="BusNum:1">28</key>
+                <key pwname="LineCircuit">1</key>
+                <data pwname="lineStatus" sclName="LineStatus"/>
+            </parameters>
+        </iedNode>
+        <iedNode active="true">
+            <PWCaseFileName>C:\\EMA\\SmartPower\\smartpower\\SmartPower\\scl\\TransformerIEDModel.icd</PWCaseFileName>
+            <ip>192.168.0.242</ip>
+            <port>10004</port>
+            <reference>IED_TransformerTransformer/TRNS_MMXU1.TRANS_54_53_1</reference>
+            <device>Transformer</device>
+            <parameters>
+                <key pwname="BusNum">54</key>
+                <key pwname="BusNum:1">53</key>
+                <key pwname="LineCircuit">1</key>
+                <data pwname="lineStatus" sclName="LineStatus"/>
+                <data pwname="tapRatio" sclName="LineTap"/>
+            </parameters>
+        </iedNode>
+        <iedNode active="true">
+            <PWCaseFileName>C:\\EMA\\SmartPower\\smartpower\\SmartPower\\scl\\CB_1_31_1.icd</PWCaseFileName>
+            <ip>192.168.0.242</ip>
+            <port>10005</port>
+            <reference>IED_CircuiteBreakerlDevice1/MMXU1.BRANCH_CB_1_31_1</reference>
+            <device>Branch</device>
+            <parameters>
+                <key pwname="BusNum">1</key>
+                <key pwname="BusNum:1">31</key>
+                <key pwname="LineCircuit">1</key>
+                <data pwname="lineStatus" sclName="LineStatus"/>
+            </parameters>
+        </iedNode>
+    </proxyNode>
+    <controlCenterNode active="true">
+        <ip>192.168.0.242</ip>
+    </controlCenterNode>
+</PWModel>

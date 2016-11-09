@@ -1,0 +1,25 @@
+##  Developer Prerequisites
+### Mandatory
+
+PowerWorld 18 or higher with Auto Simulator COM API and the Transient addon support.
+The Auto Simulator API is a critical component in the SoftGrid testbed. Therefore it is mandatory to have this API support. However, Transient addon is optional. Without Transient contingencies the testbed will work, but you will not be able to analyse transient changes in the simulated power grid.
+
+Java v1.8.* or higher.
+SoftGrid is mainly developed in Java. Other languages used along with Java are Python, XML, XSD, SCL(Substation Configuration Language)and PowerWorld Scripting Language
+
+### Optional
+
+Python Version 2.7.* When the testbed is running, a background process running on python generates the transient data requests from PowerWorld. If the transient analysis is not in your priority list, you can ignore Python installation.
+
+IED to build the source code If you want to download the source code and build on your own, you may need a good IED to start with. We recommend IntelliJ IDEA for java, as it is the development environment that we have used. If you want you can use Eclipse or NetBeans too. Whatever the IED you use, make sure it supports Grandle and Maven.
+
+Maven Version 3.3.* Some of the SoftGrid projects and their dependencies are specified in maven. So it would be easy to open the source code modules and build the project if you have installed maven version 3.3.0 or higher.
+
+## Source Code Release
+SoftGrid is a free open source project under [GNU GPL License Version 3](https://www.gnu.org/licenses/gpl-3.0.en.html).
+
+The Git hub URL  
+`To be Released`  
+
+## How to Build?
+There are 9 modules in SoftGrid. Firstly to open all the modules in an IED. The library(jars) dependencies of each modules are given in the lib directory of the respective modules. 

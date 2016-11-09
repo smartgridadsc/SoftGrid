@@ -1,0 +1,19 @@
+
+postscript("C:/Users/daisuke.m/Dropbox/EMA-references/experiments/Task1.3/paper/unserved_load_nt.ps")
+
+xdata=c(10,20,30,40,50)
+#No mitigation case is based on 20 iterations. To be replaced.(Apr 18, 2016)
+nomitigation=c(20.901088540548457,174.5422913,384.698571,614.1361584,651.2541233)
+Nt3=c(13.715174148677793,24.87962348,37.72723443,35.09581328,61.69710078)
+Nt6=c(33.610327214000264,42.26666492,93.23812379,108.0505629,177.6620738)
+Nt9=c(18.59380501747561,128.8091274,211.3332518,246.4634812,316.710428)
+
+plot(xdata, nomitigation/nomitigation, ylim=c(0,1.1), ylab="Ratio of Unserved Load against No-mitigation", type="l", xlab="Fraction of Attacked CBs", xaxt="n", cex.lab=1.5, cex.axis=1.5, lwd=5)
+lines(xdata, Nt3/nomitigation, col="lightblue", lwd=5, lty=3)
+lines(xdata, Nt6/nomitigation, col="lightgreen", lwd=5, lty=5)
+lines(xdata, Nt9/nomitigation, col="pink", lwd=5, lty=4)
+#polygon(c(1:96, rev(1:96)), c(y.high, rev(y.low)), col="lightblue", border="NA")
+#lines(1:96, y, type="l", lty=2)
+axis(1, at=c(10,20,30,40,50),labels=c("10%", "20%", "30%", "40%","50%"), cex.axis=1.5)
+legend("right", legend=c("No Mitigation", "Nt=3", "Nt=6", "Nt=9"), col=c("black", "lightblue", "lightgreen", "pink"), lty=c(1,3,5,4), lwd=c(2,2,2,2))
+dev.off()

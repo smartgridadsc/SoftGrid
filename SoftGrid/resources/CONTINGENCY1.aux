@@ -1,0 +1,413 @@
+DATA (MACHINEMODEL_GENSAL, [BusNum,GenID,TSDeviceStatus,TSH,TSD,TSRa,TSXd,TSXq,TSXd:1,TSXd:2,TSXl,TSTdo,
+   TSTdo:1,TSTqo:1,TSS1,TSS1:1,TSRcomp,TSXcomp])
+{
+   31 "1" "Active" 12 0 0 2.1 0.5 0.2 0.18 0.15 7 0.035 0.05 0 0 0 0
+   44 "1 " "Active" 4 0 0 2.1 0.5 0.2 0.18 0.15 7 0.035 0.05 0 0 0 0
+}
+
+DATA (MACHINEMODEL_GENROU, [BusNum,GenID,TSDeviceStatus,TSH,TSD,TSRa,TSXd,TSXq,TSXd:1,TSXq:1,TSXd:2,TSXl,
+   TSTdo,TSTqo,TSTdo:1,TSTqo:1,TSS1,TSS1:1,TSRcomp,TSXcomp])
+{
+   14 "1 " "Active" 3 0 0 2.1 0.5 0.2 0.5 0.18 0.15 7 0.75 0.035 0.05 0 0 0 0
+   28 "1" "Active" 10 0 0 2.1 0.5 0.2 0.5 0.18 0.15 7 0.75 0.035 0.05 0 0 0 0
+   28 "2" "Active" 10 0 0 2.1 0.5 0.2 0.5 0.18 0.15 7 0.75 0.035 0.05 0 0 0 0
+   48 "1 " "Active" 3 0 0 2.1 0.5 0.2 0.5 0.18 0.15 7 0.75 0.035 0.05 0 0 0 0
+   50 "1" "Active" 3 0 0 2.1 0.5 0.2 0.5 0.18 0.15 7 0.75 0.035 0.05 0 0 0 0
+   53 "1" "Active" 3 0 0 2.1 0.5 0.2 0.5 0.18 0.15 7 0.75 0.035 0.05 0 0 0 0
+   54 "1" "Active" 3 0 0 2.1 0.5 0.2 0.5 0.18 0.15 7 0.75 0.04 0.05 0 0 0 0
+}
+
+DATA (EXCITER_EXDC1, [BusNum,GenID,TSDeviceStatus,TSTr,TSKa,TSTa,TSTb,TSTc,TSVrMax,TSVrMin,TSKe,TSTe,
+   TSKf,TSTf:1,TSTf:2,TSE,TSSE,TSE:1,TSSE:1])
+{
+   44 "1 " "Active" 0 40 0.1 0 0 1 -1 0.1 0.5 0.05 0.7 0 2.8 0.08 3.7 0.33
+}
+
+DATA (EXCITER_EXST1_GE, [BusNum,GenID,TSDeviceStatus,TSTr,TSViMax,TSViMin,TSTc,TSTb,TSKa,TSTa,TSVrMax,
+   TSVrMin,TSKc,TSKf,TSTf,TSTc:1,TSTb:1,TSVaMax,TSVaMin,TSXe,TSILR,TSKlr])
+{
+   28 "1" "Active" 0 0.1 -0.1 1 10 200 0.02 5 -5 0.05 0 1 1 1 5 -5 0.04 2.8 5
+   28 "2" "Active" 0 0.1 -0.1 1 10 200 0.02 5 -5 0.05 0 1 1 1 5 -5 0.04 2.8 5
+   31 "1" "Active" 0 0.1 -0.1 1 10 200 0.02 5 -5 0.05 0 1 1 1 5 -5 0.04 2.8 5
+}
+
+DATA (EXCITER_EXST4B, [BusNum,GenID,TSDeviceStatus,TSTr,TSKpr,TSKir,TSTa,TSVrMax,TSVrMin,TSKpm,TSKim,
+   TSVmmax,TSVmmin,TSKg,TSKp,TSAngleP,TSKi,TSKc,TSXl,TSVbMax])
+{
+   50 "1" "Active" 0 3.15 3.15 0.035 1 -0.87 1 0 1 -0.87 0 6.5 0 0 0.08 0 8
+}
+
+DATA (EXCITER_IEEET1, [BusNum,GenID,TSDeviceStatus,TSTr,TSKa,TSTa,TSVrMax,TSVrMin,TSKe,TSTe,TSKf,TSTf,
+   TSwitch,TSE,TSSE,TSE:1,TSSE:1,TSSpdmlt])
+{
+   14 "1 " "Active" 0 50 0.04 1 -1 -0.06 0.6 0.09 1.46 0 2.8 0.04 3.73 0.33 0
+   48 "1 " "Active" 0 50 0.04 1 -1 -0.06 0.6 0.09 1.46 0 2.8 0.04 3.73 0.33 0
+   53 "1" "Active" 0 50 0.04 1 -1 -0.06 0.6 0.09 1.46 0 2.8 0.04 3.73 0.33 0
+   54 "1" "Active" 0 50 0.035 1 -1 -0.06 0.6 0.09 1.46 0 2.8 0.04 3.73 0.33 0
+}
+
+DATA (GOVERNOR_HYGOV, [BusNum,GenID,TSDeviceStatus,TSTrate,TSRperm,TSRtemp,TSTr,TSTf,TSTg,TSVelm,TSGmax,
+   TSGmin,TSTw,TSAt,TSDturb,TSQnl,TSTtur,TSTn,TSTnp,TSDb:1,TSEps,TSDb:2,TSGv,
+   TSPgv,TSGv:1,TSPgv:1,TSGv:2,TSPgv:2,TSGv:3,TSPgv:3,TSGv:4,TSPgv:4,TSGv:5,
+   TSPgv:5,TSHdam,TSBgv,TSBgv:1,TSBgv:2,TSBgv:3,TSBgv:4,TSBgv:5,TSBmax,TSTblade])
+{
+   28 "1" "Not active" 0 0.04 0.3 5 0.05 0.5 0.2 1 0 1 1.2 0.5 0.05 0.5 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 100
+   28 "2" "Active" 0 0.04 0.3 5 0.05 0.5 0.2 1 0 1 1.2 0.5 0.05 0.5 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 100
+}
+
+DATA (GOVERNOR_IEEEG1, [BusNum,GenID,WhoAmI,TSDeviceStatus,TSK,TST:1,TST:2,TST:3,TSUo,TSUc,TSPmax,TSPmin,
+   TST:4,TSK:1,TSK:2,TST:5,TSK:3,TSK:4,TST:6,TSK:5,TSK:6,TST:7,TSK:7,TSK:8,
+   TSDb:1,TSEps,TSDb:2,TSGv:1,TSPgv:1,TSGv:2,TSPgv:2,TSGv:3,TSPgv:3,TSGv:4,
+   TSPgv:4,TSGv:5,TSPgv:5,TSGv:6,TSPgv:6,TSTrate])
+{
+   31 "1" "none" "Not active" 25 0 0 0.1 1 -10 1 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+}
+
+DATA (GOVERNOR_TGOV1, [BusNum,GenID,TSDeviceStatus,TSTrate,TSR,TST:1,TSVmax,TSVmin,TST:2,TST:3,TSDt])
+{
+   44 "1 " "Active" 0 0.05 0.5 1 0 3 10 0
+   48 "1 " "Not active" 0 0.05 0.5 1 0 3 10 0
+   53 "1" "Active" 0 0.05 0.5 1 0 3 10 0
+   54 "1" "Not active" 0 0.05 0.5 1 0 3 10 0
+}
+
+DATA (GOVERNOR_GAST_GE, [BusNum,GenID,TSDeviceStatus,TSMWCap,TSR,TST:1,TST:2,TST:3,TSLmax,TSKt,TSVmax,
+   TSVmin,TSDturb,TSFidle,TSRmax,TSLinc,TSTltr,TSLtrat,TSA,TSB,TSDbPU:1,TSErr,
+   TSDbPU:2,TSGv:1,TSPgv:1,TSGv:2,TSPgv:2,TSGv:3,TSPgv:3,TSGv:4,TSPgv:4,TSGv:5,
+   TSPgv:5,TSGv:6,TSPgv:6,TSKa,TST:4,TST:5])
+{
+   14 "1 " "Not active" 0 0.05 0.4 0.5 3 1 3 1.5 0 0 0.2 1 0.05 5 0.005 0 1 0 0 0 0 0 1.3 1.3 0 0 0 0 0 0 0 0 0 0 0
+   50 "1" "Not active" 0 0.05 0.4 0.5 3 1 3 1.5 0 0 0.2 1 0.05 5 0.005 0 1 0 0 0 0 0 1.3 1.3 0 0 0 0 0 0 0 0 0 0 0
+}
+
+DATA (GOVERNOR_BPA_GH, [BusNum,GenID,TSDeviceStatus,TSPmax,TSR,TSTg,TSTp,TSTd,TSTw2,TSVelcl,TSVelop,TSDd,
+   TSEpsilon])
+{
+   14 "1 " "Active" 1 0.05 0.5 0.05 5 0.5 0.2 0.3 0.3 0
+   28 "1" "Active" 1 0.05 0.5 0.05 5 0.5 0.2 0.3 0.3 0
+   28 "2" "Not active" 1 0.05 0.5 0.05 5 0.5 0.2 0.3 0.3 0
+   31 "1" "Active" 1 0.05 0.5 0.05 5 0.5 0.2 0.3 0.3 0
+   44 "1 " "Not active" 1 0.05 0.5 0.05 5 0.5 0.2 0.3 0.3 0
+   48 "1 " "Active" 1 0.05 0.5 0.05 5 0.5 0.2 0.3 0.3 0
+   50 "1" "Active" 1 0.05 0.5 0.05 5 0.5 0.2 0.3 0.3 0
+   53 "1" "Not active" 1 0.05 0.5 0.05 5 0.5 0.2 0.3 0.3 0
+   54 "1" "Active" 1 0.05 0.5 0.05 5 0.5 0.2 0.3 0.3 0
+}
+
+DATA (GEN, [BusNum,GenID,GenMVABase,TSGovRespLimit])
+{
+   14 "1 " 40 "Normal"
+   28 "1" 180 "Normal"
+   28 "2" 180 "Normal"
+   31 "1" 250 "Normal"
+   44 "1 " 160 "Normal"
+   48 "1 " 57 "Normal"
+   50 "1" 85 "Normal"
+   53 "1" 150 "Normal"
+   54 "1" 115 "Normal"
+}
+DATA (LOADCHARACTERISTIC_CLOD, [ObjectType,BusNum,LoadID,TSDeviceStatus,TSLmotor,TSSmotor,TSTex,TSDis,TSP,TSKp,
+   TSR,TSX,TSVi,TSTi,TSTb])
+{
+"System" "" "" "Active" 20 30 0 20 0 1 0 0 0.8 60 0
+}
+
+//--------------------------------------------------------------------------------
+// THE FOLLOWING ARE THE TRANSIENT STABILITY OPTIONS
+//--------------------------------------------------------------------------------
+DATA (TRANSIENT_OPTIONS, [MaxItr,ConvergenceTol,ConvergenceTol:1,ExpDirectory,TSOStorageOption,
+   TSOUpdateDisplayNTimeStep,TSOTransferOnManualTimeStep,TSOTransferOnRunUntil,
+   TSOTimeStepUpdateTransferToPF,TSOTimeStepUpdateResults,
+   TSOShowResultPageWhenDone,TSOBusIDFormat,TSOMVABaseForInputDisplay,
+   TSOValidationAllowUnSupportedModel,TSOMaxAngleDifference,
+   TSOInfiniteBusModeling,TSOAngleReferenceOption,TSOInitRefAngleAtZero,
+   TSOAngleRefGenNum,TSOAngleRefGenID,TSOFastValvingOption,
+   TSOFastValvingParameter,TSODefaultLoadModel,TSOGroupResultsBy,
+   TSOResultsUseAreaZoneFilters,TSOSaveResultsForOpenDevices,
+   TSOSaveResultsTimeStepsPerSave,TSOManualTimeSteps,TSOManualRunUntilTime,
+   TSOSaveMinMaxValues,TSOSaveMinMaxValuesTime,TSUseAreaZone,TSEveryResult,
+   TSEveryResult:1,TSEveryResult:2,TSEveryResult:3,TSEveryResult:4,
+   TSEveryResult:5,TSEveryResult:6,TSEveryResult:7,TSEveryResult:8,
+   TSEveryResult:9,TSEveryResult:10,TSEveryResult:11,TSEveryResult:12,
+   TSEveryResult:13,TSEveryResult:14,TSEveryResult:15,TSEveryResult:16,
+   TSOSynGenLowFreqHz,TSOSynGenLowFreqSec,TSOSynGenLowFreqAction,
+   TSOSynGenHighFreqHz,TSOSynGenHighFreqSec,TSOSynGenHighFreqAction,
+   TSOSynGenAngleDeg,TSOSynGenAngleSec,TSOSynGenAngleAction,
+   TSOSynGenCBDelayCycles,TSOSynGenOnlyNoRelay,TSStoreResultsInRAM,
+   TSSaveResultsToHardDrive,TSOMinDelt,TSOInitLimitViolation,TSOTransferOnEvent,
+   TSORunProportional,TSORunProportionalMult,TSOForceSolution,
+   TSOUseVoltageExtrapolation,TSOIgnoreSpeedInSwing,SaturationModel,
+   IntegrationMethod,TSExciterParamCalc,TSMachSatIgnore,IncludePDCI,
+   TSOStartLimitMonitoringValues,TSOStartLimitMonitoringValuesAfterLastEventTime,
+   TSOStartLimitMonitoringValuesTime,TSBusFreqMeasT,TSOWhereResultEvents,
+   TSOWhereResultEvents:1,TSOWhereResultEvents:2,Inhibit])
+{
+25  0.001  1.000 "" "NO" 30 "YES" "YES" "NO " "YES" "YES" "Name" "Device" "Error" 1080.000 "None" "Terminal Angle" "NO " 31 "1" "Frequency"  0.100 "Impedance" "Object/Field" "NO " "NO " 6 1  0.000 "After Last Event"  0.000 "NO " "YES" "YES" "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "6" "YES" "YES" "NO " "NO " "YES" "YES" 58.200  2.000 "Trip" 61.200  2.000 "Trip" 180.000  0.000 "Ignore"  0.000 "YES" "YES" "NO "  4.000 "Modify" "YES" "NO "  5.000  0.000 "YES" "YES" "Quadratic" "RK2" "GE Approach" "Flip Values" "YES" "After Last Event"  0.000  0.000  0.050 "Both Log and Event" "Both Log and Event" "Both Log and Event" "0.300"
+}
+
+//--------------------------------------------------------------------------------
+// THE FOLLOWING ARE THE TRANSIENT LIMIT MONITORING
+//--------------------------------------------------------------------------------
+DATA (TSLIMITMONITOR, [LSName,Active,Category,Abort,TSTdelay,CTGViol,ObjectType,VariableName,FilterName,
+   LimViolValue,Duration,Side,UnitsType,ConditionCaseAbs,UseStopValue,StopValue,
+   UseStartValue,StartValue,UseStopValue:1,StopValue:1,UseStartValue:1,
+   StartValue:1],AUXDEF,YES)
+{
+"WECC Category B Voltage Dip Non-Load Bus" "NO " "" "Log" 0 100 "Bus" "TSBusVPU" "Non-Load Only" -30 0 "Lower" "Percent Deviation" "NO " "NO " 0 "NO " 0 "NO " 0 "NO " 0
+"WECC Category B Voltage Dip Load Bus" "NO " "" "Log" 0 100 "Bus" "TSBusVPU" "Load Only" -25 0 "Lower" "Percent Deviation" "NO " "NO " 0 "NO " 0 "NO " 0 "NO " 0
+"WECC Category B Voltage Dip Load Bus Duration" "NO " "" "Log" 0 100 "Bus" "TSBusVPU" "Load Only" -20 0.333 "Lower" "Percent Deviation" "NO " "NO " 0 "NO " 0 "NO " 0 "NO " 0
+"WECC Category B Frequency" "YES" "" "Log" 0 100 "Bus" "Frequency" "Load Only" 59.6 2 "Lower" "Actual" "NO " "NO " 0 "NO " 0 "NO " 0 "NO " 0
+"Generator Out-of-Step" "NO " "" "Log" 0 100 "Gen" "TSGenDeltaNoshift" "" 180 0 "Lower" "Actual Deviation" "YES" "NO " 0 "NO " 0 "NO " 0 "NO " 0
+}
+
+//--------------------------------------------------------------------------------
+// THE FOLLOWING DESCRIBES THE TRANSIENT CONTINGENCIES
+//--------------------------------------------------------------------------------
+DATA (TSCONTINGENCY, [TSCTGName,Category,StartTime,EndTime,UseCyclesForTimeStep,TimeStep,CTGSkip,
+   CTGProc,CTGSolved,ReasonNotSolved,CTGViol,TSTotalLoadMWTripped,
+   TSTotalGenMWTripped,PLVisible,PLColor,PLThickness,SODashed,SymbolType],AUXDEF,YES)
+{
+"OPEN_ALL" ""  0.000 10.000 "YES"  0.500 "NO " "NO " "NO " "" 0  0.000  0.000 "YES" -1 Default "Default" "Default"
+}
+
+DATA (TSCONTINGENCYELEMENT, [TSCTGName,TSTimeInSeconds,WhoAmI,TSEventString,Enabled,FilterName],AUXDEF,YES)
+{
+<$OPEN_ALL$>
+}
+
+//--------------------------------------------------------------------------------
+//Generator TRANSIENT STABILITY RESULTS TO SAVE
+//--------------------------------------------------------------------------------
+//Default All Values to NO
+SCRIPT
+{
+SetData(Gen, [TSSaveAll,TSSaveGenDelta,TSSaveGenW,TSSaveGenPMech,TSSaveGenP,TSSaveGenQ,TSSaveGenTermVPU,TSSaveGenFieldV,TSSaveGenExciter,TSSaveGenMachine,TSSaveGenGovernor,TSSaveGenStabilizer,TSSaveGenIfd,TSSaveGenStabilizerVs,TSSaveGenDeltaNoshift,TSSaveGenPAccel,TSSaveGenVOEL,TSSaveGenVUEL,TSSaveGenPrefCtrl,TSSaveGenPlantCtrl,TSSaveGenAero,TSSaveGenAGC], [NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO], All); // 
+}
+DATA (GEN, [BusNum,GenID,TSSaveAll,TSSaveGenDelta,TSSaveGenW,TSSaveGenPMech,TSSaveGenP,
+   TSSaveGenQ,TSSaveGenTermVPU,TSSaveGenFieldV,TSSaveGenExciter,TSSaveGenMachine,
+   TSSaveGenGovernor,TSSaveGenStabilizer,TSSaveGenIfd,TSSaveGenStabilizerVs,
+   TSSaveGenDeltaNoshift,TSSaveGenPAccel,TSSaveGenVOEL,TSSaveGenVUEL,
+   TSSaveGenPrefCtrl,TSSaveGenPlantCtrl,TSSaveGenAero,TSSaveGenAGC])
+{
+   14 "1 " "NO " "YES" "YES" "YES" "YES" "YES" "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   28 "1" "NO " "YES" "YES" "YES" "YES" "YES" "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   28 "2" "NO " "YES" "YES" "YES" "YES" "YES" "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   31 "1" "NO " "YES" "YES" "YES" "YES" "YES" "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   44 "1 " "NO " "YES" "YES" "YES" "YES" "YES" "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   48 "1 " "NO " "YES" "YES" "YES" "YES" "YES" "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   50 "1" "NO " "YES" "YES" "YES" "YES" "YES" "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   53 "1" "NO " "YES" "YES" "YES" "YES" "YES" "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   54 "1" "NO " "YES" "YES" "YES" "YES" "YES" "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+}
+
+//--------------------------------------------------------------------------------
+//Bus TRANSIENT STABILITY RESULTS TO SAVE
+//--------------------------------------------------------------------------------
+//Default All Values to NO
+SCRIPT
+{
+SetData(Bus, [TSSaveAll,TSSaveBusVPU,TSSaveBusDeg,TSSaveBusFreq,TSSaveBusGenP,TSSaveBusGenQ,TSSaveBusLoadP,TSSaveBusLoadQ,TSSaveBusDegNoshift], [NO, NO, NO, NO, NO, NO, NO, NO, NO], All); // 
+}
+//--------------------------------------------------------------------------------
+//Load TRANSIENT STABILITY RESULTS TO SAVE
+//--------------------------------------------------------------------------------
+//Default All Values to NO
+SCRIPT
+{
+SetData(Load, [TSSaveAll,TSSaveBusVPU,TSSaveBusDeg,TSSaveBusLoadP,TSSaveBusLoadQ,TSSaveBusLoadS,TSSaveBusLoadIPU,TSSaveBusLoadIDeg,TSSaveBusLoadStates,TSSaveLoadRelayStates,TSSaveDistributionEquivalentStates], [NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO], All); // 
+}
+DATA (LOAD, [BusNum,LoadID,TSSaveAll,TSSaveBusVPU,TSSaveBusDeg,TSSaveBusLoadP,TSSaveBusLoadQ,
+   TSSaveBusLoadS,TSSaveBusLoadIPU,TSSaveBusLoadIDeg,TSSaveBusLoadStates,
+   TSSaveLoadRelayStates,TSSaveDistributionEquivalentStates])
+{
+    3 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+    5 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   10 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   12 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   13 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   14 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   15 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   16 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   17 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   18 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   19 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   20 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   21 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   24 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   27 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   30 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   33 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   34 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   37 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   44 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   48 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   53 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   54 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   55 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   56 "1 " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+}
+
+//--------------------------------------------------------------------------------
+//Switched Shunt TRANSIENT STABILITY RESULTS TO SAVE
+//--------------------------------------------------------------------------------
+//Default All Values to NO
+SCRIPT
+{
+SetData(Shunt, [TSSaveAll,TSSaveShuntBusVPU,TSSaveShuntNomMvar,TSSaveShuntStates], [NO, NO, NO, NO], All); // 
+}
+//--------------------------------------------------------------------------------
+//Branch TRANSIENT STABILITY RESULTS TO SAVE
+//--------------------------------------------------------------------------------
+//Default All Values to NO
+SCRIPT
+{
+SetData(Branch, [TSSaveAll,TSSaveACLineFromAppImpZMag,TSSaveACLineFromAppImpZAng,TSSaveACLineFromAppImpR,TSSaveACLineFromAppImpX,TSSaveACLineToAppImpZMag,TSSaveACLineToAppImpZAng,TSSaveACLineToAppImpR,TSSaveACLineToAppImpX,TSSaveACLineFromP,TSSaveACLineFromQ,TSSaveACLineFromS,TSSaveACLineFromA,TSSaveACLineToP,TSSaveACLineToQ,TSSaveACLineToS,TSSaveACLineToA,TSSaveACLinePercent,TSSaveACLineRelayStates], [NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO], All); // 
+}
+DATA (BRANCH, [BusNum,BusNum:1,LineCircuit,TSSaveAll,TSSaveACLineFromAppImpZMag,
+   TSSaveACLineFromAppImpZAng,TSSaveACLineFromAppImpR,TSSaveACLineFromAppImpX,
+   TSSaveACLineToAppImpZMag,TSSaveACLineToAppImpZAng,TSSaveACLineToAppImpR,
+   TSSaveACLineToAppImpX,TSSaveACLineFromP,TSSaveACLineFromQ,TSSaveACLineFromS,
+   TSSaveACLineFromA,TSSaveACLineToP,TSSaveACLineToQ,TSSaveACLineToS,
+   TSSaveACLineToA,TSSaveACLinePercent,TSSaveACLineRelayStates])
+{
+    1    31 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+    1    40 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+    3    40 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+    3    41 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+    5    18 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+    5    44 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   10    13 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   10    19 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   10    39 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   12    17 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   12    18 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   12    27 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   12    40 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   12    40 " 2" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   13    55 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   14    34 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   14    44 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   15    16 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   15    24 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   15    54 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   15    54 " 2" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   15    54 " 3" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   16    27 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   17    19 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   18    37 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   18    37 " 2" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   20    34 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   20    48 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   20    50 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   21    48 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   21    48 " 2" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   24    44 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   28    29 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   28    29 " 2" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   31    28 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   32    29 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   29    41 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   56    29 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   30    32 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   30    41 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   35    31 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   31    38 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   33    32 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   33    50 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   35    39 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   35    56 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   39    38 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   39    38 " 2" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   39    40 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   39    47 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   44    41 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   44    41 " 2" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   48    47 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   47    53 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   48    54 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   54    53 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+   54    55 " 1" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+}
+
+//--------------------------------------------------------------------------------
+//DC Transmission Line TRANSIENT STABILITY RESULTS TO SAVE
+//--------------------------------------------------------------------------------
+//Default All Values to NO
+SCRIPT
+{
+SetData(DCTransmissionLine, [TSSaveAll,TSSaveDCLineRectACP,TSSaveDCLineRectACQ,TSSaveDCLineInvACP,TSSaveDCLineInvACQ,TSSaveDCLineDCAmp,TSSaveDCLineDCRectkV,TSSaveDCLineDCInvkV,TSSaveDCLineAlpha,TSSaveDCLineGamma,TSSaveDCLineStates], [NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO], All); // 
+}
+//--------------------------------------------------------------------------------
+//Voltage Source Converter DC Line TRANSIENT STABILITY RESULTS TO SAVE
+//--------------------------------------------------------------------------------
+//Default All Values to NO
+SCRIPT
+{
+SetData(VSCDCLine, [TSSaveAll,TSSaveVSCDCLineFromACP,TSSaveVSCDCLineFromACQ,TSSaveVSCDCLineToACP,TSSaveVSCDCLineToACQ,TSSaveVSCDCLineDCAmp,TSSaveVSCDCLineDCFromKV,TSSaveVSCDCLineDCToKV,TSSaveVSCDCLineStates], [NO, NO, NO, NO, NO, NO, NO, NO, NO], All); // 
+}
+//--------------------------------------------------------------------------------
+//Multi-Terminal DC Record TRANSIENT STABILITY RESULTS TO SAVE
+//--------------------------------------------------------------------------------
+//Default All Values to NO
+SCRIPT
+{
+SetData(MTDCRecord, [TSSaveAll,TSSaveMultiTerminalDCRectACP,TSSaveMultiTerminalDCRectACQ,TSSaveMultiTerminalDCInvACP,TSSaveMultiTerminalDCInvACQ,TSSaveMultiTerminalDCDCAmp,TSSaveMultiTerminalDCRectACP,TSSaveMultiTerminalDCMinDCInvkV,TSSaveMultiTerminalDCMinAlpha,TSSaveMultiTerminalDCMinGamma,TSSaveMultiTerminalDCControlStatus,TSSaveMultiTerminalDCMinACRectVPU,TSSaveMultiTerminalDCMinACInvVPU,TSSaveMultiTerminalDCVControlBus,TSSaveMultiTerminalDCStates], [NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO], All); // 
+}
+//--------------------------------------------------------------------------------
+//Multi-Terminal DC Converter TRANSIENT STABILITY RESULTS TO SAVE
+//--------------------------------------------------------------------------------
+//Default All Values to NO
+SCRIPT
+{
+SetData(MTDCConverter, [TSSaveAll,TSSaveConverterMW,TSSaveConverterMvar,TSSaveConverterACVoltPU,TSSaveConverterFiringAngle,TSSaveConverterDCCurrent,TSSaveConverterDCkV,TSSaveConverterStates], [NO, NO, NO, NO, NO, NO, NO, NO], All); // 
+}
+//--------------------------------------------------------------------------------
+//Area TRANSIENT STABILITY RESULTS TO SAVE
+//--------------------------------------------------------------------------------
+//Default All Values to NO
+SCRIPT
+{
+SetData(Area, [TSSaveAll,TSSaveAreaGenP,TSSaveAreaGenQ,TSSaveAreaLoadP,TSSaveAreaLoadQ,TSSaveAreaGenAccP,TSSaveAreaGenPMech,TSSaveAreaIntP,TSSaveAreaIntQ], [NO, NO, NO, NO, NO, NO, NO, NO, NO], All); // 
+}
+DATA (AREA, [AreaNum,TSSaveAll,TSSaveAreaGenP,TSSaveAreaGenQ,TSSaveAreaLoadP,TSSaveAreaLoadQ,
+   TSSaveAreaGenAccP,TSSaveAreaGenPMech,TSSaveAreaIntP,TSSaveAreaIntQ])
+{
+     1 "YES" "NO " "NO " "YES" "YES" "NO " "NO " "NO " "NO "
+     2 "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+     3 "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+}
+
+//--------------------------------------------------------------------------------
+//Zone TRANSIENT STABILITY RESULTS TO SAVE
+//--------------------------------------------------------------------------------
+//Default All Values to NO
+SCRIPT
+{
+SetData(Zone, [TSSaveAll,TSSaveZoneGenP,TSSaveZoneGenQ,TSSaveZoneLoadP,TSSaveZoneLoadQ,TSSaveZoneGenAccP,TSSaveZoneGenPMech,TSSaveZoneIntP,TSSaveZoneIntQ], [NO, NO, NO, NO, NO, NO, NO, NO, NO], All); // 
+}
+DATA (ZONE, [ZoneNum,TSSaveAll,TSSaveZoneGenP,TSSaveZoneGenQ,TSSaveZoneLoadP,TSSaveZoneLoadQ,
+   TSSaveZoneGenAccP,TSSaveZoneGenPMech,TSSaveZoneIntP,TSSaveZoneIntQ])
+{
+     1 "YES" "NO " "NO " "NO " "NO " "NO " "NO " "NO " "NO "
+}
+
+//--------------------------------------------------------------------------------
+//Interface TRANSIENT STABILITY RESULTS TO SAVE
+//--------------------------------------------------------------------------------
+//Default All Values to NO
+SCRIPT
+{
+SetData(Interface, [TSSaveAll,TSSaveInterfaceP,TSSaveInterfaceQ,TSSaveInterfaceS,TSSaveInterfacePercent], [NO, NO, NO, NO, NO], All); // 
+}
+//--------------------------------------------------------------------------------
+//Injection Group TRANSIENT STABILITY RESULTS TO SAVE
+//--------------------------------------------------------------------------------
+//Default All Values to NO
+SCRIPT
+{
+SetData(InjectionGroup, [TSSaveAll,TSSaveInjectionGroupP,TSSaveInjectionGroupQ,TSSaveInjectionGroupPmech], [NO, NO, NO, NO], All); // 
+}
+//--------------------------------------------------------------------------------
+// THE FOLLOWING ARE THE TRANSIENT STABILITY PLOT DEFINITIONS.
+//--------------------------------------------------------------------------------
+
