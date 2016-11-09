@@ -427,7 +427,9 @@ SoftGrid Web Service Client console has a configuration parameter called CMD_FIL
     ![](https://github.com/smartgridadsc/SoftGrid/blob/master/API/Images/Control%20Command%20Script%20file.png)
 
     Now enter the below command in the Command field of Web Service Client and press enter to send the script file to the control center.  
-    `"run script >" < Gateway IP Address >":"< Port Number >'
+    Format : "run script >" < Gateway IP Address >":"< Port Number >
+    E.g.,
+    'run script > 192.168.0.228:2404'
 
 * Run Circuit Breaker Attack Script    
 
@@ -436,7 +438,7 @@ SoftGrid Web Service Client console has a configuration parameter called CMD_FIL
     E.g.,  
     
       `attack 100 linestatus=true CB > 192.168.0.228:2404`  
-      `attack 25 linestatus=true CB`  
+      `attack 25 linestatus=true CB > 192.168.0.173:2405`  
     1st command opens all(100%) the circuit breakers randomly one at a time.  
     2nd command opens 25% of circuit breakers randomly one at a time.
  ## Evaluating Experiment Results  
@@ -480,11 +482,8 @@ SoftGrid Web Service Client console has a configuration parameter called CMD_FIL
  Sample Log message : 1476954472227,Under Voltage(5) :0.94,Time :17:07:51:662000, u'Bus   15  TSBusVPU '    
 
  ### Evaluating based on Real time Chart Panel
- You can directly type SQL-Like commands in the monitoring window and observe the real time effect on the chart panel. Currently, chart  panel is functional only when substation is manually started (i.e., not started via Web Service).
-
-
- <!--
- There are multiple ways that you can observe the communication.  
+ You can directly type SQL-Like commands in the monitoring window and observe the real time effect on the chart panel. Currently, chart  panel is functional only when substation is manually started (i.e., not started via Web Service). There are multiple ways that you can observe the communication.  
+ 
 01. Via Gateway Control Console log panel  
 02. Chat Panel in Substation Control Console  
 03. Command Prompt or terminal of Gateway, Substation, Web Service  
@@ -494,5 +493,3 @@ SoftGrid Web Service Client console has a configuration parameter called CMD_FIL
 
  NOTE : Click on Download Log file button at any time to download transient changes and log files into the below path.  
     `< Experiment Folder >\logs_downloaded\`
--->
-
