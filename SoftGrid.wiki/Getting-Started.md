@@ -394,8 +394,8 @@ In the current version, it supports only following commands.
     Format-2 : "interrogation all >" <  Gateway IP Address >":"< Port Number > 
     Eg.   
    
-      `interrogation 53 > 192.168.0.228:2404`
-      `interrogation all > 192.168.0.228:2405`
+      `interrogation 53 > 192.168.0.228:2404`  
+      `interrogation all > 192.168.0.228:2405`  
 
 * Single control command  
 
@@ -420,17 +420,18 @@ SoftGrid Web Service Client console has a configuration parameter called CMD_FIL
     According to the above script,  
     1st command will be executed after 1000 millisecond,  
     2nd command will be executed after 2 seconds (2000 milliseconds),  
-    3rd and 4th commands will executed at the same time after 10 seconds (10000 milliseconds).  
+    3rd and 4th commands will executed at the same time after 10 seconds (10000 milliseconds).   
     
-    After writing commands in a script file, copy the file into the experiment folder. Then, specify the file name in the configuration parameter CMD_FILE_PATH on Web Service Client as follows.
+    After writing commands in a script file, copy the file into the experiment folder. Then, specify the file name in the configuration parameter CMD_FILE_PATH on Web Service Client as follows.  
 
-    ![](https://github.com/smartgridadsc/SoftGrid/blob/master/API/Images/Control%20Command%20Script%20file.png)
+    ![](https://github.com/smartgridadsc/SoftGrid/blob/master/API/Images/Control%20Command%20Script%20file.png)  
 
     Now enter the below command in the Command field of Web Service Client and press enter to send the script file to the control center.  
-    Format : "run script >" < Gateway IP Address >":"< Port Number >
-    E.g.,
-    'run script > 192.168.0.228:2404'
+    Format : "run script >" < Gateway IP Address >":"< Port Number >  
+E.g.,    
 
+    'run script > 192.168.0.228:2404'    
+    
 * Run Circuit Breaker Attack Script    
 
     To facilitate evaluation of security devices in the SoftGrid, we are planing to add inbuilt attack command scripts to simulate attacks. In the current release, SoftGrid provides one attack command to issue "open" commands to randomly selected circuit breakers, similarly to the Ukraine incident in 2015.   
@@ -439,8 +440,9 @@ SoftGrid Web Service Client console has a configuration parameter called CMD_FIL
     
       `attack 100 linestatus=true CB > 192.168.0.228:2404`  
       `attack 25 linestatus=true CB > 192.168.0.173:2405`  
-    1st command opens all(100%) the circuit breakers randomly one at a time.  
-    2nd command opens 25% of circuit breakers randomly one at a time.
+      
+    1st command opens all(100%) the circuit breakers randomly one at a time.   
+    2nd command opens 25% of circuit breakers randomly one at a time.  
  ## Evaluating Experiment Results  
  You can do the evaluation based on following methods.  
 
