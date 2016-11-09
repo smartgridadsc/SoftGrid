@@ -57,67 +57,66 @@ In addition, because SoftGrid interacts with PowerWorld simulator via COM API, c
 
 Please note that you can specify relative paths for all the path configurations as needed.  
 
-1. CASE_FILE_PATH=Folder that contains PowerWorld case files. This is an optional configuration and if not specified in the configuration file, then system will set the default relative path as this "..\\SoftGrid\\casefiles\\TempCaseFiles\\". So, all the downloaded case files should be copied to this folder.
+1. CASE_FILE_PATH       =(Optional)Folder that contains PowerWorld case files. This is an optional configuration and if not specified in the configuration file, then system will set the default relative path as this "..\\SoftGrid\\casefiles\\TempCaseFiles\\". So, all the downloaded case files should be copied to this folder.
 
-2. CASE_FILE_NAME=PowerWorld case file name.  This is an optional configuration and if this is not specified, system will set the default file name as "CaseFile.PWB". So, any downloaded case files should be renamed to this default name.
+2. CASE_FILE_NAME       =(Optional)PowerWorld case file name.  This is an optional configuration and if this is not specified, system will set the default file name as "CaseFile.PWB". So, any downloaded case files should be renamed to this default name.
 
 3. LIMIT_VIOLATION_RECORD_FILE=File path and name of limit violation log file (*.csv)  
 
-4. LOG_FILE=File path and name of log file (*.log)  
+4. LOG_FILE             =File path and name of log file (*.log)  
 
-5. PYTHON_FILE_PATH=Path to Python package folder (\\SofrGrid\\python\\ in the extracted file tree)  
+5. PYTHON_FILE_PATH     =Path to Python package folder (\\SofrGrid\\python\\ in the extracted file tree)  
 
 6. PYTHON_START_BAT_FILE_PATH=Full path to pythonproxy.bat in \\SofrGrid\\python\\ in the extracted file tree 
 
-7. EXP_DATA_FILE=File path and name of a file that stores transient stability analysis data (*.csv)  
+7. PYTHON_FILE_NAME     =PYCOB_PW_SM.py (Do not change.) 
 
-8. CLOCK_CONTINGENCY_NAME=The name of the contingency for transient stability analysis defined in the PowerWorld case to be used  
+8. EXP_DATA_FILE        =File path and name of a file that stores transient stability analysis data (*.csv)  
 
-9. PW_TO_SCL_MAPPING=File path and name of a file that defines mapping between PowerWorld variable name and variable name used in IEC 61850 Substation Configuration Language(SCL). Default configuration, which meets requirements in typical use cases is found in SoftGridService\\config\\properties\\PWtoSCLMapping.properties  
+9. CLOCK_CONTINGENCY_NAME=The name of the contingency for transient stability analysis defined in the PowerWorld case to be used  
 
-10. IED_TYPE_TO_FIELD_MAPPING=File path and name of a file that defines mapping between PowerWorld variable name and variable name used in IEC 61850 Substation Configuration Language(SCL). Default configuration, which meets requirements in typical use cases is found in SoftGridService\\config\\properties\\IEDTypeToFieldMapping.properties  
+10. PW_TO_SCL_MAPPING   =File path and name of a file that defines mapping between PowerWorld variable name and variable name used in IEC 61850 Substation Configuration Language(SCL). Default configuration, which meets requirements in typical use cases is found in SoftGridService\\config\\properties\\PWtoSCLMapping.properties  
 
-11. ConfFile=Intermediate config file name (*.xml). This will be dynamically generated and no need to edit.  
+11. IED_TYPE_TO_FIELD_MAPPING=File path and name of a file that defines mapping between PowerWorld variable name and variable name used in IEC 61850 Substation Configuration Language(SCL). Default configuration, which meets requirements in typical use cases is found in SoftGridService\\config\\properties\\IEDTypeToFieldMapping.properties  
 
-12. ip=IP address of the PC on which substation is run.  
+12. ConfFile            =Intermediate config file name (*.xml). This will be dynamically generated and no need to edit.  
 
-13. GENERATE_SCL=Set true if SCD file needs to be generated automatically when starting up.  
+13. ip                  =IP address of the PC on which substation is run.  
 
-14. VIRTUAL_CLOCK_CYCLE_DURATION=Time interval in millisecond at which power flow simulation is updated.  
+14. GENERATE_SCL        =Set true if SCD file needs to be generated automatically when starting up.  
 
-15. POWER_WORLD_CLSID=The class ID of PowerWorld found in Windows registry. Eg. {0BDBD63F-C4A1-4226-9546-8964CED2C29B}   
+15. VIRTUAL_CLOCK_CYCLE_DURATION=Time interval in millisecond at which power flow simulation is updated.  
 
-16. POWER_WORLD_EXE=The file path of PowerWorld.exe  
+16. POWER_WORLD_CLSID   =The class ID of PowerWorld found in Windows registry. Eg. {0BDBD63F-C4A1-4226-9546-8964CED2C29B}   
 
-17. PYTHON_FILE_NAME=PYCOB_PW_SM.py (Do not change.) 
+16. POWER_WORLD_EXE     =The file path of PowerWorld.exe  
 
-18. TEMP_STATE_FILE_PATH=File path and name of a temporary file  
+17. TEMP_STATE_FILE_PATH=File path and name of a temporary file  
 
-19. SCL_PATH=File path of a folder to store SCL files  
+18. SCL_PATH            =File path of a folder to store SCL files  
 
-20. ServerType=IED (Do not change.) 
+19. ServerType          =IED (Do not change.) 
 
-### Sample ied.properties file
-    `#Thu Sep 29 16:50:52 SGT 2016`      
-    `LOG_FILE=..\\SoftGrid\\log\\IEDLog.log`  
-    `PYTHON_START_BAT_FILE_PATH=..\\SoftGrid\\pypw\\main\\pythonproxy.bat`
-    `LIMIT_VIOLATION_RECORD_FILE=..\\SoftGrid\\auxFile\\ContingencyAux_auxFiles\\result\\ViolationCount.csv`  
-    `EXP_DATA_FILE=..\\SoftGrid\\auxFile\\ContingencyAux_auxFiles\\result\\ExperimentData.csv`  
-    `CLOCK_CONTINGENCY_NAME=CONTINGENCY1`  
-    `PW_TO_SCL_MAPPING=..\\SoftGrid\\config\\properties\\PWtoSCLMapping.properties`  
-    `PYTHON_FILE_PATH=..\\SoftGrid\\pypw\\main\\`  
-    `ConfFile=..\\SoftGrid\\PWModel.xml`  
-    `ip=192.168.0.228`  
-    `GENERATE_SCL=false`      
-    `VIRTUAL_CLOCK_CYCLE_DURATION=20`  
-    `POWER_WORLD_CLSID={0BDBD63F-C4A1-4226-9546-8964CED2C29B}`  
-    `POWER_WORLD_EXE=C\:\\Program Files (x86)\\PowerWorld\\Simulator19\\pwrworld.exe`  
-    `IED_TYPE_TO_FIELD_MAPPING=..\\config\\properties\\IEDTypeToFieldMapping.properties`  
-    `PYTHON_FILE_NAME=PYCOB_PW_SM.py`  
-    `TEMP_STATE_FILE_PATH=..\\SoftGrid\\casefiles\\state.file`  
-    `SCL_PATH=..\\SoftGrid\\scl\\`  
-    `ServerType=IED`  
-    `CONFIG_FOLDER=..\\SoftGrid\\config\\scl\\`  
+### Sample ied.properties file    
+    'LIMIT_VIOLATION_RECORD_FILE=..\\SoftGrid\\auxFile\\ContingencyAux_auxFiles\\result\\ViolationCount.csv'
+    'LOG_FILE=..\\SoftGrid\\log\\IEDLog.log'
+    'PYTHON_FILE_PATH=..\\SoftGrid\\pypw\\main\\'
+    'PYTHON_START_BAT_FILE_PATH=..\\SoftGrid\\pypw\\test\\pythonproxy.bat'    
+    'PYTHON_FILE_NAME=PYCOB_PW_SM.py'
+    'EXP_DATA_FILE=..\\SoftGrid\\auxFile\\ContingencyAux_auxFiles\\result\\ExperimentData.csv'
+    'CLOCK_CONTINGENCY_NAME=CONTINGENCY1'
+    'PW_TO_SCL_MAPPING=..\\SoftGrid\\config\\properties\\PWtoSCLMapping.properties'    
+    'IED_TYPE_TO_FIELD_MAPPING=..\\SoftGrid\\config\\properties\\IEDTypeToFieldMapping.properties'
+    'ConfFile=..\\SoftGrid\\PWModel.xml'
+    'ip=192.168.0.228'
+    'GENERATE_SCL=true'
+    'VIRTUAL_CLOCK_CYCLE_DURATION=20'
+    'POWER_WORLD_CLSID={0BDBD63F-C4A1-4226-9546-8964CED2C29B}'
+    'POWER_WORLD_EXE=C\:\\Program Files (x86)\\PowerWorld\\Simulator19\\pwrworld.exe'    
+    'CONFIG_FOLDER=..\\SoftGrid\\config\\scl\\'
+    'TEMP_STATE_FILE_PATH=..\\SoftGrid\\casefiles\\state.file'
+    'SCL_PATH=..\\SoftGrid\\scl\\'
+    'ServerType=IED'
 
 <!--
 NOTE : Until you obtain some advanced knowledge on other configuration files, avoid modifying them and you may use them as they are.  
