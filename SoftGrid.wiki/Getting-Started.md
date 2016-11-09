@@ -157,7 +157,8 @@ The started IEDs generate periodic status data extracted from the PowerWorld sim
 
 #### SQL-like Commands to query logs
 
-Currently SoftGrid supports 5 types of IEDs.  
+Currently SoftGrid supports 5 types of IEDs.   
+
 1. Buses  
 
 2. Branch status monitors with Circuit Breakers  
@@ -389,27 +390,27 @@ In the current version, it supports only following commands.
 
     Use Case : To interrogate a specific IED or all the IEDs  
 
-    Format-1 : interrogation [IOA] 
-    Format-2 : interrogation all 
-    Eg.  
-      `interrogation 53`
-
-      `interrogation all`  
+    Format-1 : "interrogation" [IOA] ">" < Gateway IP Address >":"< Port Number >
+    Format-2 : "interrogation all >" <  Gateway IP Address >":"< Port Number > 
+    Eg.   
+   
+      `interrogation 53 > 192.168.0.228:2404`
+      `interrogation all > 192.168.0.228:2405`
 
 * Single control command  
 
     Use Case : To control some parameter in the power grid component such as opening or closing a circuit breaker.    
 
-    Format-1 : scommand [IOA] [SCL Field Name]=[Value]  
-    Eg.  
-      `scommand 53 linestatus=true`  
+    Format-1 : "scommand" [IOA] [SCL Field Name]=[Value] ">" < Gateway IP Address >":"< Port Number >
+    Eg.
+    
+    `scommand 53 linestatus=true > 192.168.0.228:2404`
     (linestatus is the circuit breaker parameter, which can be used to open or close it.)  
 
 * Run Command Scripts  
     Instead of running individual commands, it is helpful to store a series of multiple commands and run them at the scheduled timestamp. This feaure is very important in cyber-physical security research and development. For example, this feature would allow you to run the same experiment multiple times under the same power grid configurations with different set of controlled devices, so that the results can be compared. 
 SoftGrid Web Service Client console has a configuration parameter called CMD_FILE_PATH to specify pre-shceduled control command scripts. The script format is shown below.  
-
-    Format : [Delay in Millisecond]>[command]   
+    Format : [Delay in Millisecond]>[command] >  
     E.g.,  
       `1000>interrogation 53;`  
       `2000>interrogation 43;`  
@@ -426,67 +427,64 @@ SoftGrid Web Service Client console has a configuration parameter called CMD_FIL
     ![](https://github.com/smartgridadsc/SoftGrid/blob/master/API/Images/Control%20Command%20Script%20file.png)
 
     Now enter the below command in the Command field of Web Service Client and press enter to send the script file to the control center.  
-    `run script`  
+    `"run script >" < Gateway IP Address >":"< Port Number >'
 
 * Run Circuit Breaker Attack Script    
 
     To facilitate evaluation of security devices in the SoftGrid, we are planing to add inbuilt attack command scripts to simulate attacks. In the current release, SoftGrid provides one attack command to issue "open" commands to randomly selected circuit breakers, similarly to the Ukraine incident in 2015.   
-
-    Format : attack [Circuit Breaker Percentage] linestatus=true CB    
-
+    Format : "attack" [Circuit Breaker Percentage] "linestatus=true CB >" < Gateway IP Address >":"< Port Number >'    
     E.g.,  
-      `attack 100 linestatus=true CB`  
+    
+      `attack 100 linestatus=true CB > 192.168.0.228:2404`  
       `attack 25 linestatus=true CB`  
     1st command opens all(100%) the circuit breakers randomly one at a time.  
-    2nd command opens 25% of circuit breakers randomly one at a time.   
+    2nd command opens 25% of circuit breakers randomly one at a time.
+ ## Evaluating Experiment Results  
+ You can do the evaluation based on following methods.  
 
-## Evaluating Experiment Results  
+ ### Evaluating the data in log files  
 
-You can do the evaluation based on following methods.  
+ ![](https://github.com/smartgridadsc/SoftGrid/blob/master/API/Images/log%20file%20structure.png)  
 
-### Evaluating the data in log files  
-
-![](https://github.com/smartgridadsc/SoftGrid/blob/master/API/Images/log%20file%20structure.png)  
-
-As shown in the above folder structure, log files can be downloaded to the experiment folder. Mainly there are 4 types of logs based on their prefix.
+ As shown in the above folder structure, log files can be downloaded to the experiment folder. Mainly there are 4 types of logs based on  their prefix.
     
-#### Log files with "CCMSGCount.log" as prefix    
-These log files are generated based on control center data.  
+ #### Log files with "CCMSGCount.log" as prefix    
+ These log files are generated based on control center data.  
 
-Log message format : < response time > , < total message count > , < current pending message count >  
-Sample Log message : "346 , 3 , 1"  
+ Log message format : < response time > , < total message count > , < current pending message count >  
+ Sample Log message : "346 , 3 , 1"  
 
-#### Log files with "IEDLog.log" as prefix  
-These log files contain the state data of all the IEDs. i.e., Each IED periodically check the actual power grid value and log them in this file. The SQL-like script in the monitoring window can be used to plot these values in the chart window dynamically in real time.    
+ #### Log files with "IEDLog.log" as prefix  
+ These log files contain the state data of all the IEDs. i.e., Each IED periodically check the actual power grid value and log them in this file. The SQL-like script in the monitoring window can be used to plot these values in the chart window dynamically in real time.    
 
-Log message format : Data:< Current time in millisecond >:Type:< IED Type >:< VariableName : Variable Value pairs of all the IED variables >  
-Sample Log message : "Data:1476955859864:Type:BUS:BusNum:    54:BusKVVolt: 69.68999934"  
+ Log message format : Data:< Current time in millisecond >:Type:< IED Type >:< VariableName : Variable Value pairs of all the IED variables >  
+ Sample Log message : "Data:1476955859864:Type:BUS:BusNum:    54:BusKVVolt: 69.68999934"  
 
-#### Log files with "IEDLog.logPW" as prefix    
-These log files contain all the commands executed on IEDs in the PowerWorld Scripting language. By default These commands are collected withing the cycle of 8 seconds and dump into these log files periodically. 
+ #### Log files with "IEDLog.logPW" as prefix    
+ These log files contain all the commands executed on IEDs in the PowerWorld Scripting language. By default These commands are collected   withing the cycle of 8 seconds and dump into these log files periodically. 
 
-Log message format : "OPEN_ALL" < Executed Offset Time ( within 8 second cycles ) in Second.Millisecond format > "< PowerWold device type and Key values" "< PowerWorld Command >" "CHECK" ""  
-Sample Log message : "OPEN_ALL" 648.361 "Branch '54' '53' '1'" "OPEN BOTH" "CHECK" ""    
+ Log message format : "OPEN_ALL" < Executed Offset Time ( within 8 second cycles ) in Second.Millisecond format > "< PowerWold device type and Key values" "< PowerWorld Command >" "CHECK" ""  
+ Sample Log message : "OPEN_ALL" 648.361 "Branch '54' '53' '1'" "OPEN BOTH" "CHECK" ""    
 
-#### Log files with "PWLog.log" as prefix  
-These are used only internal processing. Please ignore them.  
+ #### Log files with "PWLog.log" as prefix  
+ These are used only internal processing. Please ignore them.  
 
-### Evaluating the data in Transient Data Sheets  
+ ### Evaluating the data in Transient Data Sheets  
 
-![](https://github.com/smartgridadsc/SoftGrid/blob/master/API/Images/TransientDataSheet%20Files.png)  
+ ![](https://github.com/smartgridadsc/SoftGrid/blob/master/API/Images/TransientDataSheet%20Files.png)  
 
-Transient Data Sheets are available in the above location in the Extracted Folder. In every 8 second( Default cycle ), SoftGRID generate PowerWorld script files by consolidating all the executed commands during last 8 second. Then, based on these script files, it calculates the transient values and dump into data sheets in the < extracted folder > /auxfile/ContingencyAux_auxFiles/csv/ folder. As it creates large number of files, SoftGRID clean them after processing. Based on these files limit violations are calculated and dumped in to the below file.  
+ Transient Data Sheets are available in the above location in the Extracted Folder. In every 8 second( Default cycle ), SoftGRID generate PowerWorld script files by consolidating all the executed commands during last 8 second. Then, based on these script files, it calculates the transient values and dump into data sheets in the < extracted folder > /auxfile/ContingencyAux_auxFiles/csv/ folder. As it creates large number of files, SoftGRID clean them after processing. Based on these files limit violations are calculated and dumped in to the below file.  
 
-Limit Violation File : < Extracted folder > /auxfile/ContingencyAux_auxFiles/result/ViolationCount.csv   
-Log message format : < Time in Millisecond >,< Violation Type >,< Violated Value >,< Timestamp >,< PowerWorld object and data reference >  
-Sample Log message : 1476954472227,Under Voltage(5) :0.94,Time :17:07:51:662000, u'Bus   15  TSBusVPU '    
+ Limit Violation File : < Extracted folder > /auxfile/ContingencyAux_auxFiles/result/ViolationCount.csv   
+ Log message format : < Time in Millisecond >,< Violation Type >,< Violated Value >,< Timestamp >,< PowerWorld object and data reference >  
+ Sample Log message : 1476954472227,Under Voltage(5) :0.94,Time :17:07:51:662000, u'Bus   15  TSBusVPU '    
 
-### Evaluating based on Real time Chart Panel
-You can directly type SQL-Like commands in the monitoring window and observe the real time effect on the chart panel. Currently, chart panel is functional only when substation is manually started (i.e., not started via Web Service).
+ ### Evaluating based on Real time Chart Panel
+ You can directly type SQL-Like commands in the monitoring window and observe the real time effect on the chart panel. Currently, chart  panel is functional only when substation is manually started (i.e., not started via Web Service).
 
 
-<!--
-There are multiple ways that you can observe the communication.  
+ <!--
+ There are multiple ways that you can observe the communication.  
 01. Via Gateway Control Console log panel  
 02. Chat Panel in Substation Control Console  
 03. Command Prompt or terminal of Gateway, Substation, Web Service  
@@ -494,7 +492,7 @@ There are multiple ways that you can observe the communication.
 05. Downloading and analyzing log files in Web Client console  
 06. Downloading and analyzing transient changes in Web Client Console.  
 
-NOTE : Click on Download Log file button at any time to download transient changes and log files into the below path.  
+ NOTE : Click on Download Log file button at any time to download transient changes and log files into the below path.  
     `< Experiment Folder >\logs_downloaded\`
 -->
 
