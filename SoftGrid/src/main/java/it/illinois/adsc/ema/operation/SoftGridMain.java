@@ -32,7 +32,7 @@ public class SoftGridMain {
             }
             else if(isProxy)
             {
-                SPMainFrame.getInstance().displayMonitorWindow();
+                SPMainFrame.getInstance().displayMonitorWindow("PRX");
             }
 //            else if(isCC)
 //            {
@@ -44,7 +44,7 @@ public class SoftGridMain {
                 if (isRemote) {
                     listenToMulticastCommands();
                 }
-                SPMainFrame.getInstance().displayMonitorWindow();
+                SPMainFrame.getInstance().displayMonitorWindow(null);
                 if (isRemote) {
                     SPMainFrame.getInstance().removeChartPanel();
                     SPMainFrame.getInstance().startIEDs(args.length >= 2 ? args[1] : null);
@@ -85,7 +85,7 @@ public class SoftGridMain {
                                     SPMainFrame.getInstance().stopIEDServers();
                                     break;
                                 case "INIT":
-                                    SPMainFrame.getInstance().displayMonitorWindow();
+                                    SPMainFrame.getInstance().displayMonitorWindow(null);
                                     SPMainFrame.getInstance().startIEDs(null);
                                     break;
                             }

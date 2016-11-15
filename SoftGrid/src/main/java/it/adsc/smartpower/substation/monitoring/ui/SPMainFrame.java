@@ -100,7 +100,7 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
     private boolean chartPanelVisible = true;
 
     private SPMainFrame() throws HeadlessException {
-        super("Smart Power World Monitor");
+        super("SoftGrid Monitor");
         try {
             setupGUI();
         } catch (Exception e) {
@@ -494,7 +494,7 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
                         for (MonitorConfig monitorConfig : monitorConfigs) {
                             if (monitorConfig.getDeviceType().equalsIgnoreCase(type)) {
                                 if (monitorConfig.getKeyValueMap().isEmpty()) {
-                                  found = true;
+                                    found = true;
 //                                    for (MonitorConfig newMonitor : newMonitors) {
 //                                        MonitorConfig monitorConfig1 = new MonitorConfig();
 //                                        monitorConfig1.setDeviceType(monitorConfig.getDeviceType());
@@ -697,14 +697,17 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
 //        }
     }
 
-    public void displayMonitorWindow() {
+    public void displayMonitorWindow(String title) {
+        if (title != null && title.equals("PRX")) {
+            setTitle("SoftGrid Gateway Monitor");
+        }
         this.setVisible(true);
         this.addWindowListener(this);
         this.setSize(new Dimension(1300, 800));
     }
 
     public static void main(String[] args) {
-        SPMainFrame.getInstance().displayMonitorWindow();
+        SPMainFrame.getInstance().displayMonitorWindow(args.length > 0 ? args[0] : null);
     }
 
     private void startPython() {

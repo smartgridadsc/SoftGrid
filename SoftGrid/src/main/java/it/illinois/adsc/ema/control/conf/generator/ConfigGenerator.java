@@ -372,6 +372,7 @@ public class ConfigGenerator {
         try {
             cidFile.createNewFile();
         } catch (IOException e) {
+            System.out.println("cidFile = " + cidFile.getAbsolutePath());
             e.printStackTrace();
         }
         StringBuffer headerString = new StringBuffer();
