@@ -1,2 +1,2 @@
-cd C:\SG\Releases\sourcecode\SoftGrid-master\SoftGrid-master\SoftGrid\.
-java -jar SoftGrid.jar Remote C:\SG\Releases\sourcecode\SoftGrid-master\SoftGrid-master\SoftGrid\archive\TestClient_4372728808481.PWB
+cd C:\ADSC\EMA\SoftGrid\SoftGrid\.
+java -jar SoftGrid.jar Remote C:\ADSC\EMA\SoftGrid\SoftGrid\archive\TestClient_71140726602169.PWB
