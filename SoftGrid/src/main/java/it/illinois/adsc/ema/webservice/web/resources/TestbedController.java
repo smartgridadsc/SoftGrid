@@ -165,7 +165,7 @@ public class TestbedController {
     public static void stopIEDServers() {
         if (process != null) {
             try {
-                Runtime.getRuntime().exec("TASKKILL /F /FI \"WINDOWTITLE eq Smart Power*\"");
+                Runtime.getRuntime().exec("TASKKILL /F /FI \"WINDOWTITLE eq SoftGrid*\"");
                 Runtime.getRuntime().exec("taskkill /F /IM cmd.exe");
                 Runtime.getRuntime().exec("taskkill /F /IM pwrworld.exe");
 //                broadcastTestbedCommand(ExperimentType.RESET.name());

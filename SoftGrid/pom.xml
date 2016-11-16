@@ -239,6 +239,9 @@
             <resource>
                 <directory>${project.basedir}/lib</directory>
             </resource>
+            <resource>
+                <directory>${project.basedir}/resources</directory>
+            </resource>
         </resources>
 
 
