@@ -82,51 +82,25 @@ public class FileHandler {
     public static StreamingOutput getLogFileUploadStream(String lastFileName) {
 
         List<File> files = new ArrayList<>();
-        files.add(getLogFilePath());
-//        files.add(getAuxFilePath());
-//        files.add(getSclFilePath());
-        boolean found = false;
-        for (File file : files) {
-            if (found || LAST_UPLOADED_FILE_PATH == null || LAST_UPLOADED_FILE_PATH.isEmpty()) {
-                LAST_UPLOADED_FILE_PATH = file.getAbsolutePath();
-            } else if (file.getAbsolutePath().equalsIgnoreCase(LAST_UPLOADED_FILE_PATH)) {
-                found = true;
+        File logFolder = getLogFilePath();
+        if (logFolder.exists()) {
+            for (File file : logFolder.listFiles()) {
+                files.add(file);
             }
         }
-
-//        if (logFilePath.exists() && logFilePath.isDirectory()) {
-//            String nextFile = "";
-//            boolean found = false;
-//            boolean isFirstRequest = true;
-//            LAST_UPLOADED_FILE_NAME = lastFileName;
-//            File[] files = logFilePath.listFiles();
-//            if (files.length == 0) {
-//                LAST_UPLOADED_FILE_PATH = "";
-//                LAST_UPLOADED_FILE_NAME = "";
-//                return null;
-//            }
-//
-//            for (File file : files) {
-//                if (file.isDirectory()) {
-//                    continue;
-//                }
-//                if (found || LAST_UPLOADED_FILE_NAME.isEmpty()) {
-//                    LAST_UPLOADED_FILE_PATH = file.getAbsolutePath();
-//                    LAST_UPLOADED_FILE_NAME = file.getName();
-//                    break;
-//                } else if (LAST_UPLOADED_FILE_NAME.equals(file.getName())) {
-//                    LAST_UPLOADED_FILE_NAME = "";
-//                    LAST_UPLOADED_FILE_PATH = "";
-//                    found = true;
-//                    isFirstRequest = false;
-//                }
-//            }
-//            if (!found && isFirstRequest) {
-//                LAST_UPLOADED_FILE_PATH = files[0].getAbsolutePath();
-//                LAST_UPLOADED_FILE_NAME = files[0].getName();
-//            } else if (LAST_UPLOADED_FILE_PATH.isEmpty()) {
-//                return null;
-//            }
+//        files.add(getAuxFilePath());
+//        files.add(getSclFilePath());
+        boolean invalid = false;
+        for (File file : files) {
+            if (invalid || LAST_UPLOADED_FILE_PATH == null || LAST_UPLOADED_FILE_PATH.isEmpty()) {
+                LAST_UPLOADED_FILE_PATH = file.getAbsolutePath();
+                invalid = false;
+                break;
+            } else if (file.getAbsolutePath().equalsIgnoreCase(LAST_UPLOADED_FILE_PATH)) {
+                LAST_UPLOADED_FILE_PATH = "";
+                invalid = true;
+            }
+        }
 
         StreamingOutput stream = new StreamingOutput() {
             @Override
@@ -144,12 +118,13 @@ public class FileHandler {
                     System.out.println("File iin use...!" + LAST_UPLOADED_FILE_PATH);
                     writer.write("File In use...!");
                 } finally {
-                    reader.close();
+                        reader.close();
+
                 }
                 writer.flush();
             }
         };
-        return stream;
+        return !invalid ? stream : null;
     }
 
     //    return null;

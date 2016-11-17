@@ -7,6 +7,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
+import java.io.File;
 
 /**
  * Created by prageethmahendra on 31/8/2016.
@@ -20,6 +21,8 @@ public class FileRequest {
         StreamingOutput stream = FileHandler.getLogFileUploadStream(fileRequestCriteria.getLastFileName());
         System.out.println(" File requisted...! " + stream);
         return Response.ok(stream, MediaType.APPLICATION_OCTET_STREAM)
-                .header("filename", FileHandler.LAST_UPLOADED_FILE_NAME).build();
+                .header("filename",
+                        FileHandler.LAST_UPLOADED_FILE_PATH.isEmpty() ? "" :
+                                new File(FileHandler.LAST_UPLOADED_FILE_PATH).getName()).build();
     }
 }

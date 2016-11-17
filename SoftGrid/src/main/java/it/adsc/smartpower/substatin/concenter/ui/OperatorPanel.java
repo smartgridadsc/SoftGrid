@@ -225,7 +225,7 @@ public class OperatorPanel extends JPanel implements ActionListener {
                 while (true) {
 
                     if (experiment != null) {
-                        MainPanel.getInstance().getCenterPanel().logMessage("Downloading File " + count + " ...!", false);
+                        MainPanel.getInstance().getCenterPanel().logMessage("Request for Next File. File Number : " + count + " ...!", false);
                         ISoftGridService softGridService = ServiceFactory.getServiceConnection();
                         Response response = softGridService.requestFile(fileName, FileType.ANY);
                         if (response == null ||
