@@ -1,3 +1,24 @@
+/* Copyright (C) 2016 Advanced Digital Science Centre
+
+        * This file is part of Soft-Grid.
+        * For more information visit https://www.illinois.adsc.com.sg/cybersage/
+        *
+        * Soft-Grid is free software: you can redistribute it and/or modify
+        * it under the terms of the GNU General Public License as published by
+        * the Free Software Foundation, either version 3 of the License, or
+        * (at your option) any later version.
+        *
+        * Soft-Grid is distributed in the hope that it will be useful,
+        * but WITHOUT ANY WARRANTY; without even the implied warranty of
+        * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        * GNU General Public License for more details.
+        *
+        * You should have received a copy of the GNU General Public License
+        * along with Soft-Grid.  If not, see <http://www.gnu.org/licenses/>.
+
+        * @author Prageeth Mahendra Gunathilaka
+*/
+
 package it.adsc.smartpower.substatin.concenter.ui;
 
 import it.adsc.smartpower.substatin.concenter.Experiment;
@@ -15,7 +36,6 @@ import java.util.Comparator;
  * Created by prageethmahendra on 29/8/2016.
  */
 public class LeftPanel extends JPanel implements ActionListener {
-    //    private ArrayList<ExperimentButton> experimentButtons = new ArrayList<ExperimentButton>();
     private ArrayList<ExpTree> experimentTrees = new ArrayList<ExpTree>();
     private ArrayList<ExperimentListener> experimentListeners = new ArrayList<ExperimentListener>();
     private ExpTree selecteTree = null;
@@ -46,23 +66,7 @@ public class LeftPanel extends JPanel implements ActionListener {
         experimentTrees.add(expTree);
         expTree.addActionListener(this);
 
-        Collections.sort(experimentTrees, new Comparator<ExpTree>() {
-            @Override
-            public int compare(ExpTree o1, ExpTree o2) {
-                return o1.getExperiment().getName().compareTo(o2.getExperiment().getName());
-            }
-        });
-
-//        ExperimentButton experimentButton = new ExperimentButton(experiment);
-//        experimentButtons.add(experimentButton);
-//        experimentButton.addActionListener(this);
-
-//        Collections.sort(experimentButtons, new Comparator<ExperimentButton>() {
-//            @Override
-//            public int compare(ExperimentButton o1, ExperimentButton o2) {
-//                return o1.getExperiment().getName().compareTo(o2.getExperiment().getName());
-//            }
-//        });
+        Collections.sort(experimentTrees, (o1, o2) -> o1.getExperiment().getName().compareTo(o2.getExperiment().getName()));
         reloadExperimentPanel();
     }
 
@@ -98,15 +102,6 @@ public class LeftPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-//        if (e.getSource() instanceof ExperimentButton) {
-//            for (ExperimentButton experimentButton : experimentButtons) {
-//                experimentButton.setSelected(false);
-//            }
-//            selectedButton = (ExperimentButton) e.getSource();
-//            selectedButton.setSelected(true);
-//            fireExpSelected();
-//        }
-//        else
         if (e.getSource() instanceof ExpTree) {
             for (ExpTree expTree : experimentTrees) {
                 expTree.removeActionListener(this);

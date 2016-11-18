@@ -100,17 +100,6 @@ public class OperatorPanel extends JPanel implements ActionListener {
         stopButton.setEnabled(false);
     }
 
-    public String validatedPath(String path) {
-        File file = new File(path);
-        if (!file.exists()) {
-            file = new File("..\\ControlCenter\\images\\" + path);
-            if (file.exists()) {
-                return file.getAbsolutePath();
-            }
-        }
-        return path;
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == stopButton) {
@@ -142,24 +131,13 @@ public class OperatorPanel extends JPanel implements ActionListener {
                 }
             };
             swingWorker.execute();
-
-
         } else if (e.getSource() == monitorButton) {
             downloadAllFiles();
-//            executeMonitorQuery();
         } else if (e.getSource() == clearButton) {
-//            SmartPowerControler.killAll();
-//            if (ConfigUtil.SERVER_TYPE.equals("IED")) {
-//                stopMonitor();
-//            }
-//            logAreaScrollPane.setVisible(true);
-//            chartPanel.setVisible(false);
             runButton.setEnabled(true);
             clearButton.setEnabled(false);
         } else if (e.getSource() == runButton) {
             startIEDServer();
-
-
             // connect to the web service
             // send case file
             // download all the icd files
@@ -169,9 +147,7 @@ public class OperatorPanel extends JPanel implements ActionListener {
             // detect the device and indicate its detection
             // start the control center client
             // provide the user to enter manual commands
-
             runButton.setEnabled(false);
-
         }
     }
 
@@ -196,7 +172,6 @@ public class OperatorPanel extends JPanel implements ActionListener {
                     } else {
                         MainPanel.getInstance().getCenterPanel().logMessage("Error in uploading the case file : " + experiment.getCaseFilePath());
                         serverStarted = false;
-
                     }
 
                 } catch (Exception e1) {

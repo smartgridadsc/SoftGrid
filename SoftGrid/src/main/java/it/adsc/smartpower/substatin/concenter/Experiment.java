@@ -66,4 +66,13 @@ public class Experiment {
     public void setGatewayIP(String gatewayIP) {
         properties.setProperty(ExpConfigManager.GATEWAY_IP, gatewayIP);
     }
+
+    public void copyProperties(Properties expConfigProperties) {
+        if (properties == null || expConfigProperties == null) {
+            return;
+        }
+        for (Object key : expConfigProperties.keySet()) {
+            properties.put(key, expConfigProperties.get(key));
+        }
+    }
 }

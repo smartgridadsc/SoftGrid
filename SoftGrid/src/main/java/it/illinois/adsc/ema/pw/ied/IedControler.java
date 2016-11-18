@@ -127,7 +127,9 @@ public class IedControler implements IedControlAPI {
 
     @Override
     public String changeParametersSingleElement(String objectType, String[] paramList, String[] valueList) {
-        log(objectType, paramList, valueList);
+        if (ConfigUtil.MANUAL_EXPERIMENT_MODE) {
+            log(objectType, paramList, valueList);
+        }
         if (!closed) {
             return pwComBridge.changeParametersSingleElement(objectType, paramList, valueList).toString();
         }

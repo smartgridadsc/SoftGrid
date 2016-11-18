@@ -15,11 +15,7 @@ import java.util.Properties;
 public class ExpConfigManager {
     public static final String CONFIG_EXP_NAME = "EXP_NAME";
     public static final String CONFIG_DESCRIPTION = "DESCRIPTION";
-    public static final String CONFIG_REPEAT_COUNT = "REPEAT_COUNT";
-    public static final String CONFIG_MAX_DURATION = "MAX_DURATION";
     public static final String CONFIG_CMD_FILE_PATH = "CMD_FILE_PATH";
-    public static final String CONFIG_START_TIME = "START_TIME";
-    public static final String CONFIG_EXP_DIRECTORY = "EXP_DIRECTORY";
     public static final String CONFIG_CASE_FILE = "CASE_FILE";
     public static final String GATEWAY_IP= "GATEWAY_IP";
     public static final String SERVICE_IP= "SERVICE_IP";
@@ -37,11 +33,7 @@ public class ExpConfigManager {
     private void init() {
         defaultProperties.setProperty(CONFIG_EXP_NAME, "");
         defaultProperties.setProperty(CONFIG_DESCRIPTION, "");
-        defaultProperties.setProperty(CONFIG_REPEAT_COUNT, "");
-        defaultProperties.setProperty(CONFIG_MAX_DURATION, "");
         defaultProperties.setProperty(CONFIG_CMD_FILE_PATH, "");
-        defaultProperties.setProperty(CONFIG_START_TIME, "");
-        defaultProperties.setProperty(CONFIG_EXP_DIRECTORY, "");
         defaultProperties.setProperty(CONFIG_CASE_FILE, "");
         defaultProperties.setProperty(GATEWAY_IP, "");
         defaultProperties.setProperty(SERVICE_IP, "");

@@ -288,6 +288,7 @@ public class CenterPanel extends JPanel implements ExperimentListener, PropertyC
             expConfigProperties.put(source.getName(), source.getValue());
             fo = new FileOutputStream(LeftPanel.getInstance().getSelectedExperiment().getConfigFilePath());
             expConfigProperties.store(fo, "");
+            LeftPanel.getInstance().getSelectedExperiment().copyProperties(expConfigProperties);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

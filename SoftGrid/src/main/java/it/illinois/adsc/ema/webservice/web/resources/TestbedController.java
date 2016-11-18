@@ -74,7 +74,6 @@ public class TestbedController {
             public void run() {
                 try {
                     // for source code execution
-
                     File file = new File(".\\");
                     boolean found = false;
                     String jarFileName = "SoftGrid.jar";
@@ -84,7 +83,6 @@ public class TestbedController {
                     }
                     System.out.println("file.getAbsolutePath() = " + file.getAbsolutePath());
                     for (String localFileName : file.list()) {
-
                         found = localFileName.startsWith("SoftGrid") && localFileName.endsWith(".jar");
                         if (found) {
                             jarFileName = localFileName;
@@ -93,6 +91,7 @@ public class TestbedController {
                     }
                     String batCommands = "cd " + file.getAbsolutePath() + "\n" +
                             "java -jar " + jarFileName + " " + serverType + (FileHandler.LAST_DOWNLOADED_FILE_TYPE.equalsIgnoreCase("CASE_FILE") ? (" " + FileHandler.LAST_DOWNLOADED_FILE) : "");
+                    System.out.println("Bat Command...!\n" + batCommands);
                     File batFile = new File(file.getAbsolutePath() + "\\SoftGridStartIEDs.bat");
                     FileWriter fw = null;
                     try {
