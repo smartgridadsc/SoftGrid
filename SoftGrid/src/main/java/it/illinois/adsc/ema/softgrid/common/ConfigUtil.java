@@ -1,3 +1,23 @@
+/* Copyright (C) 2016 Advanced Digital Science Centre
+
+        * This file is part of Soft-Grid.
+        * For more information visit https://www.illinois.adsc.com.sg/cybersage/
+        *
+        * Soft-Grid is free software: you can redistribute it and/or modify
+        * it under the terms of the GNU General Public License as published by
+        * the Free Software Foundation, either version 3 of the License, or
+        * (at your option) any later version.
+        *
+        * Soft-Grid is distributed in the hope that it will be useful,
+        * but WITHOUT ANY WARRANTY; without even the implied warranty of
+        * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        * GNU General Public License for more details.
+        *
+        * You should have received a copy of the GNU General Public License
+        * along with Soft-Grid.  If not, see <http://www.gnu.org/licenses/>.
+
+        * @author Prageeth Mahendra Gunathilaka
+*/
 package it.illinois.adsc.ema.softgrid.common;
 
 import it.adsc.smartpower.substation.monitoring.ui.SPMainFrame;
@@ -42,9 +62,11 @@ public class ConfigUtil {
     //    public static String TEMP_STATE_FILE_PATH = "";
     public static boolean CC_CONSOLE_INTERACTIVE = false;
     public static boolean PROXY_SERVER_LOCAL_API_MODE = false;
-    public static boolean MANUAL_EXPERIMENT_MODE = false;
+//    public static boolean MANUAL_EXPERIMENT_MODE = true;
     public static String ACM_SECURITY_PROPERTY_FILE = "";
     public static int GATEWAY_CC_PORT = -1;
+    public static boolean MULTI_IP_IED_MODE_ENABLED = true;
+    public static String DEFAULT_IED_PORT = "102";
 
     public static boolean init() {
         CONFIG_INITIALISED = true;

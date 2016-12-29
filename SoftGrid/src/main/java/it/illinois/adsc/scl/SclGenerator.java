@@ -1,3 +1,23 @@
+/* Copyright (C) 2016 Advanced Digital Science Centre
+
+        * This file is part of Soft-Grid.
+        * For more information visit https://www.illinois.adsc.com.sg/cybersage/
+        *
+        * Soft-Grid is free software: you can redistribute it and/or modify
+        * it under the terms of the GNU General Public License as published by
+        * the Free Software Foundation, either version 3 of the License, or
+        * (at your option) any later version.
+        *
+        * Soft-Grid is distributed in the hope that it will be useful,
+        * but WITHOUT ANY WARRANTY; without even the implied warranty of
+        * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        * GNU General Public License for more details.
+        *
+        * You should have received a copy of the GNU General Public License
+        * along with Soft-Grid.  If not, see <http://www.gnu.org/licenses/>.
+
+        * @author Prageeth Mahendra Gunathilaka
+*/
 package it.illinois.adsc.scl;
 
 import com.alee.utils.FileUtils;
@@ -28,7 +48,7 @@ public class SclGenerator {
         deviceTypes.add("CB");
         deviceTypes.add("GEN");
         deviceTypes.add("LOAD");
-        deviceTypes.add("SHUNT");
+//        deviceTypes.add("SHUNT");
         deviceTypes.add("TRANSFORMER");
 
 //        if (caseFile != null && !caseFile.trim().isEmpty()) {
@@ -157,7 +177,7 @@ public class SclGenerator {
                 FileUtils.copyFile(file, new File(sclFolder.getAbsoluteFile() + File.separator + file.getName()));
             }
         }
-
+        int count = 0;
         for (String deviceType : deviceTypes) {
             BufferedReader dataReader = null;
             BufferedReader templateReader = null;
@@ -182,6 +202,7 @@ public class SclGenerator {
             try {
                 dataReader = new BufferedReader(new FileReader(inputPath + folder + "\\data.txt"));
                 String dataLine = "";
+
                 while ((dataLine = dataReader.readLine()) != null) {
                     String[] dataElements;
                     dataElements = dataLine.trim().split(" ");
@@ -235,14 +256,21 @@ public class SclGenerator {
                     try {
                         templateReader = new BufferedReader(new FileReader(inputPath + folder + "\\" + deviceType + ".icd"));
                         String scdFileName = deviceType + "_" + dataLine + ".icd";
+                        count++;
                         sclWriter = new BufferedWriter(new FileWriter(outputPath + folder + "\\" + scdFileName ));
                         String sclString = "";
                         while ((sclString = templateReader.readLine()) != null) {
-                            if (sclString.contains("<?sclDevice>")) {
-                                sclString = sclString.replace("<?sclDevice>", dataLine);
-                            }
+//                            if (sclString.contains("<?sclDevice>")) {
+//                                sclString = sclString.replace("<?sclDevice>", dataLine);
+//                            }
                             if (sclString.contains("<?iedName>")) {
                                 sclString = sclString.replace("<?iedName>", scdFileName.replace(".",""));
+                            }
+//                            if(sclString.contains("<?iedId_DOA>")){
+//                                sclString = sclString.replace("<?iedId_DOA>", String.valueOf(count));
+//                            }
+                            if(sclString.contains("<?ipAddress>")){
+                                sclString = sclString.replace("<?ipAddress>", ConfigUtil.IP);
                             }
                             sclWriter.write(sclString);
                         }

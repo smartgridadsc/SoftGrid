@@ -1,3 +1,23 @@
+/* Copyright (C) 2016 Advanced Digital Science Centre
+
+        * This file is part of Soft-Grid.
+        * For more information visit https://www.illinois.adsc.com.sg/cybersage/
+        *
+        * Soft-Grid is free software: you can redistribute it and/or modify
+        * it under the terms of the GNU General Public License as published by
+        * the Free Software Foundation, either version 3 of the License, or
+        * (at your option) any later version.
+        *
+        * Soft-Grid is distributed in the hope that it will be useful,
+        * but WITHOUT ANY WARRANTY; without even the implied warranty of
+        * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        * GNU General Public License for more details.
+        *
+        * You should have received a copy of the GNU General Public License
+        * along with Soft-Grid.  If not, see <http://www.gnu.org/licenses/>.
+
+        * @author Prageeth Mahendra Gunathilaka
+*/
 package it.illinois.adsc.ema.control.center.experiments;
 
 import it.illinois.adsc.ema.softgrid.common.IEDLogFormatter;
@@ -37,12 +57,16 @@ public class CCMessageCounter {
             initLogger();
             runScheduler();
         }
-        boolean nanosecond = true;
+        boolean nanosecond = false;
         long times = (nanosecond ? 1000000 : 1);
         long delay = 1500 * times;
+        if(avgResponseTime == 0)
+        {
+            avgResponseTime = 1;
+        }
 
         if (aSdu != null) {
-            if (aSdu.getTypeId().name().equals("M_ME_NC_1") || aSdu.getTypeId().name().startsWith("M_ME")) {
+            if ("INTERROGATED_BY_STATION".equalsIgnoreCase(aSdu.getCauseOfTransmission().name())){//aSdu.getTypeId().name().equals("M_ST_NA_1") || aSdu.getTypeId().name().startsWith("M_ST")) {
 //               synchronized (addressCount) {
 //                   String IOA = String.valueOf(aSdu.getCommonAddress());
 //                   if (addressCount.get(IOA) == null) {
@@ -94,7 +118,7 @@ public class CCMessageCounter {
                         totMsgCount = 1;
                         totalResponseTime = 0;
                     }
-                    logger.info(String.valueOf(responseTime / times) + /*" , " + String.valueOf(avgResponseTime / times) + " , " + String.valueOf(msgCount / tickCount) + */" , " + String.valueOf(totMsgCount) + " , " + asduCommandStack.size());
+                    logger.info(String.valueOf(responseTime / times) + " , " + String.valueOf(avgResponseTime / times) + /*" , " + String.valueOf(msgCount / tickCount) + */" , " + String.valueOf(totMsgCount) + " , " + asduCommandStack.size());
                     totMsgCount++;
                     if (totMsgCount > 50000 || avgResponseTime > 0) {
                         totMsgCount = avgResponseTime == 0 ? 1 : totMsgCount;
@@ -106,7 +130,10 @@ public class CCMessageCounter {
             } else if (aSdu.getCauseOfTransmission().name().endsWith("_CON")) {
 //              confirmation
                 confTime = nanosecond ? System.nanoTime() : System.currentTimeMillis();
-            } else {
+            } else if (aSdu.getCauseOfTransmission().name().equalsIgnoreCase("INITIALIZED") ||
+                    aSdu.getCauseOfTransmission().name().equalsIgnoreCase("ACTIVATION_TERMINATION")) {
+                // do nothing
+            }else{
 //              sent
                 startTime = nanosecond ? System.nanoTime() : System.currentTimeMillis();
                 asduCommandStack.add(new AsduCommand(aSdu));

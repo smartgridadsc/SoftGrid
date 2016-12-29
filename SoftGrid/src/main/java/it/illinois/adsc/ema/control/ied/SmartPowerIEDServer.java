@@ -20,6 +20,7 @@
 */
 package it.illinois.adsc.ema.control.ied;
 
+import it.illinois.adsc.ema.IEDLoggerFactory;
 import it.illinois.adsc.ema.control.LogEventListener;
 import it.illinois.adsc.ema.control.ied.pw.PWModelDetails;
 import it.illinois.adsc.ema.pw.ied.IedControlerFactory;
@@ -27,14 +28,15 @@ import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
 import it.illinois.adsc.ema.softgrid.common.IEDLogFormatter;
 import it.illinois.adsc.ema.softgrid.common.ied.IedControlAPI;
 import it.illinois.adsc.ema.softgrid.common.ied.data.ParameterGenerator;
+import org.apache.log4j.Logger;
 import org.openmuc.openiec61850.*;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.logging.*;
 
 /**
  * @author Prageeth Mahendra
@@ -51,31 +53,33 @@ public class SmartPowerIEDServer implements ServerEventListener {
     private int id;
     private boolean serverStoped = false;
     private static IedControlAPI controlAPI = null;
+    HashMap<String, Fc> iedRefFcHashMap = new HashMap<>();
     //  public static boolean MANUAL_EXPERIMENT_MODE = false;
     private boolean serverStarted = false;
 
 
-    public SmartPowerIEDServer() {
+    public SmartPowerIEDServer(HashMap<String, Fc> stringFcHashMap) {
         super();
+        this.iedRefFcHashMap = stringFcHashMap;
         synchronized (this) {
             if (logger == null) {
-                initLogger();
+                logger = Logger.getLogger(SmartPowerIEDServer.class);
             }
         }
     }
 
     @Override
     public void serverStoppedListening(ServerSap serverSap) {
-        logger.severe("The SAP stopped listening");
+        logger.info("The SAP stopped listening");
     }
 
     @Override
     public List<ServiceError> write(List<BasicDataAttribute> bdas) {
-        if (ConfigUtil.MANUAL_EXPERIMENT_MODE) {
+//        if (ConfigUtil.MANUAL_EXPERIMENT_MODE) {
             for (BasicDataAttribute bda : bdas) {
                 logger.info("got a write request: " + bda);
             }
-        }
+//        }
         return null;
     }
 
@@ -91,7 +95,7 @@ public class SmartPowerIEDServer implements ServerEventListener {
             try {
                 serverSaps = ServerSap.getSapsFromSclFile(pwModelDetails.getSclFileName());
             } catch (SclParseException e) {
-                logger.severe("Error parsing SCL/ICD file: " + e.getMessage());
+                logger.info("Error parsing SCL/ICD file: " + e.getMessage());
                 e.printStackTrace();
                 return;
             }
@@ -103,7 +107,7 @@ public class SmartPowerIEDServer implements ServerEventListener {
                 ipAddress = pwModelDetails.getIpAddress();
                 address = InetAddress.getByName(ipAddress);
             } catch (UnknownHostException e) {
-                logger.severe("Unknown host: " + ipAddress);
+                logger.info("Unknown host: " + ipAddress);
                 logger.info("Proxy will run with the defualt IP as define in the SCL file.");
                 logger.info("Unknown host " + ipAddress);
                 return;
@@ -126,9 +130,8 @@ public class SmartPowerIEDServer implements ServerEventListener {
             SmartPowerIEDServer sampleServer = this;
 //          Open MUC initialization
             List<BasicDataAttribute> branchCircuitBreakerVals = new ArrayList<BasicDataAttribute>(3);
-            for (String sclFieldName : pwModelDetails.getSclToPWMapping().keySet()) {
-                String reference = pwModelDetails.getModelNodeReference() + "." + sclFieldName;
-                BdaVisibleString field = (BdaVisibleString) serverModel.findModelNode(reference, Fc.CF);
+            for (String reference : iedRefFcHashMap.keySet()) {
+                BasicDataAttribute field = (BasicDataAttribute) serverModel.findModelNode(reference, iedRefFcHashMap.get(reference));
                 if (field == null) {
                     logger.info(">>>>>> Error in obtaining SCL reference object = " + reference);
                 }
@@ -160,13 +163,12 @@ public class SmartPowerIEDServer implements ServerEventListener {
             }
 
             String[][] paramPack = parameterGenerator.getParamPack();
-            type = getIEDType(parameterGenerator.getDeviceObjectName());
+            type = IEDUtils.getIEDType(parameterGenerator.getDeviceObjectName());
             id = ++IED_COUNT;
             StringBuffer sb = new StringBuffer();
             String logDataSeperator = ":";
             boolean loged = false;
             logEvent("IED : " + type.name() + " : " + id + " is Started...!");
-
             String[] elements = null;
             while (true) {
                 synchronized (this) {
@@ -182,27 +184,45 @@ public class SmartPowerIEDServer implements ServerEventListener {
                 }
                 sb.append("Type:").append(type.name());
                 for (int i = 0; i < branchCircuitBreakerVals.size(); i++) {
-                    BdaVisibleString modelNodes = (BdaVisibleString) branchCircuitBreakerVals.get(i);
+                    BasicDataAttribute modelNodes = branchCircuitBreakerVals.get(i);
                     if (modelNodes != null && elements.length > i) {
-                        String pwKeyName = parameterGenerator.getSclKeyToPWKeyMap().get(modelNodes.getName());
+                        String pwKeyName = null;
+                        for (String sclKey : parameterGenerator.getSclKeyToPWKeyMap().keySet()) {
+                            if (modelNodes.getReference().toString().endsWith(sclKey)) {
+                                pwKeyName = sclKey;
+                            }
+                        }
+                        if (pwKeyName == null) {
+                            continue;
+                        }
                         for (int j = 0; j < paramPack[0].length; j++) {
                             if (!loged) {
                                 sb.append(logDataSeperator).append(paramPack[0][j]).append(logDataSeperator).append(elements[j]);
                             }
-                            if (pwKeyName.equals(paramPack[0][j])) {
-                                modelNodes.setValue(elements[j]);
+                            if (parameterGenerator.getSclKeyToPWKeyMap().get(pwKeyName).equals(paramPack[0][j])) {
+                                if (modelNodes instanceof BdaDoubleBitPos) {
+                                    byte[] status = new byte[1];
+                                    if (elements[j].equalsIgnoreCase("open")) {
+                                        status[0] = 0;
+                                    } else {
+                                        status[0] = 1;
+                                    }
+                                    ((BdaDoubleBitPos) modelNodes).setValue(status);
+                                } else if (modelNodes instanceof BdaVisibleString) {
+                                    ((BdaVisibleString) modelNodes).setValue(elements[j]);
+                                }
                             }
                         }
                         loged = true;
                     }
                 }
                 serverStarted = true;
-                synchronized (logger) {
-                    if (ConfigUtil.MANUAL_EXPERIMENT_MODE) {
-                        // if this string is not printed in the log file,
-                        logger.info(sb.toString());
-                    }
-                }
+//                 synchronized (logger) {
+//                 if (ConfigUtil.MANUAL_EXPERIMENT_MODE) {
+                // if this string is not printed in the log file,
+                logger.info(sb.toString());
+//                  }
+//              }
                 sb = new StringBuffer("");
                 loged = false;
                 serverSap.setValues(branchCircuitBreakerVals);
@@ -226,48 +246,6 @@ public class SmartPowerIEDServer implements ServerEventListener {
         logEventListener = iedListener;
     }
 
-    private IEDType getIEDType(String deviceObjectName) {
-        switch (deviceObjectName.toUpperCase()) {
-            case "TRANSFORMER":
-                return IEDType.TRANSFRMER;
-            case "GEN":
-                return IEDType.GENERATOR;
-            case "SHUNT":
-                return IEDType.SHUNT;
-            case "BRANCH":
-                return IEDType.BRANCH;
-            case "BUS":
-                return IEDType.BUS;
-            case "LOAD":
-                return IEDType.BUS;
-            default:
-                return IEDType.VIRTUAL;
-        }
-    }
-
-    private static synchronized void initLogger() {
-        FileHandler fileTxt = null;
-        Formatter formatterTxt;
-        if (logger != null) {
-            return;
-        }
-        // suppress the logging output to the console
-        logger = Logger.getLogger("IED");
-        logger.setLevel(Level.INFO);
-        try {
-            fileTxt = new FileHandler(ConfigUtil.LOG_FILE, 500000, 2);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (fileTxt != null) {
-            logger.addHandler(fileTxt);// create a TXT formatter
-        }
-        formatterTxt = new IEDLogFormatter();
-        fileTxt.setFormatter(formatterTxt);
-        logger.addHandler(new ConsoleHandler());
-        // create an HTML formatter
-    }
 
     public void stop() {
         if (controlAPI != null) {
@@ -289,4 +267,5 @@ public class SmartPowerIEDServer implements ServerEventListener {
         return serverStarted;
     }
 }
+
 

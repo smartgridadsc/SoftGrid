@@ -80,7 +80,7 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
     private JButton clearButton = new JButton("");
     private JButton runButton = new JButton("");
     private ArrayList<MonitorConfig> monitorConfigs = new ArrayList<MonitorConfig>();
-    private double startTime = System.currentTimeMillis();
+    private double startTime = 1;
     private int alertCount = 0;
     private SMAlert lastAlert = null;
     private long minTimeRange = 0;
@@ -228,10 +228,6 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
             executeMonitorQuery();
         } else if (e.getSource() == clearButton) {
             alertPanel.removeAll();
-//            SmartPowerControler.killAll();
-//            if (ConfigUtil.SERVER_TYPE.equals("IED")) {
-//                stopMonitor();
-//            }
             stopIEDServers();
             logAreaScrollPane.setVisible(true);
             chartPanel.setVisible(false);
@@ -244,7 +240,6 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
             switch (ConfigUtil.SERVER_TYPE.toUpperCase()) {
                 case "IED":
                     System.out.println("Starting IEDs...!");
-                    ConfigUtil.MANUAL_EXPERIMENT_MODE = true;
                     startIEDs(null);
                     break;
                 case "PRX":
@@ -475,9 +470,15 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
             String type = "";
             boolean found = false;
             for (int j = 0; j < 2; j++) {
-                File logFile = new File(ConfigUtil.LOG_FILE + "." + j);
+                File logFile = new File(ConfigUtil.LOG_FILE);
                 if (!logFile.exists()) {
-                    break;
+                    logFile = new File(ConfigUtil.LOG_FILE + "." + j);
+                    if (!logFile.exists()) {
+                        System.out.println("Invalid IED log file path.\n" + logFile.getAbsolutePath());
+                        break;
+                    }
+                } else {
+                    j = 2;
                 }
                 bufferedReader = new BufferedReader(new FileReader(logFile));
                 while ((line = bufferedReader.readLine()) != null) {
@@ -485,7 +486,7 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
                     String[] data = line.split(":");
                     if (data.length >= 4 && data[0].equals("Data")) {
                         double timeinMilis = (Double.parseDouble(data[1]) - startTime) * 100.00 / 100000.00;
-                        if (timeinMilis < 0) startTime -= 10000;
+                        if (timeinMilis < 0) startTime -= 10;
 //                      Day day = new Day(Long.parseLong(data[1]));
                         type = data[3];
 //                      select the type
@@ -495,16 +496,6 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
                             if (monitorConfig.getDeviceType().equalsIgnoreCase(type)) {
                                 if (monitorConfig.getKeyValueMap().isEmpty()) {
                                     found = true;
-//                                    for (MonitorConfig newMonitor : newMonitors) {
-//                                        MonitorConfig monitorConfig1 = new MonitorConfig();
-//                                        monitorConfig1.setDeviceType(monitorConfig.getDeviceType());
-//                                        monitorConfig1.setKeyValueMap((HashMap<String, String>) monitorConfig.getKeyValueMap().clone());
-////                                      monitorConfig1.getKeyValueMap().put(key, data[i + 1]);
-//                                        monitorConfig1.setVariable(monitorConfig.getVariable());
-//                                        monitorConfig1.setXySeries((XYSeries) monitorConfig.getXySeries().clone());
-//                                        monitorConfig1.setSeriesName(monitorConfig1.toString());
-//                                        newMonitors.add(monitorConfig1);
-//                                    }
                                 } else {
                                     for (String key : monitorConfig.getKeyValueMap().keySet()) {
                                         found = false;
@@ -513,15 +504,6 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
                                                 if (data[i + 1].trim().equalsIgnoreCase(monitorConfig.getKeyValueMap().get(key))) {
                                                     found = true;
                                                     break;
-                                                } else {
-//                                                    MonitorConfig monitorConfig1 = new MonitorConfig();
-//                                                    monitorConfig1.setDeviceType(monitorConfig.getDeviceType());
-//                                                    monitorConfig1.setKeyValueMap((HashMap<String, String>) monitorConfig.getKeyValueMap().clone());
-//                                                    monitorConfig1.getKeyValueMap().put(key, data[i + 1]);
-//                                                    monitorConfig1.setVariable(monitorConfig.getVariable());
-//                                                    monitorConfig1.setXySeries((XYSeries) monitorConfig.getXySeries().clone());
-//                                                    monitorConfig1.setSeriesName(monitorConfig1.toString());
-//                                                    newMonitors.add(monitorConfig1);
                                                 }
                                             }
                                         }
@@ -534,11 +516,13 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
                                             try {
                                                 if (data[i + 1].equals("Closed")) {
                                                     value = 0;
+                                                } else if (data[i + 1].equals("Open")) {
+                                                    value = 1;
                                                 } else {
                                                     value = Double.parseDouble(data[i + 1]);
                                                 }
                                                 if (this.isVisible() && timeinMilis > 0 && value < 0.5 && monitorConfig.getVariable().contains("BusKVVolt")) {
-                                                    JOptionPane.showMessageDialog(this, "Blackout occured...!");
+                                                    JOptionPane.showMessageDialog(this, "Blackout occurred...!");
                                                     try {
                                                         Thread.sleep(7000);
                                                     } catch (InterruptedException e) {
@@ -557,7 +541,7 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
                                                 dataFileWriter.write(maxTimeRange + " , " + monitorConfig.getVariable() + " , " + String.valueOf(value) + "\n");
                                                 dataFileWriter.flush();
                                             }
-                                            if (racordCount >= 100000) {
+                                            if (racordCount >= 10000) {
                                                 XYDataItem xyDataItem = monitorConfig.getXySeries().remove(0);
                                                 minTimeRange = xyDataItem.getX().longValue();
                                             }

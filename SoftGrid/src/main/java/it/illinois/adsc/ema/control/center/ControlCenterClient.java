@@ -203,6 +203,9 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
         System.out.println("Successfully Connected. ");
         String line;
         System.out.println("controlCenterContext.isRemoteInteractive() = " + controlCenterContext.isRemoteInteractive());
+        if (manualExperimentMode) {
+            periodicInterrogation();
+        }
         if (!controlCenterContext.isRemoteInteractive()) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             while (true) {
@@ -216,24 +219,33 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
             }
         }
 
+
     }
 
     public void setControlCenterGUI(ControlCenterGUI controlCenterGUI) {
         this.controlCenterGUI = controlCenterGUI;
     }
 
+    String commandString = "";
     public void runCommand(String commandString) throws IOException {
-        Command command = CommandParser.parseCommandString(commandString);
+//        if(commandString.contains("test throughput"))
+//        {
+//            periodicInterrogation();
+//            return;
+//        }
+        this.commandString = commandString;
+            Command command = CommandParser.parseCommandString(commandString);
 //        if (command.getCommandType().equals(CommandType.ATTACK)) {
 //            periodicInterrogation();
 //            CCUserGenerator.main(null);
 //            return;
 //        }
-        for (String clientAddress : PROXY_CONNECTION_MAP.keySet()) {
-            if (command != null && controlCenterContext.validate(command)) {
-                MessageFactory.sendCommand(command, PROXY_CONNECTION_MAP.get(clientAddress), controlCenterGUI, ccMessageCounter);
+            for (String clientAddress : PROXY_CONNECTION_MAP.keySet()) {
+                if (command != null && controlCenterContext.validate(command)) {
+                    MessageFactory.sendCommand(command, PROXY_CONNECTION_MAP.get(clientAddress), controlCenterGUI, ccMessageCounter);
+                }
             }
-        }
+
     }
 
 //    public boolean runCommand(ASdu aSdu) throws IOException {
@@ -255,6 +267,14 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
             controlCenterGUI.newASdu(aSdu.toString());
         }
         ccMessageCounter.logMessageReceived(aSdu);
+//        if(aSdu.getCauseOfTransmission().getCode() == 47)
+//        {
+//            try {
+//                runCommand(commandString);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     @Override
@@ -296,8 +316,12 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
 
                             CCMessageCounter.SENT++;
 //                            String IOA = String.valueOf(CCMessageCounter.SENT % 7000);
-                            String IOA = String.valueOf(Math.abs(random.nextLong() % 110));
+                            String IOA = "1";//String.valueOf(Math.abs(random.nextLong() % 110));
                             if (!CCMessageCounter.SLOW) {
+                                runCommand("interrogation " + IOA);
+                                runCommand("interrogation " + IOA);
+                                runCommand("interrogation " + IOA);
+                                runCommand("interrogation " + IOA);
                                 runCommand("interrogation " + IOA);
                             }
 
@@ -307,7 +331,7 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
                     }
 //                }, 5000, 300); // 66 MPS
 //                }, 5000 200); // 100 MPS
-                }, 5000, 200); // 33 MPS
+                }, 5000, 2000); // 33 MPS
     }
 
     public Connection getConnection() {

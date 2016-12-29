@@ -50,7 +50,7 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
     protected int connectionId;
     private ProxyServerContext proxyContext;
     private ServerSap serverSap;
-//    private SecurityHandler securityHandler;
+//  private SecurityHandler securityHandler;
     private static LogEventListener logEventListener;
 
     protected ProxyServer() {
@@ -66,12 +66,12 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
     private void init() {
         proxyContext = ProxyContextFactory.getInstance().getProxyContext(this);
         LOCAL_API_MODE = ConfigUtil.PROXY_SERVER_LOCAL_API_MODE;
-        //  TODO : security is not needed in the ProxyServer
+//      TODO : security is not needed in the ProxyServer
         if (!LOCAL_API_MODE) {
             logEvent("LOCAL_API_MODE disabled..!");
-//            securityHandler = SecurityHandler.getInstance();
-//            securityHandler.setEnabled(false);
-//            securityHandler.addSecurityEventListener(this);
+//          securityHandler = SecurityHandler.getInstance();
+//          securityHandler.setEnabled(false);
+//          securityHandler.addSecurityEventListener(this);
         } else {
             logEvent("LOCAL_API_MODE enabled..!");
         }
@@ -183,10 +183,10 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
         if (aSdu.getInformationObjects() != null && aSdu.getInformationObjects()[0] != null && aSdu.getInformationObjects()[0].getInformationElements() != null
                 && aSdu.getInformationObjects()[0].getInformationElements()[0] != null &&
                 aSdu.getInformationObjects()[0].getInformationElements()[0][0] != null) {
-            IeQualifierOfResetProcessCommand ieQualifierOfResetProcessCommand = (IeQualifierOfResetProcessCommand) aSdu.getInformationObjects()[0].getInformationElements()[0][0];
-//            if (securityHandler != null && ieQualifierOfResetProcessCommand.getValue() == 255) {
+              IeQualifierOfResetProcessCommand ieQualifierOfResetProcessCommand = (IeQualifierOfResetProcessCommand) aSdu.getInformationObjects()[0].getInformationElements()[0][0];
+//              if (securityHandler != null && ieQualifierOfResetProcessCommand.getValue() == 255) {
 //                securityHandler.resetAll();
-//            }
+//              }
         }
     }
 
@@ -200,9 +200,6 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
             if (LOCAL_API_MODE) {
                 readyToExecute(aSdu, qualifier, state);
             }
-//            else {
-//                securityHandler.validateAndExecute(this, proxyContext, aSdu, qualifier, state);
-//            }
         }
     }
 

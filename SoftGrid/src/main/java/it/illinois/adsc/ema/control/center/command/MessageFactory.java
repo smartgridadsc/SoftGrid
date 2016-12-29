@@ -1,3 +1,23 @@
+/* Copyright (C) 2016 Advanced Digital Science Centre
+
+        * This file is part of Soft-Grid.
+        * For more information visit https://www.illinois.adsc.com.sg/cybersage/
+        *
+        * Soft-Grid is free software: you can redistribute it and/or modify
+        * it under the terms of the GNU General Public License as published by
+        * the Free Software Foundation, either version 3 of the License, or
+        * (at your option) any later version.
+        *
+        * Soft-Grid is distributed in the hope that it will be useful,
+        * but WITHOUT ANY WARRANTY; without even the implied warranty of
+        * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        * GNU General Public License for more details.
+        *
+        * You should have received a copy of the GNU General Public License
+        * along with Soft-Grid.  If not, see <http://www.gnu.org/licenses/>.
+
+        * @author Prageeth Mahendra Gunathilaka
+*/
 package it.illinois.adsc.ema.control.center.command;
 
 import it.illinois.adsc.ema.control.center.CCTimeLoger;
@@ -19,9 +39,15 @@ public class MessageFactory {
     public static ASdu sendCommand(Command command, Connection clientConnection, ControlCenterGUI controlCenterGUI,  CCMessageCounter ccMessageCounter) throws IOException {
         return sendCommand(command, clientConnection, controlCenterGUI, false, ccMessageCounter);
     }
-
+    static int ioa = 0;
     public static ASdu sendCommand(Command command, Connection clientConnection, ControlCenterGUI controlCenterGUI, boolean attack, CCMessageCounter ccMessageCounter) throws IOException {
         ASdu aSdu = null;
+//      if(ioa < 32765)
+        {
+//            ioa = 26113;
+//            ioa = 16385;
+              ioa= 0;
+        }
         switch (command.getCommandType()) {
             case INTERROGATION:
                 CCTimeLoger.resetStartTime("interrogation");
@@ -30,7 +56,7 @@ public class MessageFactory {
 //                        new IeQualifierOfInterrogation(20));
                 aSdu = new ASdu(TypeId.C_IC_NA_1, false, CauseOfTransmission.ACTIVATION, false, false,
                         clientConnection.getOriginatorAddress(), command.getSubtationAddressSpace(),
-                        new InformationObject[]{new InformationObject(0,
+                        new InformationObject[]{new InformationObject(ioa,
                                 new InformationElement[][]{{new IeQualifierOfInterrogation(20)}})});
                 break;
             case SINGLE_COMMAND:
@@ -112,7 +138,7 @@ public class MessageFactory {
             if (ControlCenterClient.getCCSecurityHandler() != null) {
 //              ControlCenterClient.getCCSecurityHandler().commandSent(aSdu);
             }
-
+            ioa++;
             clientConnection.send(aSdu);
 
         }

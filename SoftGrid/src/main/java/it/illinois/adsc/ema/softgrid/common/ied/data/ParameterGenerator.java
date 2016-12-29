@@ -1,6 +1,24 @@
+/* Copyright (C) 2016 Advanced Digital Science Centre
+
+        * This file is part of Soft-Grid.
+        * For more information visit https://www.illinois.adsc.com.sg/cybersage/
+        *
+        * Soft-Grid is free software: you can redistribute it and/or modify
+        * it under the terms of the GNU General Public License as published by
+        * the Free Software Foundation, either version 3 of the License, or
+        * (at your option) any later version.
+        *
+        * Soft-Grid is distributed in the hope that it will be useful,
+        * but WITHOUT ANY WARRANTY; without even the implied warranty of
+        * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        * GNU General Public License for more details.
+        *
+        * You should have received a copy of the GNU General Public License
+        * along with Soft-Grid.  If not, see <http://www.gnu.org/licenses/>.
+
+        * @author Prageeth Mahendra Gunathilaka
+*/
 package it.illinois.adsc.ema.softgrid.common.ied.data;
-
-
 
 
 import it.illinois.adsc.ema.softgrid.common.ied.IedControlAPI;
@@ -12,7 +30,6 @@ import java.util.StringTokenizer;
  * Created by prageethmahendra on 29/1/2016.
  */
 public class ParameterGenerator {
-
     // Device Name
     String deviceObjectName;
     // key Names
@@ -30,10 +47,7 @@ public class ParameterGenerator {
     }
 
     public String[][] writePWParameters(String openMucKey, String openMUCValue) throws Exception {
-        if (openMucKey == null ||
-                openMUCValue == null ||
-                !isValid()
-                ) {
+        if (openMucKey == null || openMUCValue == null || !isValid()) {
             throw new Exception("Invalid IDE Prameter State.");
         }
         String pwKey = sclKeyToPWKeyMap.get(openMucKey);
@@ -62,7 +76,7 @@ public class ParameterGenerator {
     public String[] loadDataValues(String[][] paramPack) {
         synchronized (controlAPI) {
             String[] results = controlAPI.getParametersSingleElement(deviceObjectName, paramPack[0], paramPack[1]);
-//            return getTokenizedElements(results, paramPack[0].length);
+//          return getTokenizedElements(results, paramPack[0].length);
             return results;
         }
     }
