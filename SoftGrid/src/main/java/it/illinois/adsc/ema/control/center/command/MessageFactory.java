@@ -27,7 +27,7 @@ import it.illinois.adsc.ema.control.center.ControlCenterContext;
 import it.illinois.adsc.ema.control.center.experiments.CCMessageCounter;
 import it.illinois.adsc.ema.control.ied.pw.IEDServerFactory;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
-import it.illinois.adsc.ema.ui.ControlCenterGUI;
+import it.illinois.adsc.ema.softgrid.concenter.ui.ControlCenterGUI;
 import org.openmuc.j60870.*;
 
 import java.io.IOException;

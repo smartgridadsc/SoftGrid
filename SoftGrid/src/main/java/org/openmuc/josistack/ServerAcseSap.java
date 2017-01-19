@@ -122,7 +122,7 @@ public final class ServerAcseSap implements TConnectionListener {
 	 */
 	public void startListening() throws IOException {
 		if (associationListener == null || serverTSap == null) {
-			throw new IllegalStateException("AcseSAP is unable to listen because it was not initialized.");
+			throw new IllegalStateException("ACSE SAP is unable to listen because it was not initialized.");
 		}
 		serverTSap.startListening();
 	}

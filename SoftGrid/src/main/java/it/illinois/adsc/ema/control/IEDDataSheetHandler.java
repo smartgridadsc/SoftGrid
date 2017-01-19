@@ -22,7 +22,6 @@ package it.illinois.adsc.ema.control;
 
 import it.illinois.adsc.ema.control.ied.pw.IEDWorkerThread;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
-import it.illinois.adsc.ema.webservice.web.resources.FileRequest;
 
 import java.io.*;
 import java.util.List;

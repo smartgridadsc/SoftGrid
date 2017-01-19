@@ -68,14 +68,12 @@ public class GPLHeaderGenerator {
                 BufferedReader reader = new BufferedReader(fileReader);
                 String fileString = "";
                 String temp = null;
-                while((temp = reader.readLine()) != null)
-                {
+                while ((temp = reader.readLine()) != null) {
                     fileString += temp + "\n";
                 }
                 fileReader.close();
                 reader.close();
-                if(!fileString.startsWith(headerString))
-                {
+                if (!fileString.startsWith(headerString)) {
                     fileString = headerString + fileString;
                 }
                 fileWriter = new FileWriter(file);

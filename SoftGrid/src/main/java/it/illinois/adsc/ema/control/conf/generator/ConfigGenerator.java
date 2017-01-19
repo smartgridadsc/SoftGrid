@@ -514,7 +514,7 @@ public class ConfigGenerator {
                                     found = true;
                                 }
 
-                                if (section.trim().contains("<EnumType id=\"CtlModels\">")) {
+                                if (section.trim().contains("<EnumType id=\"tempEnum\">")) {
                                     found = false;
                                     footer = false;
                                     break;
@@ -569,23 +569,38 @@ public class ConfigGenerator {
     }
 
     private static String getCidFooter() {
-        return "<EnumType id=\"CtlModels\">" +
-                "            <EnumVal ord=\"0\">status-only</EnumVal>" +
-                "            <EnumVal ord=\"1\">direct-with-normal-security</EnumVal>" +
-                "            <EnumVal ord=\"2\">sbo-with-normal-security</EnumVal>" +
-                "            <EnumVal ord=\"3\">direct-with-enhanced-security</EnumVal>" +
-                "            <EnumVal ord=\"4\">sbo-with-enhanced-security</EnumVal>" +
-                "        </EnumType>" +
-                "        <EnumType id=\"OrCat\">" +
-                "            <EnumVal ord=\"0\">not-supported</EnumVal>" +
-                "            <EnumVal ord=\"1\">bay-control</EnumVal>" +
-                "            <EnumVal ord=\"2\">station-control</EnumVal>" +
-                "            <EnumVal ord=\"3\">remote-control</EnumVal>" +
-                "            <EnumVal ord=\"4\">automatic-bay</EnumVal>" +
-                "            <EnumVal ord=\"5\">automatic-station</EnumVal>" +
-                "            <EnumVal ord=\"6\">automatic-remote</EnumVal>" +
-                "            <EnumVal ord=\"7\">maintenance</EnumVal>" +
-                "            <EnumVal ord=\"8\">process</EnumVal>" +
+        return " <EnumType id=\"tempEnum\">\n" +
+                "            <EnumVal ord=\"0\">e1</EnumVal>\n" +
+                "            <EnumVal ord=\"1\">e2</EnumVal>\n" +
+                "            <EnumVal ord=\"2\">e3</EnumVal>\n" +
+                "            <EnumVal ord=\"3\">e4</EnumVal>\n" +
+                "            <EnumVal ord=\"4\">e5</EnumVal>\n" +
+                "        </EnumType>\n" +
+                "        <EnumType id=\"orCat\">\n" +
+                "            <EnumVal ord=\"0\">not-supported</EnumVal>\n" +
+                "            <EnumVal ord=\"1\">bay-control</EnumVal>\n" +
+                "            <EnumVal ord=\"2\">station-control</EnumVal>\n" +
+                "            <EnumVal ord=\"3\">remote-control</EnumVal>\n" +
+                "            <EnumVal ord=\"4\">automatic-bay</EnumVal>\n" +
+                "            <EnumVal ord=\"5\">automatic-station</EnumVal>\n" +
+                "            <EnumVal ord=\"6\">automatic-remote</EnumVal>\n" +
+                "            <EnumVal ord=\"7\">maintenance</EnumVal>\n" +
+                "            <EnumVal ord=\"8\">process</EnumVal>\n" +
+                "        </EnumType>\n" +
+                "        <EnumType id=\"cmdQual\">\n" +
+                "            <EnumVal ord=\"0\">pulse</EnumVal>\n" +
+                "            <EnumVal ord=\"1\">persistent</EnumVal>\n" +
+                "        </EnumType>\n" +
+                "        <EnumType id=\"ctlModel\">\n" +
+                "            <EnumVal ord=\"0\">status-only</EnumVal>\n" +
+                "            <EnumVal ord=\"1\">direct-with-normal-security</EnumVal>\n" +
+                "            <EnumVal ord=\"2\">sbo-with-normal-security</EnumVal>\n" +
+                "            <EnumVal ord=\"3\">direct-with-enhanced-security</EnumVal>\n" +
+                "            <EnumVal ord=\"4\">sbo-with-enhanced-security</EnumVal>\n" +
+                "        </EnumType>\n" +
+                "        <EnumType id=\"sboClass\">\n" +
+                "            <EnumVal ord=\"0\">operate-once</EnumVal>\n" +
+                "            <EnumVal ord=\"1\">operate-many</EnumVal>\n" +
                 "        </EnumType>" +
                 "    </DataTypeTemplates>" +
                 "</SCL>";

@@ -27,9 +27,8 @@ import it.illinois.adsc.ema.control.center.command.MessageFactory;
 import it.illinois.adsc.ema.control.center.experiments.CCMessageCounter;
 import it.illinois.adsc.ema.control.center.security.CCSecurityHandler;
 import it.illinois.adsc.ema.control.ied.StatusHandler;
-import it.illinois.adsc.ema.control.ied.pw.IEDServerFactory;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
-import it.illinois.adsc.ema.ui.ControlCenterGUI;
+import it.illinois.adsc.ema.softgrid.concenter.ui.ControlCenterGUI;
 import org.openmuc.j60870.*;
 
 import java.io.BufferedReader;
@@ -56,7 +55,7 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
     private boolean securityEnabled = false;
     private static CCMessageCounter ccMessageCounter = new CCMessageCounter();
     private Connection clientConnection;
-    public static boolean manualExperimentMode = false;
+    public static boolean manualExperimentMode = true;
     private String IP_ADDRESS = "192.168.0.173";
     private int PORT = 2404;
 
@@ -319,10 +318,6 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
                             String IOA = "1";//String.valueOf(Math.abs(random.nextLong() % 110));
                             if (!CCMessageCounter.SLOW) {
                                 runCommand("interrogation " + IOA);
-                                runCommand("interrogation " + IOA);
-                                runCommand("interrogation " + IOA);
-                                runCommand("interrogation " + IOA);
-                                runCommand("interrogation " + IOA);
                             }
 
                         } catch (IOException e) {
@@ -331,7 +326,7 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
                     }
 //                }, 5000, 300); // 66 MPS
 //                }, 5000 200); // 100 MPS
-                }, 5000, 2000); // 33 MPS
+                }, 5000, 500); // 33 MPS
     }
 
     public Connection getConnection() {

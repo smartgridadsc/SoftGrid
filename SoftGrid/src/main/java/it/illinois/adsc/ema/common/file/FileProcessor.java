@@ -22,7 +22,7 @@ package it.illinois.adsc.ema.common.file;
 
 import it.illinois.adsc.ema.common.webservice.TransferResults;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
-import it.illinois.adsc.ema.webservice.file.FileHandler;
+import it.illinois.adsc.ema.softgrid.webservice.file.FileHandler;
 
 import java.io.*;
 import java.nio.file.Files;

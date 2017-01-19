@@ -21,7 +21,7 @@
 package org.openmuc.j60870;
 
 import it.illinois.adsc.ema.control.proxy.server.GatewayConListener;
-import it.illinois.adsc.ema.control.proxy.server.PowerProxyServer;
+import it.illinois.adsc.ema.control.proxy.server.handlers.ICommandHandler;
 import org.openmuc.j60870.job.ContextState;
 import org.openmuc.j60870.job.MessageHandler;
 
@@ -31,7 +31,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * Created by prageethmahendra on 30/5/2016.
  */
-public class IEC60870D104Receiver implements ConnectionEventListener, PowerProxyServer{
+public class IEC60870D104Receiver implements ConnectionEventListener, ICommandHandler {
     private Connection connection;
     protected int connectionId;
     private ServerSap serverSap;

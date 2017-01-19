@@ -21,8 +21,6 @@
 package it.illinois.adsc.ema.control.ied.pw;
 
 
-import com.jacob.com.ComThread;
-import it.adsc.smartpower.substation.monitoring.ui.IEDControler;
 import it.illinois.adsc.ema.control.conf.generator.ConfigGenerator;
 import it.illinois.adsc.ema.control.ied.*;
 

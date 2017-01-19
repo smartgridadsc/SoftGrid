@@ -58,7 +58,7 @@ public class RestServiceApplication  extends Application {
      * @return
      */
     public static HttpServer startServer() {
-        final ResourceConfig rc = new ResourceConfig().packages("it.illinois.adsc.ema.webservice.web.resources");
+        final ResourceConfig rc = new ResourceConfig().packages("it.illinois.adsc.ema.softgrid.webservice.web.resources");
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(ServiceConfig.BASE_URI), rc);
     }
 

@@ -24,7 +24,7 @@ import it.illinois.adsc.ema.control.proxy.client.VPBusClient;
 import it.illinois.adsc.ema.control.proxy.util.DeviceType;
 import it.illinois.adsc.ema.control.proxy.client.PowerProxyClient;
 import it.illinois.adsc.ema.control.proxy.infor.ProxyInformation;
-import it.illinois.adsc.ema.control.proxy.server.PowerProxyServer;
+import it.illinois.adsc.ema.control.proxy.server.handlers.ICommandHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,14 +34,14 @@ import java.util.List;
  * Created by prageethmahendra on 2/2/2016.
  */
 public class SimpleProxyContext implements ProxyServerContext, ProxyClientContext {
-    private PowerProxyServer powerProxyServer = null;
+    private ICommandHandler icommandHandler = null;
     private PowerProxyClient powerProxyClient = null;
     private HashMap<Integer, PowerProxyClient> iedClientMap = new HashMap<Integer, PowerProxyClient>();
 
     // This method will register the proxyserver and keep its reference to maintain the bridge
     @Override
-    public void registerProxyServer(PowerProxyServer proxyServer) {
-        this.powerProxyServer = proxyServer;
+    public void registerCommandHandler(ICommandHandler commandHandler) {
+        this.icommandHandler = commandHandler;
     }
 
     @Override

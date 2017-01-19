@@ -20,10 +20,10 @@
 */
 package it.illinois.adsc.ema.operation;
 
-import it.adsc.smartpower.substatin.concenter.ControlCenterWindow;
-import it.adsc.smartpower.substation.monitoring.ui.SPMainFrame;
+import it.illinois.adsc.ema.softgrid.concenter.ControlCenterWindow;
+import it.illinois.adsc.ema.softgrid.monitoring.ui.SPMainFrame;
 import it.illinois.adsc.ema.common.webservice.ServiceConfig;
-import it.illinois.adsc.ema.webservice.RestServiceApplication;
+import it.illinois.adsc.ema.softgrid.webservice.RestServiceApplication;
 
 import java.net.DatagramPacket;
 import java.net.InetAddress;

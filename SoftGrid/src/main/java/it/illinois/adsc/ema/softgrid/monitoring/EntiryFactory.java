@@ -20,10 +20,10 @@
 */
 package it.illinois.adsc.ema.softgrid.monitoring;
 
-import it.adsc.smartpower.substation.monitoring.ui.CCControler;
+import it.illinois.adsc.ema.softgrid.concenter.ui.CCControler;
 import it.illinois.adsc.ema.softgrid.monitoring.ui.IEDControler;
 import it.illinois.adsc.ema.softgrid.monitoring.ui.SPMainFrame;
-import it.illinois.adsc.ema.ui.ControlCenter;
+import it.illinois.adsc.ema.softgrid.concenter.ui.ControlCenter;
 
 /**
  * Created by prageethmahendra on 2/9/2016.

@@ -37,7 +37,7 @@ public class ControlCenterContext {
             configFileName;
     private HashMap<Integer, IedNodeType> iedVariableMap = new HashMap<Integer, IedNodeType>();
     // todo this should not be hard corded
-    private int portoffset = 101;
+    private int portoffset = 10003;
     private boolean remoteInteractive;
 
     public ControlCenterContext(boolean consoleInteractive, String configFileName) {

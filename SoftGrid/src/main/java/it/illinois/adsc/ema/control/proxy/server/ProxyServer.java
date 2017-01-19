@@ -31,9 +31,10 @@ import it.illinois.adsc.ema.control.proxy.context.ProxyContextFactory;
 import it.illinois.adsc.ema.control.proxy.context.ProxyServerContext;
 import it.illinois.adsc.ema.control.proxy.infor.InformationASduBridge;
 import it.illinois.adsc.ema.control.proxy.infor.ProxyInformation;
+import it.illinois.adsc.ema.control.proxy.server.handlers.ICommandHandler;
 import it.illinois.adsc.ema.control.proxy.util.DeviceType;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
-import it.illinois.adsc.ema.ui.ControlCenter;
+import it.illinois.adsc.ema.softgrid.concenter.ui.ControlCenter;
 import org.openmuc.j60870.*;
 
 import java.io.EOFException;
@@ -41,7 +42,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
-public class ProxyServer implements ServerSapListener, ConnectionEventListener, PowerProxyServer, SecurityEventListener {
+public class ProxyServer implements ServerSapListener, ConnectionEventListener, ICommandHandler, SecurityEventListener {
     private static int connectionIdCounter = 1;
     public static boolean LOCAL_API_MODE = false;
     protected static ProxyServer instance;
@@ -184,9 +185,9 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
                 && aSdu.getInformationObjects()[0].getInformationElements()[0] != null &&
                 aSdu.getInformationObjects()[0].getInformationElements()[0][0] != null) {
               IeQualifierOfResetProcessCommand ieQualifierOfResetProcessCommand = (IeQualifierOfResetProcessCommand) aSdu.getInformationObjects()[0].getInformationElements()[0][0];
-//              if (securityHandler != null && ieQualifierOfResetProcessCommand.getValue() == 255) {
+//            if (securityHandler != null && ieQualifierOfResetProcessCommand.getValue() == 255) {
 //                securityHandler.resetAll();
-//              }
+//            }
         }
     }
 
@@ -227,9 +228,9 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
             if (LOCAL_API_MODE) {
                 readyToExecute(aSdu, qualifier, new Float(value));
             }
-//            else {
-//                securityHandler.validateAndExecute(this, proxyContext, aSdu, qualifier, new Float(value));
-//            }
+//          else {
+//              securityHandler.validateAndExecute(this, proxyContext, aSdu, qualifier, new Float(value));
+//          }
         }
     }
 

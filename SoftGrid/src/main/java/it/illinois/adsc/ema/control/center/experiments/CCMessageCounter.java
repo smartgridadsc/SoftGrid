@@ -133,7 +133,7 @@ public class CCMessageCounter {
             } else if (aSdu.getCauseOfTransmission().name().equalsIgnoreCase("INITIALIZED") ||
                     aSdu.getCauseOfTransmission().name().equalsIgnoreCase("ACTIVATION_TERMINATION")) {
                 // do nothing
-            }else{
+            }else if(aSdu.getCauseOfTransmission().name().equalsIgnoreCase("ACTIVATION")){
 //              sent
                 startTime = nanosecond ? System.nanoTime() : System.currentTimeMillis();
                 asduCommandStack.add(new AsduCommand(aSdu));

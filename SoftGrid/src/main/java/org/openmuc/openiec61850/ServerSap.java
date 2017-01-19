@@ -343,11 +343,9 @@ public final class ServerSap {
 		if (serverSocketFactory == null) {
 			serverSocketFactory = ServerSocketFactory.getDefault();
 		}
-
 		acseSap = new ServerAcseSap(port, backlog, bindAddr, new AcseListener(this), serverSocketFactory , parameterGenerator);
 		this.serverEventListener = serverEventListener;
 		listening = true;
-
 		acseSap.startListening();
 	}
 
@@ -372,7 +370,6 @@ public final class ServerSap {
 	}
 
 	void connectionIndication(AcseAssociation acseAssociation, ByteBuffer psdu) {
-
 		ServerAssociation association;
 		synchronized (associations) {
 			if (listening) {
@@ -384,13 +381,11 @@ public final class ServerSap {
 				return;
 			}
 		}
-
 		try {
 			association.handleNewAssociation(acseAssociation, psdu);
 		} catch (Exception e) {
 			logger.warn("Association closed because of an unexpected exception.", e);
 		}
-
 		association.close();
 		synchronized (associations) {
 			associations.remove(association);
