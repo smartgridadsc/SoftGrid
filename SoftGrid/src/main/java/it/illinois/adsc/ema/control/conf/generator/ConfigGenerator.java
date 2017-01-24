@@ -256,7 +256,7 @@ public class ConfigGenerator {
             switch (fnameElements[0]) {
                 case CIRCUITE_BREAKER:
                     iedNodeType.setDevice("Branch");
-                    iedNodeType.setReference(refPrefix + "LD1/CSWI1.Pos");
+                    iedNodeType.setReference(refPrefix + "LD1/");
                     addBranchKeys(fnameElements, parametersType);
                     addBranchDatas(parametersType, CIRCUITE_BREAKER);
                     iedNodeType.setParameters(parametersType);
@@ -294,7 +294,7 @@ public class ConfigGenerator {
                     break;
                 case BUS:
                     iedNodeType.setDevice("Bus");
-                    iedNodeType.setReference(refPrefix + "LD1/MMXU1.pwMv");
+                    iedNodeType.setReference(refPrefix + "LD1/");
                     addBusKeys(fnameElements, parametersType);
                     addBranchDatas(parametersType, BUS);
                     iedNodeType.setParameters(parametersType);
@@ -312,7 +312,7 @@ public class ConfigGenerator {
                     break;
                 case PW_CASE_INFOR:
                     iedNodeType.setDevice("PWCaseInformation");
-                    iedNodeType.setReference(refPrefix + "LD1/PWCaseInformation_MMXU1.PWCaseInformation_");
+                    iedNodeType.setReference(refPrefix + "LD1/");
 //                  addCaseKeys(fnameElements, parametersType);
                     addBranchDatas(parametersType, PW_CASE_INFOR);
                     iedNodeType.setParameters(parametersType);

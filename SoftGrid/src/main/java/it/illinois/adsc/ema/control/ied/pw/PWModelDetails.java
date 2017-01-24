@@ -74,15 +74,19 @@ public class PWModelDetails implements Comparable {
         this.portNumber = portNumber;
     }
 
-    public void addDataField(String fieldName, String value, String sclFieldName) {
+    public void addDataField(String fieldName, String value, String pwFeildName) {
         if (dataKeyValueFields == null) {
             dataKeyValueFields = new HashMap<String, String>();
         }
         if (sclToPWMapping == null) {
             sclToPWMapping = new HashMap<String, String>();
         }
-        dataKeyValueFields.put(fieldName, value);
-        sclToPWMapping.put(fieldName, sclFieldName);
+        String[] sclFeilds = fieldName.split(",");
+        // allways first parameter is the read parameter and other parameters are write parameter
+        dataKeyValueFields.put(sclFeilds[0], value);
+        for (String sclFeild : sclFeilds) {
+            sclToPWMapping.put(sclFeild, pwFeildName);
+        }
     }
 
     public int getFieldCount() {

@@ -42,9 +42,21 @@
               <FCDA doName="PhyNam" daName="busNum" fc="CF" ldInst="LD1" lnClass="LPHD" lnInst="1"/>
             </DataSet>
           </LN0>
-          <LN inst="1" lnClass="CSWI" lnType="CSWI"/>
+          <LN inst="1" lnClass="CSWI" lnType="CSWI">
+             <DOI name="Pos" desc="generatorctlVal">
+                <DAI name="ctlModel" valKind="Set">
+                  <Val>direct-with-normal-security</Val>
+                </DAI>
+             </DOI>
+          </LN>
           <LN inst="1" lnClass="LPHD" lnType="LPHD"/>
-          <LN inst="1" lnClass="ZGEN" lnType="ZGEN"/>
+          <LN inst="1" lnClass="ZGEN" lnType="ZGEN">
+             <DOI name="GnCtl" desc="generatorMW">
+                <DAI name="ctlModel" valKind="Set">
+                  <Val>direct-with-normal-security</Val>
+                </DAI>
+             </DOI>
+          </LN>
         </LDevice>
       </Server>
     </AccessPoint>

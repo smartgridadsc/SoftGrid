@@ -62,7 +62,13 @@
 
             </DataSet>
           </LN0>
-          <LN inst="1" lnClass="CSWI" lnType="CSWI"/>
+          <LN inst="1" lnClass="CSWI" lnType="CSWI">
+             <DOI name="Pos" desc="circuitBreaker">
+                <DAI name="ctlModel" valKind="Set">
+                  <Val>direct-with-normal-security</Val>
+                </DAI>
+             </DOI>
+          </LN>
           <LN inst="1" lnClass="LPHD" lnType="LPHD">
             <DOI name="PhyNam" desc="Info">
               <DAI name="fromBus" valKind="Set">

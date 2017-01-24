@@ -41,10 +41,15 @@
             </DataSet>
             <DataSet name="dsSetting">
               <FCDA daName="Oper.ctlVal" doName="Pos" fc="CO" ldInst="LD1" lnClass="CSWI" lnInst="1"/>
-              <FCDA daName="setMag.f" doName="Rat" fc="SP" ldInst="LD1" lnClass="TVTR" lnInst="1"/>
             </DataSet>
           </LN0>
-          <LN inst="1" lnClass="CSWI" lnType="CSWI"/>
+          <LN inst="1" lnClass="CSWI" lnType="CSWI">
+             <DOI name="Pos" desc="generatorctlVal">
+                <DAI name="ctlModel" valKind="Set">
+                  <Val>direct-with-normal-security</Val>
+                </DAI>
+             </DOI>
+          </LN>
           <LN inst="1" lnClass="LPHD" lnType="LPHD">
             <DOI name="PhyNam" desc="Info">
               <DAI name="fromBus" valKind="Set">

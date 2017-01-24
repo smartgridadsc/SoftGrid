@@ -37,9 +37,6 @@
               <FCDA doName="PhyNam" daName="busNum" fc="CF" ldInst="LD1" lnClass="LPHD" lnInst="1"/>
               <FCDA doName="TapChg" daName="Oper.setMag.f" fc="SP" ldInst="LD1" lnClass="ARCO" lnInst="1"/>
             </DataSet>
-            <DataSet name="dsSetting">
-              <FCDA doName="TapChg" daName="Oper.setMag.f" fc="SP" ldInst="LD1" lnClass="ARCO" lnInst="1"/>
-            </DataSet>
           </LN0>
           <LN inst="1" lnClass="LPHD" lnType="LPHD">
             <DOI name="PhyNam" desc="Info">

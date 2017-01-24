@@ -22,6 +22,8 @@ package it.illinois.adsc.ema.softgrid.common.ied.data;
 
 
 import it.illinois.adsc.ema.softgrid.common.ied.IedControlAPI;
+import javafx.scene.control.SplitPane;
+import org.openmuc.openiec61850.internal.mms.asn1.Data;
 
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -46,11 +48,33 @@ public class ParameterGenerator {
 
     }
 
-    public String[][] writePWParameters(String openMucKey, String openMUCValue) throws Exception {
-        if (openMucKey == null || openMUCValue == null || !isValid()) {
+    public String[][] writePWParameters(String openMucKey, Data dataValue) throws Exception {
+        if (openMucKey == null || dataValue == null || !isValid()) {
             throw new Exception("Invalid IDE Prameter State.");
         }
-        String pwKey = sclKeyToPWKeyMap.get(openMucKey);
+        String mostApplicableKey = "";
+        int matchCount = 0;
+        boolean found = true;
+        String[] keyTokens = openMucKey.split("\\$");
+        for (String key : sclKeyToPWKeyMap.keySet()) {
+            String[] keyParts = key.split("\\.");
+            if (keyTokens.length >= keyParts.length) {
+                found = true;
+                for (int i = 0; i < keyParts.length; i++) {
+                    if (!(keyParts[keyParts.length - i -1].equals(keyTokens[keyTokens.length - i - 1]))) {
+                        found = false;
+                        break;
+                    }
+                }
+                if (found) {
+                    if (matchCount < keyParts.length) {
+                        mostApplicableKey = key;
+                        matchCount = keyParts.length;
+                    }
+                }
+            }
+        }
+        String pwKey = sclKeyToPWKeyMap.get(mostApplicableKey);
         if (pwKey != null) {
             int keyIndex = -1;
             for (int i = 0; i < valueParameters.length; i++) {
@@ -60,7 +84,7 @@ public class ParameterGenerator {
             }
             String[][] paramPack = getParamPack();
             if (keyIndex >= 0) {
-                persistedValues[keyIndex] = openMUCValue;
+                persistedValues[keyIndex] = translatedToPW(pwKey, dataValue);
                 String variant = writeDataValues(paramPack);
                 if (variant != null && variant.trim().isEmpty()) {
                     return paramPack;
@@ -69,8 +93,16 @@ public class ParameterGenerator {
             throw new Exception("Error occured during changeParamegters for Single Element" + deviceObjectName +
                     "\n Parameters : " + paramPack[0].toString() + "\n values " + paramPack[1].toString());
         } else {
-            throw new Exception("Invalid IED parameter name : " + openMucKey + " or value : " + openMUCValue);
+            throw new Exception("Invalid IED parameter name : " + openMucKey + " or value : " + dataValue);
         }
+    }
+
+    private String translatedToPW(String pwKey, Data dataValue) {
+        switch (pwKey) {
+            case "LineStatus":
+                return dataValue.boolean_.val ? "Open" : "Closed";
+        }
+        return null;
     }
 
     public String[] loadDataValues(String[][] paramPack) {

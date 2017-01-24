@@ -310,19 +310,19 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
         uploadCheckerTimer.schedule(
                 new TimerTask() {
                     public void run() {
-                        try {
+//                        try {
                             Random random = new Random();
 
                             CCMessageCounter.SENT++;
 //                            String IOA = String.valueOf(CCMessageCounter.SENT % 7000);
                             String IOA = "1";//String.valueOf(Math.abs(random.nextLong() % 110));
                             if (!CCMessageCounter.SLOW) {
-                                runCommand("interrogation " + IOA);
+//                                runCommand("interrogation " + IOA);
                             }
 
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
                     }
 //                }, 5000, 300); // 66 MPS
 //                }, 5000 200); // 100 MPS

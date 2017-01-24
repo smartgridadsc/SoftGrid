@@ -76,9 +76,9 @@ public class SmartPowerIEDServer implements ServerEventListener {
     @Override
     public List<ServiceError> write(List<BasicDataAttribute> bdas) {
 //        if (ConfigUtil.MANUAL_EXPERIMENT_MODE) {
-            for (BasicDataAttribute bda : bdas) {
-                logger.info("got a write request: " + bda);
-            }
+        for (BasicDataAttribute bda : bdas) {
+            logger.info("got a write request: " + bda);
+        }
 //        }
         return null;
     }
@@ -210,6 +210,8 @@ public class SmartPowerIEDServer implements ServerEventListener {
                                     ((BdaDoubleBitPos) modelNodes).setValue(status);
                                 } else if (modelNodes instanceof BdaVisibleString) {
                                     ((BdaVisibleString) modelNodes).setValue(elements[j]);
+                                } else if (modelNodes instanceof BdaFloat32) {
+                                    ((BdaFloat32) modelNodes).setFloat(Float.parseFloat(elements[j]));
                                 }
                             }
                         }

@@ -541,7 +541,7 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
                                                 dataFileWriter.write(maxTimeRange + " , " + monitorConfig.getVariable() + " , " + String.valueOf(value) + "\n");
                                                 dataFileWriter.flush();
                                             }
-                                            if (racordCount >= 10000) {
+                                            if (racordCount >= 100000) {
                                                 XYDataItem xyDataItem = monitorConfig.getXySeries().remove(0);
                                                 minTimeRange = xyDataItem.getX().longValue();
                                             }
