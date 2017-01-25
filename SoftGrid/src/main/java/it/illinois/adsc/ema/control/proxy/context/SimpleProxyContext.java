@@ -64,7 +64,7 @@ public class SimpleProxyContext implements ProxyServerContext, ProxyClientContex
     }
 
     @Override
-    public ProxyInformation getIntegrationData(int iedID) {
+    public ProxyInformation getIntegrationData(int commonAddress) {
         if (iedClientMap == null || iedClientMap.isEmpty()) {
             return null;
         } else {
@@ -72,23 +72,23 @@ public class SimpleProxyContext implements ProxyServerContext, ProxyClientContex
             ProxyInformation proxyInformation = new ProxyInformation();
             proxyInformation.init();
             proxyInformation.setDeviceType(DeviceType.ROOT);
-            if (iedID == 65534) {
+            if (commonAddress == 65534) {
                 // vertual IED address
-                VPBusClient vpBusClient = getVirtualClient(iedID);
+                VPBusClient vpBusClient = getVirtualClient(commonAddress);
                 List<ProxyInformation> proxyInterrogations  = vpBusClient.getResults();
                 proxyInformation.getDeviceInfor().addAll(proxyInterrogations);
-                proxyInformation.setIedId(iedID);
+                proxyInformation.setIedId(commonAddress);
             } else {
                 System.out.println("iedClientMap = " + iedClientMap.size());
-                for (PowerProxyClient proxyClient : getClients(iedID)) {
-                    List<ProxyInformation> proxyInterrogations = proxyClient.interrogationRequest();
+                for (PowerProxyClient proxyClient : getClients(commonAddress)) {
+                    List<ProxyInformation> proxyInterrogations = proxyClient.interrogationRequest(commonAddress);
                     if (proxyInterrogations != null) {
                         for (ProxyInformation proxyInterrogation : proxyInterrogations) {
                             System.out.println("params = " + proxyInterrogation.getParameter());
                             System.out.println("value = " + proxyInterrogation.getVariant());
                         }
                         proxyInformation.getDeviceInfor().addAll(proxyInterrogations);
-                        proxyInformation.setIedId(iedID);
+                        proxyInformation.setIedId(commonAddress);
                     }
                     else
                     {

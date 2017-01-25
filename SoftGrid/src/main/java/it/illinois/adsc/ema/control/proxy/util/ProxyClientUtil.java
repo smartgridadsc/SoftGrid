@@ -20,6 +20,7 @@
 */
 package it.illinois.adsc.ema.control.proxy.util;
 
+import org.openmuc.openiec61850.BdaBoolean;
 import org.openmuc.openiec61850.BdaVisibleString;
 import org.openmuc.openiec61850.FcModelNode;
 import org.openmuc.openiec61850.ModelNode;
@@ -32,10 +33,14 @@ public class ProxyClientUtil {
     public static String getObjectReference(int qualifier) {
         switch (qualifier) {
             case 1:
-                return "lineStatus";
+                return "CSWI1.Pos.Oper.ctlVal";
             case 2:
-                return "tapRatio";
+                return "MMXU1.pwMv.BusKVVolt.f";
             case 3:
+                // todo not integrated
+                return "tapRatio";
+            case 4:
+                // todo not integrated
                 return "loadMW";
             default:
                 return "";
@@ -47,12 +52,7 @@ public class ProxyClientUtil {
         switch (qualifier) {
             case 1:
                 // line status
-                boolean state = (Boolean) valueObject;
-                if (state) {
-                    ((BdaVisibleString) modCtlModel).setValue("Open");
-                } else {
-                    ((BdaVisibleString) modCtlModel).setValue("Closed");
-                }
+                ((BdaBoolean) modCtlModel).setValue((Boolean) valueObject);
                 break;
             case 2:
                 // set float value command
@@ -63,6 +63,7 @@ public class ProxyClientUtil {
         }
     }
 
+    @Deprecated
     public static ParameterType getObjectVariableType(String variableName) {
         switch (variableName) {
             case "lineStatus":
@@ -75,23 +76,21 @@ public class ProxyClientUtil {
         }
     }
 
-    public static DeviceType getDeviceType(FcModelNode modelNodes) {
-        if (modelNodes != null) {
-            for (ModelNode modelNode : modelNodes.getChildren()) {
-                if (modelNode.getName().contains("IED_Bus")) {
+    public static DeviceType getDeviceType(FcModelNode modelNode) {
+        if (modelNode != null) {
+                if (modelNode.getName().startsWith("BUS")) {
                     return DeviceType.BUS;
-                } else if (modelNode.getName().contains("CB")) {
+                } else if (modelNode.getName().startsWith("CB")) {
                     return DeviceType.BRANCH;
-                } else if (modelNode.getName().contains("GEN")) {
+                } else if (modelNode.getName().startsWith("GEN")) {
                     return DeviceType.GENERATOR;
-                } else if (modelNode.getName().contains("Shunt")) {
+                } else if (modelNode.getName().startsWith("SHUNT")) {
                     return DeviceType.SHUNT;
-                } else if (modelNode.getName().contains("Transformer")) {
+                } else if (modelNode.getName().startsWith("TRANSFORMER")) {
                     return DeviceType.TRANSFORMER;
-                } else if (modelNode.getName().contains("Load")) {
+                } else if (modelNode.getName().startsWith("LOAD")) {
                     return DeviceType.LOAD;
                 }
-            }
         }
         return DeviceType.MONITOR;
     }

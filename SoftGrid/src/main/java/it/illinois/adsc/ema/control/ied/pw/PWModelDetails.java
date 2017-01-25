@@ -20,6 +20,8 @@
 */
 package it.illinois.adsc.ema.control.ied.pw;
 
+import org.openmuc.openiec61850.Fc;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -190,4 +192,6 @@ public class PWModelDetails implements Comparable {
 
         }
     }
+
+
 }

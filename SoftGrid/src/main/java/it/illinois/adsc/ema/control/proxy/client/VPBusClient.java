@@ -47,7 +47,7 @@ public class VPBusClient {
         List<ProxyInformation> proxyInformation = new ArrayList<ProxyInformation>();
         int violationCount = 0;
         for (PowerProxyClient powerProxyClient : powerProxyClients) {
-            List<ProxyInformation> subInfor = powerProxyClient.interrogationRequest();
+            List<ProxyInformation> subInfor = powerProxyClient.interrogationRequest(powerProxyClient.getIedID());
             for (ProxyInformation information : subInfor) {
                 if (information.getParameter() != null && information.getParameter().equalsIgnoreCase("frequency")) {
                     float value = Float.parseFloat(information.getVariant().getString());
