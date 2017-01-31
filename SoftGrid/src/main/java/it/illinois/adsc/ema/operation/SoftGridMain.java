@@ -1,9 +1,29 @@
+/* Copyright (C) 2016 Advanced Digital Science Centre
+
+        * This file is part of Soft-Grid.
+        * For more information visit https://www.illinois.adsc.com.sg/cybersage/
+        *
+        * Soft-Grid is free software: you can redistribute it and/or modify
+        * it under the terms of the GNU General Public License as published by
+        * the Free Software Foundation, either version 3 of the License, or
+        * (at your option) any later version.
+        *
+        * Soft-Grid is distributed in the hope that it will be useful,
+        * but WITHOUT ANY WARRANTY; without even the implied warranty of
+        * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        * GNU General Public License for more details.
+        *
+        * You should have received a copy of the GNU General Public License
+        * along with Soft-Grid.  If not, see <http://www.gnu.org/licenses/>.
+
+        * @author Prageeth Mahendra Gunathilaka
+*/
 package it.illinois.adsc.ema.operation;
 
-import it.adsc.smartpower.substatin.concenter.ControlCenterWindow;
-import it.adsc.smartpower.substation.monitoring.ui.SPMainFrame;
+import it.illinois.adsc.ema.softgrid.concenter.ControlCenterWindow;
+import it.illinois.adsc.ema.softgrid.monitoring.ui.SPMainFrame;
 import it.illinois.adsc.ema.common.webservice.ServiceConfig;
-import it.illinois.adsc.ema.webservice.RestServiceApplication;
+import it.illinois.adsc.ema.softgrid.webservice.RestServiceApplication;
 
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -46,7 +66,6 @@ public class SoftGridMain {
                 }
                 SPMainFrame.getInstance().displayMonitorWindow(null);
                 if (isRemote) {
-                    SPMainFrame.getInstance().removeChartPanel();
                     SPMainFrame.getInstance().startIEDs(args.length >= 2 ? args[1] : null);
                 }
             }

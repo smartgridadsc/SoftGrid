@@ -31,9 +31,10 @@ import it.illinois.adsc.ema.control.proxy.context.ProxyContextFactory;
 import it.illinois.adsc.ema.control.proxy.context.ProxyServerContext;
 import it.illinois.adsc.ema.control.proxy.infor.InformationASduBridge;
 import it.illinois.adsc.ema.control.proxy.infor.ProxyInformation;
+import it.illinois.adsc.ema.control.proxy.server.handlers.ICommandHandler;
 import it.illinois.adsc.ema.control.proxy.util.DeviceType;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
-import it.illinois.adsc.ema.ui.ControlCenter;
+import it.illinois.adsc.ema.softgrid.concenter.ui.ControlCenter;
 import org.openmuc.j60870.*;
 
 import java.io.EOFException;
@@ -41,7 +42,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
-public class ProxyServer implements ServerSapListener, ConnectionEventListener, PowerProxyServer, SecurityEventListener {
+public class ProxyServer implements ServerSapListener, ConnectionEventListener, ICommandHandler, SecurityEventListener {
     private static int connectionIdCounter = 1;
     public static boolean LOCAL_API_MODE = false;
     protected static ProxyServer instance;
@@ -50,7 +51,7 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
     protected int connectionId;
     private ProxyServerContext proxyContext;
     private ServerSap serverSap;
-//    private SecurityHandler securityHandler;
+//  private SecurityHandler securityHandler;
     private static LogEventListener logEventListener;
 
     protected ProxyServer() {
@@ -66,12 +67,12 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
     private void init() {
         proxyContext = ProxyContextFactory.getInstance().getProxyContext(this);
         LOCAL_API_MODE = ConfigUtil.PROXY_SERVER_LOCAL_API_MODE;
-        //  TODO : security is not needed in the ProxyServer
+//      TODO : security is not needed in the ProxyServer
         if (!LOCAL_API_MODE) {
             logEvent("LOCAL_API_MODE disabled..!");
-//            securityHandler = SecurityHandler.getInstance();
-//            securityHandler.setEnabled(false);
-//            securityHandler.addSecurityEventListener(this);
+//          securityHandler = SecurityHandler.getInstance();
+//          securityHandler.setEnabled(false);
+//          securityHandler.addSecurityEventListener(this);
         } else {
             logEvent("LOCAL_API_MODE enabled..!");
         }
@@ -183,7 +184,7 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
         if (aSdu.getInformationObjects() != null && aSdu.getInformationObjects()[0] != null && aSdu.getInformationObjects()[0].getInformationElements() != null
                 && aSdu.getInformationObjects()[0].getInformationElements()[0] != null &&
                 aSdu.getInformationObjects()[0].getInformationElements()[0][0] != null) {
-            IeQualifierOfResetProcessCommand ieQualifierOfResetProcessCommand = (IeQualifierOfResetProcessCommand) aSdu.getInformationObjects()[0].getInformationElements()[0][0];
+              IeQualifierOfResetProcessCommand ieQualifierOfResetProcessCommand = (IeQualifierOfResetProcessCommand) aSdu.getInformationObjects()[0].getInformationElements()[0][0];
 //            if (securityHandler != null && ieQualifierOfResetProcessCommand.getValue() == 255) {
 //                securityHandler.resetAll();
 //            }
@@ -200,9 +201,6 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
             if (LOCAL_API_MODE) {
                 readyToExecute(aSdu, qualifier, state);
             }
-//            else {
-//                securityHandler.validateAndExecute(this, proxyContext, aSdu, qualifier, state);
-//            }
         }
     }
 
@@ -230,9 +228,9 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
             if (LOCAL_API_MODE) {
                 readyToExecute(aSdu, qualifier, new Float(value));
             }
-//            else {
-//                securityHandler.validateAndExecute(this, proxyContext, aSdu, qualifier, new Float(value));
-//            }
+//          else {
+//              securityHandler.validateAndExecute(this, proxyContext, aSdu, qualifier, new Float(value));
+//          }
         }
     }
 

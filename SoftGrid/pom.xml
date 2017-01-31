@@ -267,7 +267,6 @@
                     <target>${jdk.version}</target>
                 </configuration>
             </plugin>
-
             <!-- Maven Assembly Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -284,7 +283,6 @@
                             <mainClass>it.illinois.adsc.ema.operation.SoftGridMain</mainClass>
                         </manifest>
                     </archive>
-
                 </configuration>
                 <executions>
                     <execution>
@@ -297,9 +295,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-
-
         </plugins>
     </build>
 </project>

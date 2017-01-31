@@ -121,7 +121,14 @@ public class PWCom_com4j implements PWComAPI {
     @Override
     public String changeParametersSingleElement(String objectType, String[] paramList, String[] valueList) {
         synchronized (simulatorAuto) {
-            return convertToStrArray(((Object[]) simulatorAuto.changeParametersSingleElement(objectType, paramList, valueList)))[0];
+            if(paramList.length == valueList.length)
+            {
+                return convertToStrArray(((Object[]) simulatorAuto.changeParametersSingleElement(objectType, paramList, valueList)))[0];
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 

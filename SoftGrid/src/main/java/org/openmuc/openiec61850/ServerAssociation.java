@@ -1,3 +1,23 @@
+/* Copyright (C) 2016 Advanced Digital Science Centre
+
+        * This file is part of Soft-Grid.
+        * For more information visit https://www.illinois.adsc.com.sg/cybersage/
+        *
+        * Soft-Grid is free software: you can redistribute it and/or modify
+        * it under the terms of the GNU General Public License as published by
+        * the Free Software Foundation, either version 3 of the License, or
+        * (at your option) any later version.
+        *
+        * Soft-Grid is distributed in the hope that it will be useful,
+        * but WITHOUT ANY WARRANTY; without even the implied warranty of
+        * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        * GNU General Public License for more details.
+        *
+        * You should have received a copy of the GNU General Public License
+        * along with Soft-Grid.  If not, see <http://www.gnu.org/licenses/>.
+
+        * @author Prageeth Mahendra Gunathilaka
+*/
 /*
  * Copyright 2011-14 Fraunhofer ISE, energy & meteo Systems GmbH and other contributors
  *
@@ -225,7 +245,6 @@ final class ServerAssociation {
     private void handleConnection() {
 
         while (true) {
-
             MmsPdu mmsRequestPdu = listenForMmsRequest(acseAssociation);
             if (mmsRequestPdu == null) {
                 return;
@@ -889,7 +908,6 @@ final class ServerAssociation {
 
             List<BasicDataAttribute> totalBdasToBeWritten = new ArrayList<BasicDataAttribute>();
             int[] numBdas = new int[listOfData.size()];
-
             int i = -1;
             synchronized (serverModel) {
                 for (VariableDef variableDef : listOfVariable) {
@@ -906,12 +924,12 @@ final class ServerAssociation {
                             case INTEGRATED_DATA:
                                 // commit the data into the integrated device
                                 ParameterGenerator parameterGenerator = acseAssociation.getParameterGenerator();
-                                if (parameterGenerator != null && mmsData != null && mmsData.visible_string != null) {
+                                if (parameterGenerator != null && mmsData != null) {
                                     try {
-                                        String fieldName = variableDef.variableSpecification.name.domain_specific.itemId.toString().split("\\$")[3];
+                                        String fieldName = variableDef.variableSpecification.name.domain_specific.itemId.toString();
                                         logger.info("Write Request PW Field Name = " + fieldName);
-                                        parameterGenerator.writePWParameters(fieldName, mmsData.visible_string.toString());
-                                        getFirstWriteResults(mmsResponseValues, totalBdasToBeWritten, numBdas, i, modelNode, mmsData);
+                                        parameterGenerator.writePWParameters(fieldName, mmsData);
+                                        getFirstWriteResults(mmsResponseValues, totalBdasToBeWritten, numBdas, i, (FcModelNode) modelNode.getParent(), mmsData);
                                         break;
                                     } catch (Exception e) {
                                         e.printStackTrace();
@@ -995,6 +1013,11 @@ final class ServerAssociation {
         WriteResponse.SubChoice writeResult = getWriteResult(dataSetMember, mmsData);
         if (writeResult == null) {
             FcModelNode fcModelNodeCopy = (FcModelNode) dataSetMember.copy();
+            if (fcModelNodeCopy.fc == Fc.CO) {
+//              TODO timeactivate operate
+                fcModelNodeCopy = (BasicDataAttribute) fcModelNodeCopy.getChild("ctlVal");
+//              TODO write origin and ctlNum if they exist
+            }
             try {
                 fcModelNodeCopy.setValueFromMmsDataObj(mmsData);
             } catch (ServiceError e) {
@@ -1003,11 +1026,7 @@ final class ServerAssociation {
                 return;
             }
 
-            if (fcModelNodeCopy.fc == Fc.CO) {
-//              TODO timeactivate operate
-                fcModelNodeCopy = (BasicDataAttribute) fcModelNodeCopy.getChild("ctlVal");
-//              TODO write origin and ctlNum if they exist
-            }
+
             List<BasicDataAttribute> bdas = fcModelNodeCopy.getBasicDataAttributes();
             totalBdasToBeWritten.addAll(bdas);
             numBdas[i] = bdas.size();
@@ -1026,44 +1045,43 @@ final class ServerAssociation {
         }
 
         if (fc == Fc.CO) {
-            String nodeName = modelNode.getName();
-
-            if (nodeName.equals("Oper")) {
-                FcModelNode cdcParent = (FcModelNode) modelNode.getParent();
-                ModelNode ctlModelNode = serverModel.findModelNode(cdcParent.getReference(), Fc.CF)
-                        .getChild("ctlModel");
-                if (ctlModelNode == null || !(ctlModelNode instanceof BdaInt8)) {
-                    logger.warn("Operatring controle DO failed because ctlModel is not set.");
-                    // 3 indicates error "object_access_denied"
-                    return new WriteResponse.SubChoice(new BerInteger(3L), null);
-                }
-
-                int ctlModel = ((BdaInt8) ctlModelNode).getValue();
-
-				/* Direct control with normal security (direct-operate) */
-                if (ctlModel == 1) {
-                    return null;
-                }
-                /* SBO control with normal security (operate-once or operate-many) */
-                else if (ctlModel == 2) {
-                    if (cdcParent.isSelectedBy(this)) {
-                        return null;
-                    } else {
-                        // 3 indicates error "object_access_denied"
-                        return new WriteResponse.SubChoice(new BerInteger(3L), null);
-                    }
-
-                } else {
-                    logger.warn("SetDataValues failed because of unsupported ctlModel: " + ctlModel);
-                    // 9 indicates error "object_access_unsupported"
-                    return new WriteResponse.SubChoice(new BerInteger(9L), null);
-
-                }
-            } else {
+            if (!modelNode.getName().equals("Oper")) {
                 logger.warn("SetDataValues failed because of the operation is not allowed yet: " + modelNode.getName());
                 // 9 indicates error "object_access_unsupported"
                 return new WriteResponse.SubChoice(new BerInteger(9L), null);
             }
+
+            FcModelNode cdcParent = (FcModelNode) modelNode.getParent();
+            ModelNode ctlModelNode = serverModel.findModelNode(cdcParent.getReference(), Fc.CF)
+                    .getChild("ctlModel");
+            if (ctlModelNode == null || !(ctlModelNode instanceof BdaInt8)) {
+                logger.warn("Operatring controle DO failed because ctlModel is not set.");
+                // 3 indicates error "object_access_denied"
+                return new WriteResponse.SubChoice(new BerInteger(3L), null);
+            }
+
+            int ctlModel = ((BdaInt8) ctlModelNode).getValue();
+
+				/* Direct control with normal security (direct-operate) */
+            if (ctlModel == 1) {
+                return null;
+            }
+                /* SBO control with normal security (operate-once or operate-many) */
+            else if (ctlModel == 2) {
+                if (cdcParent.isSelectedBy(this)) {
+                    return null;
+                } else {
+                    // 3 indicates error "object_access_denied"
+                    return new WriteResponse.SubChoice(new BerInteger(3L), null);
+                }
+
+            } else {
+                logger.warn("SetDataValues failed because of unsupported ctlModel: " + ctlModel);
+                // 9 indicates error "object_access_unsupported"
+                return new WriteResponse.SubChoice(new BerInteger(9L), null);
+
+            }
+
         } else if (fc == Fc.RP) {
 
             if (modelNode instanceof Rcb) {

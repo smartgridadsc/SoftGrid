@@ -63,12 +63,11 @@ public class SubstationProxyClient implements ClientEventListener, PowerProxyCli
     }
 
     @Override
-    public List<ProxyInformation> interrogationRequest() {
+    public List<ProxyInformation> interrogationRequest(int commonAddress) {
         System.out.println(serverModel);
         System.out.println(modelDetails.getModelNodeReference());
         List<ProxyInformation> proxyInformations = null;
-        if(serverModel == null)
-        {
+        if (serverModel == null) {
             try {
                 startProxy(modelDetails);
             } catch (IOException e) {
@@ -76,40 +75,71 @@ public class SubstationProxyClient implements ClientEventListener, PowerProxyCli
             } catch (ServiceError serviceError) {
                 serviceError.printStackTrace();
             }
-            if(serverModel == null)
-            {
+            if (serverModel == null) {
                 return proxyInformations;
             }
         }
-        FcModelNode modelNode = (FcModelNode) serverModel.findModelNode(modelDetails.getModelNodeReference(), Fc.CF);
-        if (modelNode == null) {
-            System.out.println("Null ModelNode");
-            return proxyInformations;
-        }
-        logger.info("Re-Loading..." + modelDetails.getModelNodeReference());
-        System.out.println("Re-Loading..." + modelDetails.getModelNodeReference());
-        try {
-            ProxyTimeLoger.resetStartTime();
-            association.getDataValues(modelNode);
-            for (String variableName : modelNode.getChildrenMap().keySet()) {
-                proxyInformations = new ArrayList<ProxyInformation>();
-                ProxyInformation proxyInformation = new ProxyInformation();
-                BdaVisibleString lineStatus = (BdaVisibleString) modelNode.getChild(variableName);
-                proxyInformation.setParamType(ProxyClientUtil.getObjectVariableType(variableName));
-                proxyInformation.setParameter(variableName);
-                proxyInformation.setVariant(new ProxyVariant());
-                proxyInformation.getVariant().setString(lineStatus.getStringValue());
-                ProxyTimeLoger.logDuration("interrogationRequest");
-                proxyInformation.setDeviceType(ProxyClientUtil.getDeviceType(modelNode));
-                proxyInformation.setIedId(this.iedID);
-                proxyInformations.add(proxyInformation);
+        String postFix = "";
+        proxyInformations = new ArrayList<ProxyInformation>();
+        if (modelDetails.getDataKeyValueFields() != null) {
+            for (String postfix : modelDetails.getDataKeyValueFields().keySet()) {
+                FcModelNode modelNode = findModelNode(serverModel, modelDetails.getModelNodeReference() + postfix);
+                if (modelNode == null) {
+                    System.out.println("Null ModelNode");
+                    continue;
+                }
+                logger.info("Re-Loading..." + modelDetails.getModelNodeReference());
+                System.out.println("Re-Loading..." + modelDetails.getModelNodeReference());
+                try {
+                    ProxyTimeLoger.resetStartTime();
+                    association.getDataValues(modelNode);
+
+                    String variableName = modelNode.getName();
+                    ProxyInformation proxyInformation = new ProxyInformation();
+                    proxyInformation.setParamType(ProxyClientUtil.getObjectVariableType(variableName));
+                    proxyInformation.setParameter(variableName);
+                    proxyInformation.setVariant(new ProxyVariant());
+                    proxyInformation.getVariant().setString(getValue(modelNode));
+                    ProxyTimeLoger.logDuration("interrogationRequest");
+                    proxyInformation.setDeviceType(ProxyClientUtil.getDeviceType(modelNode));
+                    proxyInformation.setIedId(this.iedID);
+                    proxyInformations.add(proxyInformation);
+
+                } catch (ServiceError serviceError) {
+                    serviceError.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (ServiceError serviceError) {
-            serviceError.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return proxyInformations;
+    }
+
+    private FcModelNode findModelNode(ServerModel serverModel, String ref) {
+        for (Fc fc : Fc.values()) {
+            if (fc.equals(Fc.CO)) {
+                continue;
+            }
+            FcModelNode modelNode = (FcModelNode) serverModel.findModelNode(ref, fc);
+            if (modelNode != null) {
+                return modelNode;
+            }
+        }
+        return null;
+    }
+
+    private String getValue(ModelNode modelNode) {
+        if (modelNode == null) {
+            return null;
+        } else if (modelNode instanceof BdaDoubleBitPos) {
+            return String.valueOf(((BdaDoubleBitPos) modelNode).getValue()[0]);
+        }else if(modelNode instanceof BdaFloat32)
+        {
+            return String.valueOf(((BdaFloat32) modelNode).getFloat());
+        }
+        else {
+            return modelNode.toString();
+        }
     }
 
     @Override
@@ -117,7 +147,7 @@ public class SubstationProxyClient implements ClientEventListener, PowerProxyCli
         if (qualifier > 0 && serverModel != null && modelDetails != null) {
             ProxyTimeLoger.resetStartTime();
             FcModelNode modCtlModel = (FcModelNode) serverModel.findModelNode(modelDetails.getModelNodeReference()
-                    + "." + ProxyClientUtil.getObjectReference(qualifier), Fc.CF);
+                    + ProxyClientUtil.getObjectReference(qualifier), Fc.CO);
             if (modCtlModel != null) {
                 ProxyClientUtil.setIedFeildValues(modCtlModel, qualifier, valueObject);
                 try {

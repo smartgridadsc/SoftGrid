@@ -66,13 +66,15 @@ public class SmartPowerControler {
                 e.printStackTrace();
             }
             System.out.println("Generating Config XML...");
-            ConfigGenerator.generateConfigXml(ConfigUtil.SCL_PATH, ConfigUtil.CONFIG_PEROPERTY_FILE, ConfigUtil.IP);
             try {
+                ConfigGenerator.generateConfigXml(ConfigUtil.SCL_PATH, ConfigUtil.CONFIG_PEROPERTY_FILE, ConfigUtil.IP);
                 System.out.println("Starting server/client threads...");
                 IEDServerFactory.createAndStartIEDServer(ConfigUtil.CONFIG_PEROPERTY_FILE, ConfigUtil.SERVER_TYPE, ConfigUtil.CC_CONSOLE_INTERACTIVE);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ServiceError e) {
+                e.printStackTrace();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

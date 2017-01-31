@@ -1,9 +1,29 @@
+/* Copyright (C) 2016 Advanced Digital Science Centre
+
+        * This file is part of Soft-Grid.
+        * For more information visit https://www.illinois.adsc.com.sg/cybersage/
+        *
+        * Soft-Grid is free software: you can redistribute it and/or modify
+        * it under the terms of the GNU General Public License as published by
+        * the Free Software Foundation, either version 3 of the License, or
+        * (at your option) any later version.
+        *
+        * Soft-Grid is distributed in the hope that it will be useful,
+        * but WITHOUT ANY WARRANTY; without even the implied warranty of
+        * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        * GNU General Public License for more details.
+        *
+        * You should have received a copy of the GNU General Public License
+        * along with Soft-Grid.  If not, see <http://www.gnu.org/licenses/>.
+
+        * @author Prageeth Mahendra Gunathilaka
+*/
 package it.illinois.adsc.ema.softgrid.common.ied.data;
 
 
-
-
 import it.illinois.adsc.ema.softgrid.common.ied.IedControlAPI;
+import javafx.scene.control.SplitPane;
+import org.openmuc.openiec61850.internal.mms.asn1.Data;
 
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -12,7 +32,6 @@ import java.util.StringTokenizer;
  * Created by prageethmahendra on 29/1/2016.
  */
 public class ParameterGenerator {
-
     // Device Name
     String deviceObjectName;
     // key Names
@@ -29,14 +48,33 @@ public class ParameterGenerator {
 
     }
 
-    public String[][] writePWParameters(String openMucKey, String openMUCValue) throws Exception {
-        if (openMucKey == null ||
-                openMUCValue == null ||
-                !isValid()
-                ) {
+    public String[][] writePWParameters(String openMucKey, Data dataValue) throws Exception {
+        if (openMucKey == null || dataValue == null || !isValid()) {
             throw new Exception("Invalid IDE Prameter State.");
         }
-        String pwKey = sclKeyToPWKeyMap.get(openMucKey);
+        String mostApplicableKey = "";
+        int matchCount = 0;
+        boolean found = true;
+        String[] keyTokens = openMucKey.split("\\$");
+        for (String key : sclKeyToPWKeyMap.keySet()) {
+            String[] keyParts = key.split("\\.");
+            if (keyTokens.length >= keyParts.length) {
+                found = true;
+                for (int i = 0; i < keyParts.length; i++) {
+                    if (!(keyParts[keyParts.length - i -1].equals(keyTokens[keyTokens.length - i - 1]))) {
+                        found = false;
+                        break;
+                    }
+                }
+                if (found) {
+                    if (matchCount < keyParts.length) {
+                        mostApplicableKey = key;
+                        matchCount = keyParts.length;
+                    }
+                }
+            }
+        }
+        String pwKey = sclKeyToPWKeyMap.get(mostApplicableKey);
         if (pwKey != null) {
             int keyIndex = -1;
             for (int i = 0; i < valueParameters.length; i++) {
@@ -46,7 +84,9 @@ public class ParameterGenerator {
             }
             String[][] paramPack = getParamPack();
             if (keyIndex >= 0) {
-                persistedValues[keyIndex] = openMUCValue;
+                persistedValues[keyIndex] = translatedToPW(pwKey, dataValue);
+                // recreate the param pack after translation;
+                paramPack = getParamPack();
                 String variant = writeDataValues(paramPack);
                 if (variant != null && variant.trim().isEmpty()) {
                     return paramPack;
@@ -55,14 +95,24 @@ public class ParameterGenerator {
             throw new Exception("Error occured during changeParamegters for Single Element" + deviceObjectName +
                     "\n Parameters : " + paramPack[0].toString() + "\n values " + paramPack[1].toString());
         } else {
-            throw new Exception("Invalid IED parameter name : " + openMucKey + " or value : " + openMUCValue);
+            throw new Exception("Invalid IED parameter name : " + openMucKey + " or value : " + dataValue);
         }
+    }
+
+    private String translatedToPW(String pwKey, Data dataValue) {
+        switch (pwKey) {
+            case "LineStatus":
+                return dataValue.boolean_.val ? "Open" : "Closed";
+            case "SSStatus":
+                return dataValue.boolean_.val ? "Open" : "Closed";
+        }
+        return null;
     }
 
     public String[] loadDataValues(String[][] paramPack) {
         synchronized (controlAPI) {
             String[] results = controlAPI.getParametersSingleElement(deviceObjectName, paramPack[0], paramPack[1]);
-//            return getTokenizedElements(results, paramPack[0].length);
+//          return getTokenizedElements(results, paramPack[0].length);
             return results;
         }
     }
@@ -83,6 +133,12 @@ public class ParameterGenerator {
         }
         paramPack[0] = params;
         paramPack[1] = persistedValues;
+        paramPack[1] = new String[persistedValues.length];
+        int i = 0;
+        for (String persistedValue : persistedValues) {
+            paramPack[1][i]=persistedValue;
+            i++;
+        }
         return paramPack;
     }
 

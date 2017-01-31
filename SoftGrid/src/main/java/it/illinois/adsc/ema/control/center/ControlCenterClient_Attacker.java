@@ -26,7 +26,7 @@ import it.illinois.adsc.ema.control.center.command.CommandParser;
 import it.illinois.adsc.ema.control.center.command.MessageFactory;
 import it.illinois.adsc.ema.control.conf.IedNodeType;
 import it.illinois.adsc.ema.control.conf.generator.ConfigGenerator;
-import it.illinois.adsc.ema.ui.ControlCenterGUI;
+import it.illinois.adsc.ema.softgrid.concenter.ui.ControlCenterGUI;
 import org.openmuc.j60870.*;
 
 import java.io.BufferedReader;

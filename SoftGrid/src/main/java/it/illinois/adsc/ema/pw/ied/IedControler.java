@@ -26,12 +26,12 @@ import it.illinois.adsc.ema.pw.PWComFactory;
 import it.illinois.adsc.ema.pw.ied.pwcom.PWComAPI;
 import it.illinois.adsc.ema.pw.log.PWLogFormatter;
 import it.illinois.adsc.ema.softgrid.common.ied.IedControlAPI;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.*;
 
 /**
  * Created by prageethmahendra on 21/1/2016.
@@ -53,9 +53,9 @@ public class IedControler implements IedControlAPI {
 
 
     public void init() {
-        if(pwComBridge == null) {
+        if (pwComBridge == null) {
             pwComBridge = PWComFactory.getSingletonPWComInstance();
-            initLogger();
+            logger = Logger.getLogger(IedControler.class);
             closed = false;
         }
     }
@@ -63,7 +63,6 @@ public class IedControler implements IedControlAPI {
 
     public void stop() {
         closed = true;
-
         pwComBridge.stop();
         instance = null;
     }
@@ -99,7 +98,7 @@ public class IedControler implements IedControlAPI {
         sb.append("\"CHECK\" \"\"");
         String command = sb.toString();
         LOG_DATA.add(command);
-        logger.severe(command);
+        logger.info(command);
     }
 
     private String[] getKeyList(String objectType) {
@@ -127,9 +126,7 @@ public class IedControler implements IedControlAPI {
 
     @Override
     public String changeParametersSingleElement(String objectType, String[] paramList, String[] valueList) {
-        if (ConfigUtil.MANUAL_EXPERIMENT_MODE) {
-            log(objectType, paramList, valueList);
-        }
+        log(objectType, paramList, valueList);
         if (!closed) {
             return pwComBridge.changeParametersSingleElement(objectType, paramList, valueList).toString();
         }
@@ -167,18 +164,8 @@ public class IedControler implements IedControlAPI {
         if (!closed) {
             result = pwComBridge.getParametersSingleElement(objectType, paramList, values);
             return result;
-//            if (variant != null) {
-//                Object value = PWVariantUtil.variantToObject(variant);
-//                variant.safeRelease();
-//                if (value != null) {
-//                    return value.toString();
-//                }
-//            }
-
-//            return null;
         } else {
-//            return "Closed...!";
-            String[] closed ={"Closed"};
+            String[] closed = {"Closed"};
             return closed;
         }
     }
@@ -249,34 +236,8 @@ public class IedControler implements IedControlAPI {
         return pwComBridge.writeAuxFile(AUX_FILE_NAME, filterName, objectType, eString, toAppend, fieldList).toString();
     }
 
-    private static synchronized void initLogger() {
-        FileHandler fileTxt = null;
-        Formatter formatterTxt;
-        if (logger != null) {
-            return;
-        }
-        // suppress the logging output to the console
-        logger = Logger.getLogger("PW");
-        logger.setLevel(Level.INFO);
-        try {
-            fileTxt = new FileHandler(ConfigUtil.LOG_FILE +"PW");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (fileTxt != null) {
-            // create a TXT formatter
-            logger.addHandler(fileTxt);
-        }
-        formatterTxt = new PWLogFormatter();
-        fileTxt.setFormatter(formatterTxt);
-        logger.addHandler(new ConsoleHandler());
-        AUXGenerator.startThread();
-        // create an HTML formatter
-    }
-
     public static IedControler getInstance() {
-        if(instance == null)
-        {
+        if (instance == null) {
             instance = new IedControler();
         }
         return instance;

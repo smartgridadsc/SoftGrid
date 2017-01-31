@@ -33,7 +33,8 @@ import java.util.HashMap;
  * This file contains the context parameters required for the control center
  */
 public class ControlCenterContext {
-    private String configFileName;
+    private String
+            configFileName;
     private HashMap<Integer, IedNodeType> iedVariableMap = new HashMap<Integer, IedNodeType>();
     // todo this should not be hard corded
     private int portoffset = 10003;

@@ -1,3 +1,23 @@
+/* Copyright (C) 2016 Advanced Digital Science Centre
+
+        * This file is part of Soft-Grid.
+        * For more information visit https://www.illinois.adsc.com.sg/cybersage/
+        *
+        * Soft-Grid is free software: you can redistribute it and/or modify
+        * it under the terms of the GNU General Public License as published by
+        * the Free Software Foundation, either version 3 of the License, or
+        * (at your option) any later version.
+        *
+        * Soft-Grid is distributed in the hope that it will be useful,
+        * but WITHOUT ANY WARRANTY; without even the implied warranty of
+        * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        * GNU General Public License for more details.
+        *
+        * You should have received a copy of the GNU General Public License
+        * along with Soft-Grid.  If not, see <http://www.gnu.org/licenses/>.
+
+        * @author Prageeth Mahendra Gunathilaka
+*/
 package it.illinois.adsc.ema.control.conf.generator;
 
 import it.illinois.adsc.ema.control.cid.*;
@@ -9,6 +29,7 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -47,11 +68,11 @@ public class ConfigGenerator {
         return pwModelType;
     }
 
-    public static void generateConfigXml(String xmlDirName, String configFileName, Properties properties) {
+    public static void generateConfigXml(String xmlDirName, String configFileName, Properties properties) throws Exception {
         generateConfigXml(xmlDirName, configFileName, properties.getProperty("ip"));
     }
 
-    public static void generateConfigXml(String xmlDirName, String configFileName, String ip) {
+    public static void generateConfigXml(String xmlDirName, String configFileName, String ip) throws Exception {
         try {
             if (!ConfigUtil.PW_TO_SCL_MAPPING.isEmpty()) {
                 initProperties();
@@ -81,18 +102,75 @@ public class ConfigGenerator {
                         generateIntegrationTypes(proxyNodeType, file.listFiles(), 0, ip);
                     }
                 }
-                int port = FIRST_PORT;
+                int identifier = FIRST_PORT;
                 Collections.sort(pwModelType.getProxyNode().get(0).getIedNode(), new Comparator<IedNodeType>() {
                     @Override
                     public int compare(IedNodeType o1, IedNodeType o2) {
                         return o1.getReference().compareTo(o2.getReference());
                     }
                 });
-                for (IedNodeType nodeType : pwModelType.getProxyNode().get(0).getIedNode()) {
-                    if (port == 100 + FIRST_PORT) {
-                        System.out.println();
+                if (ConfigUtil.MULTI_IP_IED_MODE_ENABLED) {
+                    List<IedNodeType> iedNodeTypeList = pwModelType.getProxyNode().get(0).getIedNode();
+                    String[] ipParts = iedNodeTypeList.get(0).getIp().split("\\.");
+                    int count1 = Integer.parseInt(ipParts[0]);
+                    int count2 = Integer.parseInt(ipParts[1]);
+                    int count3 = Integer.parseInt(ipParts[2]);
+                    int count4 = Integer.parseInt(ipParts[3]);
+                    count4--;
+                    StringBuffer sb = new StringBuffer();
+                    for (IedNodeType nodeType : pwModelType.getProxyNode().get(0).getIedNode()) {
+                        if (count4 < 254) {
+                            count4++;
+                        } else {
+                            if (count3 < 254) {
+                                count3++;
+                            } else {
+                                if (count2 < 254) {
+                                    count2++;
+                                } else {
+                                    if (count1 < 254) {
+                                        count1++;
+                                    } else {
+                                        throw new Exception("Too many IEDs");
+                                    }
+                                    count2 = 1;
+                                }
+                                count3 = 1;
+                            }
+                            count4 = 1;
+                        }
+                        nodeType.setIp(count1 + "." + count2 + "." + count3 + "." + count4);
+                        sb.append("netsh interface ipv4 add address \"Local Area Connection\" " + nodeType.getIp() + " 255.255.255.0\n");
+                        System.out.println("nodeType = " + nodeType.getIp());
+                        nodeType.setPort(ConfigUtil.DEFAULT_IED_PORT);
                     }
-                    nodeType.setPort(String.valueOf(port++));
+                    File ipGenFile = new File("ipGenerator.bat");
+                    FileWriter fw = null;
+                    try {
+                        fw = new FileWriter(ipGenFile);
+                        BufferedWriter writer = new BufferedWriter(fw);
+                        writer.write(sb.toString());
+                        writer.flush();
+                        writer.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            fw.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Runtime runTime = Runtime.getRuntime();
+                    try {
+                        runTime.exec("cmd.exe /k " + ipGenFile.getAbsolutePath());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    for (IedNodeType nodeType : pwModelType.getProxyNode().get(0).getIedNode()) {
+                        nodeType.setPort(String.valueOf(identifier++));
+                    }
                 }
                 OutputStream xmlout = null;
                 try {
@@ -174,10 +252,11 @@ public class ConfigGenerator {
             ParametersType parametersType = new ParametersType();
             count++;
             String refPrefix = file.getName().replace(".", "");
+//          <IED NAME><Device Name>/<TypeID>.<DO Name>.<DA Name>
             switch (fnameElements[0]) {
                 case CIRCUITE_BREAKER:
                     iedNodeType.setDevice("Branch");
-                    iedNodeType.setReference(refPrefix + "lDevice1/MMXU1.BRANCH_" + fname.split("\\.")[0]);
+                    iedNodeType.setReference(refPrefix + "LD1/");
                     addBranchKeys(fnameElements, parametersType);
                     addBranchDatas(parametersType, CIRCUITE_BREAKER);
                     iedNodeType.setParameters(parametersType);
@@ -186,7 +265,7 @@ public class ConfigGenerator {
                     break;
                 case TRANSFORMER:
                     iedNodeType.setDevice("Transformer");
-                    iedNodeType.setReference(refPrefix + "Transformer/TRNS_MMXU1.TRANS" + fname.split("\\.")[0].substring(TRANSFORMER.length()));
+                    iedNodeType.setReference(refPrefix + "LD1/");
                     addBranchKeys(fnameElements, parametersType);
                     addBranchDatas(parametersType, CIRCUITE_BREAKER);
                     addBranchDatas(parametersType, TRANSFORMER);
@@ -197,7 +276,7 @@ public class ConfigGenerator {
                 case GENERATOR:
 //                  count++;
                     iedNodeType.setDevice("Gen");
-                    iedNodeType.setReference(refPrefix + "Generator/GEN_MMXU1.GEN" + fname.split("\\.")[0].substring(GENERATOR.length()));
+                    iedNodeType.setReference(refPrefix + "LD1/");
                     addGeneratorKeys(fnameElements, parametersType);
                     addBranchDatas(parametersType, GENERATOR);
                     iedNodeType.setParameters(parametersType);
@@ -206,7 +285,7 @@ public class ConfigGenerator {
                     break;
                 case LOAD:
                     iedNodeType.setDevice("Load");
-                    iedNodeType.setReference(refPrefix + "Load/Load_MMXU1.Load" + fname.split("\\.")[0].substring(LOAD.length()));
+                    iedNodeType.setReference(refPrefix + "LD1/");
                     addLoadKeys(fnameElements, parametersType);
                     addBranchDatas(parametersType, LOAD);
                     iedNodeType.setParameters(parametersType);
@@ -215,7 +294,7 @@ public class ConfigGenerator {
                     break;
                 case BUS:
                     iedNodeType.setDevice("Bus");
-                    iedNodeType.setReference(refPrefix + "Bus/Bus_MMXU1.Bus" + fname.split("\\.")[0].substring(BUS.length()));
+                    iedNodeType.setReference(refPrefix + "LD1/");
                     addBusKeys(fnameElements, parametersType);
                     addBranchDatas(parametersType, BUS);
                     iedNodeType.setParameters(parametersType);
@@ -224,7 +303,7 @@ public class ConfigGenerator {
                     break;
                 case SHUNT:
                     iedNodeType.setDevice("Shunt");
-                    iedNodeType.setReference(refPrefix + "Shunt/Shunt_MMXU1.Shunt" + fname.split("\\.")[0].substring(SHUNT.length()));
+                    iedNodeType.setReference(refPrefix + "LD1/");
                     addShuntKeys(fnameElements, parametersType);
                     addBranchDatas(parametersType, SHUNT);
                     iedNodeType.setParameters(parametersType);
@@ -233,7 +312,7 @@ public class ConfigGenerator {
                     break;
                 case PW_CASE_INFOR:
                     iedNodeType.setDevice("PWCaseInformation");
-                    iedNodeType.setReference(refPrefix + "PWCaseInformation/PWCaseInformation_MMXU1.PWCaseInformation_");
+                    iedNodeType.setReference(refPrefix + "LD1/");
 //                  addCaseKeys(fnameElements, parametersType);
                     addBranchDatas(parametersType, PW_CASE_INFOR);
                     iedNodeType.setParameters(parametersType);
@@ -392,7 +471,7 @@ public class ConfigGenerator {
                 </Address>
             </ConnectedAP>*/
                 if (scdFile.exists()) {
-                    headerString.append("<ConnectedAP iedName=\"").append(scdFile.getName()).append("\" apName=\"S1\">");
+                    headerString.append("<ConnectedAP iedName=\"").append(scdFile.getName().replace(".", "")).append("\" apName=\"S1\">");
                     headerString.append("<Address>" +
                             "                    <P type=\"OSI-AP-Title\">1 3 9999 106</P>" +
                             "                    <P type=\"OSI-AE-Qualifier\">33</P>" +
@@ -435,7 +514,7 @@ public class ConfigGenerator {
                                     found = true;
                                 }
 
-                                if (section.trim().contains("<EnumType id=\"CtlModels\">")) {
+                                if (section.trim().contains("<EnumType id=\"tempEnum\">")) {
                                     found = false;
                                     footer = false;
                                     break;
@@ -490,23 +569,38 @@ public class ConfigGenerator {
     }
 
     private static String getCidFooter() {
-        return "<EnumType id=\"CtlModels\">" +
-                "            <EnumVal ord=\"0\">status-only</EnumVal>" +
-                "            <EnumVal ord=\"1\">direct-with-normal-security</EnumVal>" +
-                "            <EnumVal ord=\"2\">sbo-with-normal-security</EnumVal>" +
-                "            <EnumVal ord=\"3\">direct-with-enhanced-security</EnumVal>" +
-                "            <EnumVal ord=\"4\">sbo-with-enhanced-security</EnumVal>" +
-                "        </EnumType>" +
-                "        <EnumType id=\"OrCat\">" +
-                "            <EnumVal ord=\"0\">not-supported</EnumVal>" +
-                "            <EnumVal ord=\"1\">bay-control</EnumVal>" +
-                "            <EnumVal ord=\"2\">station-control</EnumVal>" +
-                "            <EnumVal ord=\"3\">remote-control</EnumVal>" +
-                "            <EnumVal ord=\"4\">automatic-bay</EnumVal>" +
-                "            <EnumVal ord=\"5\">automatic-station</EnumVal>" +
-                "            <EnumVal ord=\"6\">automatic-remote</EnumVal>" +
-                "            <EnumVal ord=\"7\">maintenance</EnumVal>" +
-                "            <EnumVal ord=\"8\">process</EnumVal>" +
+        return " <EnumType id=\"tempEnum\">\n" +
+                "            <EnumVal ord=\"0\">e1</EnumVal>\n" +
+                "            <EnumVal ord=\"1\">e2</EnumVal>\n" +
+                "            <EnumVal ord=\"2\">e3</EnumVal>\n" +
+                "            <EnumVal ord=\"3\">e4</EnumVal>\n" +
+                "            <EnumVal ord=\"4\">e5</EnumVal>\n" +
+                "        </EnumType>\n" +
+                "        <EnumType id=\"orCat\">\n" +
+                "            <EnumVal ord=\"0\">not-supported</EnumVal>\n" +
+                "            <EnumVal ord=\"1\">bay-control</EnumVal>\n" +
+                "            <EnumVal ord=\"2\">station-control</EnumVal>\n" +
+                "            <EnumVal ord=\"3\">remote-control</EnumVal>\n" +
+                "            <EnumVal ord=\"4\">automatic-bay</EnumVal>\n" +
+                "            <EnumVal ord=\"5\">automatic-station</EnumVal>\n" +
+                "            <EnumVal ord=\"6\">automatic-remote</EnumVal>\n" +
+                "            <EnumVal ord=\"7\">maintenance</EnumVal>\n" +
+                "            <EnumVal ord=\"8\">process</EnumVal>\n" +
+                "        </EnumType>\n" +
+                "        <EnumType id=\"cmdQual\">\n" +
+                "            <EnumVal ord=\"0\">pulse</EnumVal>\n" +
+                "            <EnumVal ord=\"1\">persistent</EnumVal>\n" +
+                "        </EnumType>\n" +
+                "        <EnumType id=\"ctlModel\">\n" +
+                "            <EnumVal ord=\"0\">status-only</EnumVal>\n" +
+                "            <EnumVal ord=\"1\">direct-with-normal-security</EnumVal>\n" +
+                "            <EnumVal ord=\"2\">sbo-with-normal-security</EnumVal>\n" +
+                "            <EnumVal ord=\"3\">direct-with-enhanced-security</EnumVal>\n" +
+                "            <EnumVal ord=\"4\">sbo-with-enhanced-security</EnumVal>\n" +
+                "        </EnumType>\n" +
+                "        <EnumType id=\"sboClass\">\n" +
+                "            <EnumVal ord=\"0\">operate-once</EnumVal>\n" +
+                "            <EnumVal ord=\"1\">operate-many</EnumVal>\n" +
                 "        </EnumType>" +
                 "    </DataTypeTemplates>" +
                 "</SCL>";

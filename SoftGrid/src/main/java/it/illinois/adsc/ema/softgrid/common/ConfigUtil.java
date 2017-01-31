@@ -1,6 +1,22 @@
+/* Copyright (C) 2016 Advanced Digital Science Centre
+* This file is part of Soft-Grid.
+* For more information visit https://www.illinois.adsc.com.sg/cybersage/
+*
+* Soft-Grid is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* Soft-Grid is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with Soft-Grid.  If not, see <http://www.gnu.org/licenses/>.
+* @author Prageeth Mahendra Gunathilaka
+*/
 package it.illinois.adsc.ema.softgrid.common;
-
-import it.adsc.smartpower.substation.monitoring.ui.SPMainFrame;
 
 import javax.swing.*;
 import java.io.File;
@@ -36,15 +52,17 @@ public class ConfigUtil {
     public static String IED_TYPE_TO_FIELD_MAPPING = "";
     public static String EXP_DATA_FILE = "";
     public static String LIMIT_VIOLATION_RECORD_FILE = "";
-    //    public static String PYTHON_START_BAT_FILE_PATH = "";
+//  public static String PYTHON_START_BAT_FILE_PATH = "";
     public static String PYTHON_FILE_PATH = "";
     public static String PYTHON_FILE_NAME = "";
-    //    public static String TEMP_STATE_FILE_PATH = "";
+//  public static String TEMP_STATE_FILE_PATH = "";
     public static boolean CC_CONSOLE_INTERACTIVE = false;
     public static boolean PROXY_SERVER_LOCAL_API_MODE = false;
-    public static boolean MANUAL_EXPERIMENT_MODE = false;
+//  public static boolean MANUAL_EXPERIMENT_MODE = true;
     public static String ACM_SECURITY_PROPERTY_FILE = "";
     public static int GATEWAY_CC_PORT = -1;
+    public static boolean MULTI_IP_IED_MODE_ENABLED = false;
+    public static String DEFAULT_IED_PORT = "102";
 
     public static boolean init() {
         CONFIG_INITIALISED = true;
@@ -56,7 +74,6 @@ public class ConfigUtil {
         }
         CASE_FILE_NAME = new File(CASE_FILE_NAME).getName();
         CASE_FILE_PATH = CASE_FILE_PATH.endsWith(File.separator) ? CASE_FILE_PATH : CASE_FILE_PATH + File.separator;
-
         String clonedSCLFile = new File(CASE_FILE_PATH + "OP_" + CASE_FILE_NAME).getAbsolutePath();
         CASE_FILE_TEMP = new File(CASE_FILE_PATH + "TEMP_" + CASE_FILE_NAME).getAbsolutePath();
         CASE_FILE_MONITOR = new File(CASE_FILE_PATH + "MONITOR_" + CASE_FILE_NAME).getAbsolutePath();
@@ -69,35 +86,27 @@ public class ConfigUtil {
                     System.exit(0);
                 }
             });
-
             CONFIG_INITIALISED = false;
             return false;
         }
         try {
-            //Clone PWB file
+//          Clone PWB file
             Files.copy(new File(CASE_FILE_NAME).toPath(), new File(CASE_FILE_TEMP).toPath(), StandardCopyOption.REPLACE_EXISTING);
             Files.copy(new File(CASE_FILE_NAME).toPath(), new File(CASE_FILE_MONITOR).toPath(), StandardCopyOption.REPLACE_EXISTING);
             Files.copy(new File(CASE_FILE_NAME).toPath(), new File(clonedSCLFile).toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-
-            // Clone PWD file
+//          Clone PWD file
             String pwdFile = CASE_FILE_NAME.substring(0, CASE_FILE_NAME.length() - 4) + ".PWD";
-//            System.out.println("pwdFile = " + pwdFile);
-//            String tempPwdFile = CASE_FILE_TEMP.substring(0, CASE_FILE_TEMP.length() - 4) + ".PWD";
-//            String monitorPwdFile = CASE_FILE_MONITOR.substring(0, CASE_FILE_MONITOR.length() - 4) + ".PWD";
-//            String clonedPwdFile = clonedSCLFile.substring(0, clonedSCLFile.length() - 4) + ".PWD";
-
-//            Files.copy(new File(pwdFile).toPath(), new File(tempPwdFile).toPath(), StandardCopyOption.REPLACE_EXISTING);
-//            Files.copy(new File(pwdFile).toPath(), new File(monitorPwdFile).toPath(), StandardCopyOption.REPLACE_EXISTING);
-//            Files.copy(new File(pwdFile).toPath(), new File(clonedPwdFile).toPath(), StandardCopyOption.REPLACE_EXISTING);
-
+//          System.out.println("pwdFile = " + pwdFile);
+//          String tempPwdFile = CASE_FILE_TEMP.substring(0, CASE_FILE_TEMP.length() - 4) + ".PWD";
+//          String monitorPwdFile = CASE_FILE_MONITOR.substring(0, CASE_FILE_MONITOR.length() - 4) + ".PWD";
+//          String clonedPwdFile = clonedSCLFile.substring(0, clonedSCLFile.length() - 4) + ".PWD";
+//          Files.copy(new File(pwdFile).toPath(), new File(tempPwdFile).toPath(), StandardCopyOption.REPLACE_EXISTING);
+//          Files.copy(new File(pwdFile).toPath(), new File(monitorPwdFile).toPath(), StandardCopyOption.REPLACE_EXISTING);
+//          Files.copy(new File(pwdFile).toPath(), new File(clonedPwdFile).toPath(), StandardCopyOption.REPLACE_EXISTING);
             CASE_FILE_NAME = clonedSCLFile;
-
         } catch (Exception e) {
             e.printStackTrace();
         }
         return true;
     }
-
-
 }

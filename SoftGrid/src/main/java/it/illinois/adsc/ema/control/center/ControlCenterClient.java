@@ -27,9 +27,8 @@ import it.illinois.adsc.ema.control.center.command.MessageFactory;
 import it.illinois.adsc.ema.control.center.experiments.CCMessageCounter;
 import it.illinois.adsc.ema.control.center.security.CCSecurityHandler;
 import it.illinois.adsc.ema.control.ied.StatusHandler;
-import it.illinois.adsc.ema.control.ied.pw.IEDServerFactory;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
-import it.illinois.adsc.ema.ui.ControlCenterGUI;
+import it.illinois.adsc.ema.softgrid.concenter.ui.ControlCenterGUI;
 import org.openmuc.j60870.*;
 
 import java.io.BufferedReader;
@@ -56,7 +55,7 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
     private boolean securityEnabled = false;
     private static CCMessageCounter ccMessageCounter = new CCMessageCounter();
     private Connection clientConnection;
-    public static boolean manualExperimentMode = false;
+    public static boolean manualExperimentMode = true;
     private String IP_ADDRESS = "192.168.0.173";
     private int PORT = 2404;
 
@@ -203,6 +202,9 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
         System.out.println("Successfully Connected. ");
         String line;
         System.out.println("controlCenterContext.isRemoteInteractive() = " + controlCenterContext.isRemoteInteractive());
+        if (manualExperimentMode) {
+            periodicInterrogation();
+        }
         if (!controlCenterContext.isRemoteInteractive()) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             while (true) {
@@ -216,24 +218,33 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
             }
         }
 
+
     }
 
     public void setControlCenterGUI(ControlCenterGUI controlCenterGUI) {
         this.controlCenterGUI = controlCenterGUI;
     }
 
+    String commandString = "";
     public void runCommand(String commandString) throws IOException {
-        Command command = CommandParser.parseCommandString(commandString);
+//        if(commandString.contains("test throughput"))
+//        {
+//            periodicInterrogation();
+//            return;
+//        }
+        this.commandString = commandString;
+            Command command = CommandParser.parseCommandString(commandString);
 //        if (command.getCommandType().equals(CommandType.ATTACK)) {
 //            periodicInterrogation();
 //            CCUserGenerator.main(null);
 //            return;
 //        }
-        for (String clientAddress : PROXY_CONNECTION_MAP.keySet()) {
-            if (command != null && controlCenterContext.validate(command)) {
-                MessageFactory.sendCommand(command, PROXY_CONNECTION_MAP.get(clientAddress), controlCenterGUI, ccMessageCounter);
+            for (String clientAddress : PROXY_CONNECTION_MAP.keySet()) {
+                if (command != null && controlCenterContext.validate(command)) {
+                    MessageFactory.sendCommand(command, PROXY_CONNECTION_MAP.get(clientAddress), controlCenterGUI, ccMessageCounter);
+                }
             }
-        }
+
     }
 
 //    public boolean runCommand(ASdu aSdu) throws IOException {
@@ -255,6 +266,14 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
             controlCenterGUI.newASdu(aSdu.toString());
         }
         ccMessageCounter.logMessageReceived(aSdu);
+//        if(aSdu.getCauseOfTransmission().getCode() == 47)
+//        {
+//            try {
+//                runCommand(commandString);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     @Override
@@ -291,23 +310,23 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
         uploadCheckerTimer.schedule(
                 new TimerTask() {
                     public void run() {
-                        try {
+//                        try {
                             Random random = new Random();
 
                             CCMessageCounter.SENT++;
 //                            String IOA = String.valueOf(CCMessageCounter.SENT % 7000);
-                            String IOA = String.valueOf(Math.abs(random.nextLong() % 110));
+                            String IOA = "1";//String.valueOf(Math.abs(random.nextLong() % 110));
                             if (!CCMessageCounter.SLOW) {
-                                runCommand("interrogation " + IOA);
+//                                runCommand("interrogation " + IOA);
                             }
 
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
                     }
 //                }, 5000, 300); // 66 MPS
 //                }, 5000 200); // 100 MPS
-                }, 5000, 200); // 33 MPS
+                }, 5000, 500); // 33 MPS
     }
 
     public Connection getConnection() {
