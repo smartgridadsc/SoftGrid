@@ -64,6 +64,7 @@ public class Command {
         switch (feild.toLowerCase())
         {
             case "linestatus": feildQualifier = 1; break;
+            case "ssstatus": feildQualifier = 1; break;
             case "putratio" : feildQualifier = 2; break;
             case "loadmw" : feildQualifier = 3; break;
             default:

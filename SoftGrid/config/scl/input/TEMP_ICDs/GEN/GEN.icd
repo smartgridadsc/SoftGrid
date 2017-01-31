@@ -33,10 +33,10 @@
         <LDevice inst="LD1">
           <LN0 inst="" lnClass="LLN0" lnType="LLN0">
             <DataSet name="dsSetting">
-              <FCDA doName="GnCtl" daName="genMW" fc="CO" ldInst="LD1" lnClass="ZGEN" lnInst="1"/>
               <FCDA daName="Oper.ctlVal" doName="Pos" fc="CO" ldInst="LD1" lnClass="CSWI" lnInst="1"/>
             </DataSet>
             <DataSet name="dsAin">
+              <FCDA daName="genMW.f" doName="pwMv" fc="MX" ldInst="LD1" lnClass="MMXU" lnInst="1"/>
               <FCDA daName="stVal" doName="Pos" fc="ST" ldInst="LD1" lnClass="CSWI" lnInst="1"/>
               <FCDA doName="PhyNam" daName="genID" fc="CF" ldInst="LD1" lnClass="LPHD" lnInst="1"/>
               <FCDA doName="PhyNam" daName="busNum" fc="CF" ldInst="LD1" lnClass="LPHD" lnInst="1"/>
@@ -50,27 +50,14 @@
              </DOI>
           </LN>
           <LN inst="1" lnClass="LPHD" lnType="LPHD"/>
-          <LN inst="1" lnClass="ZGEN" lnType="ZGEN">
-             <DOI name="GnCtl" desc="generatorMW">
-                <DAI name="ctlModel" valKind="Set">
-                  <Val>direct-with-normal-security</Val>
-                </DAI>
-             </DOI>
-          </LN>
+          <LN inst="1" lnClass="MMXU" lnType="MMXU"/>
         </LDevice>
       </Server>
     </AccessPoint>
   </IED>
   <DataTypeTemplates>
-    <LNodeType id="ZGEN" lnClass="ZGEN">
-      <DO name="Beh" type="ENS"/>
-      <DO name="GnSt" type="ENS"/>
-      <DO name="OpNoLod" type="SPS"/>
-      <DO name="RotDir" type="ENS"/>
-      <DO name="OpUnExt" type="SPS"/>
-      <DO name="OpOvExt" type="SPS"/>
-      <DO name="GnCtl" type="DPC"/>
-      <DO name="DExt" type="SPC"/>
+    <LNodeType id="MMXU" lnClass="MMXU">
+      <DO name="pwMv" type="PW_MV"/>
     </LNodeType>
     <LNodeType id="LPHD" lnClass="LPHD">
       <DO name="PhyNam" type="DPL"/>
@@ -84,6 +71,9 @@
       <DO name="Beh" type="ENS"/>
       <DO name="Pos" type="DPC"/>
     </LNodeType>
+    <DOType cdc="MV" id="PW_MV">
+      <DA bType="Struct" type="AnalogueValue" fc="MX" name="genMW"/>
+    </DOType>
     <DOType cdc="ENS" id="ENS">
       <DA bType="Enum" fc="ST" name="stVal" type="tempEnum"/>
       <DA bType="Quality" fc="ST" name="q"/>
@@ -142,10 +132,8 @@
       <DA bType="VisString255" fc="EX" name="cdcNs"/>
       <DA bType="VisString255" fc="EX" name="cdcName"/>
       <DA bType="VisString255" fc="EX" name="dataNs"/>
-
-      <DA bType="FLOAT32" fc="CO" name="genMW"/>
-
     </DOType>
+
     <DOType cdc="SPC" id="SPC">
       <!--<DA bType="ObjRef" fc="CO" name="SBO"/>-->
       <DA bType="Struct" fc="CO" name="SBOw" type="SPCSelectWithValue"/>
@@ -213,6 +201,10 @@
     <DAType id="Originator">
       <BDA bType="Enum" name="orCat" type="orCat"/>
       <BDA bType="Octet64" name="orIdent"/>
+    </DAType>
+    <DAType id="AnalogueValue">
+      <BDA bType="INT32" name="i"/>
+      <BDA bType="FLOAT32" name="f"/>
     </DAType>
     <DAType id="DPCOperate">
       <BDA bType="BOOLEAN" name="ctlVal"/>

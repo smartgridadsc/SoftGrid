@@ -48,7 +48,7 @@ public class SclGenerator {
         deviceTypes.add("CB");
         deviceTypes.add("GEN");
         deviceTypes.add("LOAD");
-//        deviceTypes.add("SHUNT");
+        deviceTypes.add("SHUNT");
         deviceTypes.add("TRANSFORMER");
 
 //        if (caseFile != null && !caseFile.trim().isEmpty()) {

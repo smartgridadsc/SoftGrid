@@ -85,6 +85,8 @@ public class ParameterGenerator {
             String[][] paramPack = getParamPack();
             if (keyIndex >= 0) {
                 persistedValues[keyIndex] = translatedToPW(pwKey, dataValue);
+                // recreate the param pack after translation;
+                paramPack = getParamPack();
                 String variant = writeDataValues(paramPack);
                 if (variant != null && variant.trim().isEmpty()) {
                     return paramPack;
@@ -100,6 +102,8 @@ public class ParameterGenerator {
     private String translatedToPW(String pwKey, Data dataValue) {
         switch (pwKey) {
             case "LineStatus":
+                return dataValue.boolean_.val ? "Open" : "Closed";
+            case "SSStatus":
                 return dataValue.boolean_.val ? "Open" : "Closed";
         }
         return null;
@@ -129,6 +133,12 @@ public class ParameterGenerator {
         }
         paramPack[0] = params;
         paramPack[1] = persistedValues;
+        paramPack[1] = new String[persistedValues.length];
+        int i = 0;
+        for (String persistedValue : persistedValues) {
+            paramPack[1][i]=persistedValue;
+            i++;
+        }
         return paramPack;
     }
 

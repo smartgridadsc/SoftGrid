@@ -30,6 +30,7 @@ import java.util.HashMap;
  * Created by prageeth.g on 22/12/2016.
  */
 public class IEDServerFactory {
+    // todo replace this with the property definitino
     public static SmartPowerIEDServer getIedServer(PWModelDetails pwModelDetails) {
         if (pwModelDetails == null) {
             return null;
@@ -39,18 +40,18 @@ public class IEDServerFactory {
         String reference = new File(pwModelDetails.getSclFileName()).getName().replace(".", "");
         switch (iedType) {
             case BRANCH:
-                reference += "LD1/CSWI1.";
-                stringFcHashMap.put(reference + "Pos.stVal", Fc.ST);
-                stringFcHashMap.put(reference + "Pos.Oper.ctlVal", Fc.CO);
+                reference += "LD1/";
+                stringFcHashMap.put(reference + "CSWI1.Pos.stVal", Fc.ST);
+                stringFcHashMap.put(reference + "CSWI1.Pos.Oper.ctlVal", Fc.CO);
                 break;
             case BUS:
-                reference += "LD1/MMXU1.pwMv.";
-                stringFcHashMap.put(reference + "frequency.f", Fc.MX);
-                stringFcHashMap.put(reference + "BusKVVolt.f", Fc.MX);
+                reference += "LD1/";
+                stringFcHashMap.put(reference + "MMXU1.pwMv.frequency.f", Fc.MX);
+                stringFcHashMap.put(reference + "MMXU1.pwMv.BusKVVolt.f", Fc.MX);
                 break;
             case GENERATOR:
                 reference += "LD1/";
-                stringFcHashMap.put(reference + "ZGEN1.GnCtl.genMW", Fc.CO);
+                stringFcHashMap.put(reference + "MMXU1.pwMv.genMW.f", Fc.MX);
                 stringFcHashMap.put(reference + "CSWI1.Pos.Oper.ctlVal", Fc.CO);
                 stringFcHashMap.put(reference + "CSWI1.Pos.stVal", Fc.ST);
                 break;
@@ -62,8 +63,8 @@ public class IEDServerFactory {
                 break;
             case SHUNT:
                 reference += "LD1/";
-                stringFcHashMap.put(reference + "ARCO1.Oper.setMag.fl", Fc.SP);
-                stringFcHashMap.put(reference + "ARCO1.TapChg.Oper.setMag.f", Fc.SP);
+                stringFcHashMap.put(reference + "CSWI1.Pos.stVal", Fc.ST);
+                stringFcHashMap.put(reference + "CSWI1.Pos.Oper.ctlVal", Fc.CO);
                 break;
             case TRANSFRMER:
                 reference += "LD1/";
