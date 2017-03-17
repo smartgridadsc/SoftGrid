@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SoftGRID.iml" filepath="$PROJECT_DIR$/SoftGRID.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SoftGrid.iml" filepath="$PROJECT_DIR$/SoftGrid.iml" />
     </modules>
   </component>
 </project>
