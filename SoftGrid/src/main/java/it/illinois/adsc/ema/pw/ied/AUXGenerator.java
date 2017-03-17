@@ -28,6 +28,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.illinois.adsc.ema.pw.ied.IedControler.LOG_DATA;
+
 /**
  * Created by prageethmahendra on 17/5/2016.
  */
@@ -44,36 +46,49 @@ public class AUXGenerator implements Runnable {
         File file = new File(ConfigUtil.LIMIT_VIOLATION_CSV_PATH);
         String auxFilePath = file.getAbsolutePath().replace(file.getName(), "");
         if (new File(auxFilePath).exists()) {
-            NEW_AUX_FILE = auxFilePath +"\\"+ NEW_AUX_FILE;
-            AUX_FILE = auxFilePath +"\\resources\\"+ AUX_FILE;
+            NEW_AUX_FILE = auxFilePath + "\\" + NEW_AUX_FILE;
+            AUX_FILE = auxFilePath + "\\resources\\" + AUX_FILE;
         }
     }
 
     @Override
     public void run() {
         clearVioloationCounts();
-        boolean fileCreated = false;
-        while (true) {
-            try {
-                Thread.sleep(8000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            List<String> LOG_DATA = IedControler.LOG_DATA;
-            if (LOG_DATA.size() > 0 || fileCreated) {
-                // run extra empty command aux file to generate additional data ( if in-case)
-                fileCreated = LOG_DATA.size() > 0;
-                IedControler.LOG_DATA = new ArrayList<String>();
-                IedControler.RESET_TIME = true;
-                count++;
-                File oldPWB = new File(NEW_AUX_FILE + (count) % rotation_count + ".PWB");
-                File newPWB = new File(NEW_AUX_FILE + (count + 1) % rotation_count + ".PWB");
-                PWComFactory.getSingletonPWComInstance().saveState();
-                PWComFactory.getSingletonPWComInstance().saveCase(newPWB.getAbsolutePath(), ConfigUtil.CASE_FILE_TYPE, true);
-                if (oldPWB.exists()) {
-                    writeToAux(new File(NEW_AUX_FILE + count % rotation_count + ".aux"), LOG_DATA);
-                    fileCreated = true;
+        do {
+            long spentTime = 0;
+            // Aux files are generated only if there is a control command.
+            // control commands executed within last 8 seconds will be added to the aux file
+            do {
+                try {
+                    Thread.sleep(spentTime += 1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+                if (LOG_DATA.isEmpty()) {
+                    spentTime = 0;
+                }
+            }
+            while (spentTime < 8000);
+            try {
+                generateAuxFile();
+            } catch (Exception e) {
+                System.out.println("Error in generating contingency analysis AUX file.");
+            }
+        } while (true);
+    }
+
+    private void generateAuxFile() {
+        if (LOG_DATA.size() > 0) {
+            // run extra empty command aux file to generate additional data ( if in-case)
+            LOG_DATA = new ArrayList<String>();
+            IedControler.RESET_TIME = true;
+            count++;
+            File oldPWB = new File(NEW_AUX_FILE + (count) % rotation_count + ".PWB");
+            File newPWB = new File(NEW_AUX_FILE + (count + 1) % rotation_count + ".PWB");
+            PWComFactory.getSingletonPWComInstance().saveState();
+            PWComFactory.getSingletonPWComInstance().saveCase(newPWB.getAbsolutePath(), ConfigUtil.CASE_FILE_TYPE, true);
+            if (oldPWB.exists()) {
+                writeToAux(new File(NEW_AUX_FILE + count % rotation_count + ".aux"), LOG_DATA);
             }
         }
     }
