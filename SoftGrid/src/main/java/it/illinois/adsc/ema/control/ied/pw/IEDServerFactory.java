@@ -91,9 +91,13 @@ public class IEDServerFactory {
                 System.out.println("All IED threads Executed");
             } else if (serverType.equals("PRX")) {
                 Collections.sort(iedConfigDetails);
+                String firstIP = null;
                 for (PWModelDetails iedConfigDetail : iedConfigDetails) {
+                    if (firstIP == null) {
+                        firstIP = iedConfigDetail.getIpAddress();
+                    }
                     try {
-                        ProxyClientFactory.startNormalProxy(iedConfigDetail);
+                        ProxyClientFactory.startNormalProxy(iedConfigDetail, firstIP);
                     } catch (ServiceError serviceError) {
                         serviceError.printStackTrace();
                     } catch (IOException e) {
@@ -107,7 +111,7 @@ public class IEDServerFactory {
                     ControlCenterContext controlCenterContext = new ControlCenterContext(consoleInteractive, confFileName);
                     String ipPort = "";
                     for (String s : proxyIpPorts.keySet()) {
-                        ipPort = s+":"+ ConfigUtil.GATEWAY_CC_PORT;
+                        ipPort = s + ":" + ConfigUtil.GATEWAY_CC_PORT;
                     }
                     controlCenterClient = ControlCenterClient.getInstance(controlCenterContext, ipPort);
                     controlCenterClient.startClient();

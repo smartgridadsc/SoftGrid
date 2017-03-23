@@ -71,6 +71,9 @@ public class ConfigReader {
 
     public static void updateConfigUtils(final String keyString, final String value) {
         switch (keyString) {
+            case "MULTI_IP_IED_MODE_ENABLED":
+                ConfigUtil.MULTI_IP_IED_MODE_ENABLED =  value != null && (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("yes"));
+                break;
             case "ConfFile":
                 ConfigUtil.CONFIG_PEROPERTY_FILE = value;
                 break;
