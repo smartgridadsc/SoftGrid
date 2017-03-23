@@ -80,6 +80,19 @@ public class SimpleProxyContext implements ProxyServerContext, ProxyClientContex
                 proxyInformation.setIedId(commonAddress);
             } else {
                 System.out.println("iedClientMap = " + iedClientMap.size());
+                System.out.println("requested Address = " + commonAddress);
+                int count = 0;
+                for (Integer integer : iedClientMap.keySet()) {
+                    count++;
+                    System.out.print(integer + ",");
+                    if(count%25 == 0)
+                    {
+                        System.out.println();
+                        count = 0;
+                    }
+                }
+                System.out.println();
+
                 for (PowerProxyClient proxyClient : getClients(commonAddress)) {
                     List<ProxyInformation> proxyInterrogations = proxyClient.interrogationRequest(commonAddress);
                     if (proxyInterrogations != null) {
