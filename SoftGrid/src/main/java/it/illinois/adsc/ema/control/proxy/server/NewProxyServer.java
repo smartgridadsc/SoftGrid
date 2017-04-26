@@ -34,7 +34,7 @@ import it.illinois.adsc.ema.control.proxy.infor.ProxyInformation;
 import it.illinois.adsc.ema.control.proxy.server.handlers.ICommandHandler;
 import it.illinois.adsc.ema.control.proxy.util.DeviceType;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
-import it.illinois.adsc.ema.softgrid.concenter.ui.ControlCenter;
+import it.illinois.adsc.ema.softgrid.concenter.ui.ControlMonitorWindow;
 import org.openmuc.j60870.*;
 
 import java.io.EOFException;
@@ -294,7 +294,7 @@ public class NewProxyServer implements ServerSapListener, ConnectionEventListene
                 System.out.println("Unable to startProxy listening: \"" + e.getMessage() + "\". Will quit.["
                         + ConfigUtil.GATEWAY_CC_PORT + "]");
             }
-            ControlCenter.getInstance().processAndAddLogMessage("Proxy Gateway Started...!");
+            ControlMonitorWindow.getInstance().processAndAddLogMessage("Proxy Gateway Started...!");
         }
     }
 

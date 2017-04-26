@@ -20,11 +20,11 @@
 */
 package it.illinois.adsc.ema.control.proxy.context;
 
-import it.illinois.adsc.ema.control.proxy.client.PowerProxyClient;
+import it.illinois.adsc.ema.control.proxy.client.ProxyClientAPI;
 
 /**
  * Created by prageethmahendra on 2/2/2016.
  */
 public interface ProxyClientContext {
-    void registerProxyClient(int iedID, PowerProxyClient proxyClient);
+    void registerProxyClient(int iedID, ProxyClientAPI proxyClient);
 }

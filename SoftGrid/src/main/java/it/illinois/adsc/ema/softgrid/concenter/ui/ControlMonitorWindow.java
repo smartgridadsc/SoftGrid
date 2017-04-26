@@ -20,7 +20,7 @@
 */
 package it.illinois.adsc.ema.softgrid.concenter.ui;
 
-import it.illinois.adsc.ema.control.SmartPowerControler;
+import it.illinois.adsc.ema.control.SoftGridController;
 import it.illinois.adsc.ema.control.center.ControlCenterClient;
 import it.illinois.adsc.ema.control.ied.StatusHandler;
 import com.sun.jna.*;
@@ -41,10 +41,10 @@ import java.util.HashMap;
 /**
  * Created by SmartPower on 20/5/2016.
  */
-public class ControlCenter extends JFrame implements ActionListener, ControlCenterGUI, CCControler {
+public class ControlMonitorWindow extends JFrame implements ActionListener, ControlCenterGUI, CCControler {
     private static final String SPMAINFRAME_START_BAT = ".\\spmainframe.bat";
     public static String CONFIG_PEROPERTY_FILE = ".\\config.properties";
-    private static ControlCenter instance;
+    private static ControlMonitorWindow instance;
 
     private JTextField commandText = new JTextField();
     private JTextArea resultArea = new JTextArea();
@@ -72,7 +72,7 @@ public class ControlCenter extends JFrame implements ActionListener, ControlCent
 //  Process proxyProcess = null;
 
 
-    private ControlCenter() throws HeadlessException {
+    private ControlMonitorWindow() throws HeadlessException {
         super("Control Center");
         setupGUI();
     }
@@ -163,9 +163,9 @@ public class ControlCenter extends JFrame implements ActionListener, ControlCent
         deleteLogFiles();
     }
 
-    public static ControlCenter getInstance() {
+    public static ControlMonitorWindow getInstance() {
         if (instance == null) {
-            instance = new ControlCenter();
+            instance = new ControlMonitorWindow();
         }
         return instance;
     }
@@ -394,7 +394,7 @@ public class ControlCenter extends JFrame implements ActionListener, ControlCent
                 controlCenterClient = ControlCenterClient.getInstance(ipPort);
                 if (controlCenterClient == null || controlCenterClient.getConnection() == null ||
                         controlCenterClient.getConnection().isClosed()) {
-                    ControlCenter.getInstance().addLogMessage("Starting Control Center Client...!");
+                    ControlMonitorWindow.getInstance().addLogMessage("Starting Control Center Client...!");
                     File file = new File(CONFIG_PEROPERTY_FILE);
                     if (!file.exists()) {
                         CONFIG_PEROPERTY_FILE = "config\\config.properties";
@@ -404,18 +404,18 @@ public class ControlCenter extends JFrame implements ActionListener, ControlCent
                         }
                     }
                     String[] args = {"-f", CONFIG_PEROPERTY_FILE, "CC", gatewayIP, String.valueOf(port)};
-                    SmartPowerControler.initiate(args);
+                    SoftGridController.initiate(args);
                     controlCenterClient = ControlCenterClient.getInstance(ipPort);
                     controlCenterClient = ControlCenterClient.getInstance(ipPort);
                     if (controlCenterClient.getConnection() != null && !controlCenterClient.getConnection().isClosed()) {
-                        controlCenterClient.setControlCenterGUI(ControlCenter.this);
+                        controlCenterClient.setControlCenterGUI(ControlMonitorWindow.this);
                         ccProxyConnectionMap.put(ipPort, controlCenterClient);
                         try {
                             StatusHandler.statusChanged("CC_STARTED " + ipPort);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        ControlCenter.getInstance().addLogMessage("Control Center Status : CC_STARTED");
+                        ControlMonitorWindow.getInstance().addLogMessage("Control Center Status : CC_STARTED");
                     }
                 }
                 return null;
@@ -445,8 +445,8 @@ public class ControlCenter extends JFrame implements ActionListener, ControlCent
     }
 
     private static void showWindow() {
-        ControlCenter.getInstance().setSize(924, 1024);
-        ControlCenter.getInstance().addWindowListener(new WindowAdapter() {
+        ControlMonitorWindow.getInstance().setSize(924, 1024);
+        ControlMonitorWindow.getInstance().addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 try {
@@ -459,7 +459,7 @@ public class ControlCenter extends JFrame implements ActionListener, ControlCent
 //                System.exit(0);
             }
         });
-        ControlCenter.getInstance().setVisible(true);
+        ControlMonitorWindow.getInstance().setVisible(true);
     }
 
 //    public void startIEDs() {

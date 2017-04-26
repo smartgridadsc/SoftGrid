@@ -258,7 +258,7 @@ public class ConfigGenerator {
                     iedNodeType.setDevice("Branch");
                     iedNodeType.setReference(refPrefix + "LD1/");
                     addBranchKeys(fnameElements, parametersType);
-                    addBranchDatas(parametersType, CIRCUITE_BREAKER);
+                    addDatas(parametersType, CIRCUITE_BREAKER);
                     iedNodeType.setParameters(parametersType);
 //                  iedNodeType.setActive("false");
                     proxyNodeTypes.getIedNode().add(iedNodeType);
@@ -267,8 +267,8 @@ public class ConfigGenerator {
                     iedNodeType.setDevice("Transformer");
                     iedNodeType.setReference(refPrefix + "LD1/");
                     addBranchKeys(fnameElements, parametersType);
-                    addBranchDatas(parametersType, CIRCUITE_BREAKER);
-                    addBranchDatas(parametersType, TRANSFORMER);
+                    addDatas(parametersType, CIRCUITE_BREAKER);
+                    addDatas(parametersType, TRANSFORMER);
                     iedNodeType.setParameters(parametersType);
 //                  iedNodeType.setActive("false");
                     proxyNodeTypes.getIedNode().add(iedNodeType);
@@ -278,7 +278,7 @@ public class ConfigGenerator {
                     iedNodeType.setDevice("Gen");
                     iedNodeType.setReference(refPrefix + "LD1/");
                     addGeneratorKeys(fnameElements, parametersType);
-                    addBranchDatas(parametersType, GENERATOR);
+                    addDatas(parametersType, GENERATOR);
                     iedNodeType.setParameters(parametersType);
 //                  iedNodeType.setActive("false");
                     proxyNodeTypes.getIedNode().add(iedNodeType);
@@ -287,7 +287,7 @@ public class ConfigGenerator {
                     iedNodeType.setDevice("Load");
                     iedNodeType.setReference(refPrefix + "LD1/");
                     addLoadKeys(fnameElements, parametersType);
-                    addBranchDatas(parametersType, LOAD);
+                    addDatas(parametersType, LOAD);
                     iedNodeType.setParameters(parametersType);
 //                  iedNodeType.setActive("false");
                     proxyNodeTypes.getIedNode().add(iedNodeType);
@@ -296,7 +296,7 @@ public class ConfigGenerator {
                     iedNodeType.setDevice("Bus");
                     iedNodeType.setReference(refPrefix + "LD1/");
                     addBusKeys(fnameElements, parametersType);
-                    addBranchDatas(parametersType, BUS);
+                    addDatas(parametersType, BUS);
                     iedNodeType.setParameters(parametersType);
 //                  iedNodeType.setActive("false");
                     proxyNodeTypes.getIedNode().add(iedNodeType);
@@ -305,7 +305,7 @@ public class ConfigGenerator {
                     iedNodeType.setDevice("Shunt");
                     iedNodeType.setReference(refPrefix + "LD1/");
                     addShuntKeys(fnameElements, parametersType);
-                    addBranchDatas(parametersType, SHUNT);
+                    addDatas(parametersType, SHUNT);
                     iedNodeType.setParameters(parametersType);
 //                  iedNodeType.setActive("false");
                     proxyNodeTypes.getIedNode().add(iedNodeType);
@@ -314,7 +314,7 @@ public class ConfigGenerator {
                     iedNodeType.setDevice("PWCaseInformation");
                     iedNodeType.setReference(refPrefix + "LD1/");
 //                  addCaseKeys(fnameElements, parametersType);
-                    addBranchDatas(parametersType, PW_CASE_INFOR);
+                    addDatas(parametersType, PW_CASE_INFOR);
                     iedNodeType.setParameters(parametersType);
 //                  iedNodeType.setActive("false");
                     proxyNodeTypes.getIedNode().add(iedNodeType);
@@ -333,14 +333,14 @@ public class ConfigGenerator {
 //        parametersType.getData().add(dataType);
 //    }
 
-    private static void addBranchDatas(ParametersType parametersType, String type) {
-        DataType dataType = new DataType();
+    private static void addDatas(ParametersType parametersType, String type) {
         String fieldList = iedTypeToFieldMappingProperties.getProperty(type);
         for (String field : fieldList.split(",")) {
+            DataType dataType = new DataType();
             dataType.setPwname(field);
             dataType.setSclName(pwToSclMappingProperties.getProperty(field));
+            parametersType.getData().add(dataType);
         }
-        parametersType.getData().add(dataType);
     }
 
 //    private static void addGeneratorDatas(ParametersType parametersType) {
