@@ -19,7 +19,7 @@ public class DBConnection {
         init();
     }
 
-    public static DBConnection getConnection() {
+    public static synchronized DBConnection getConnection() {
         if (connection == null) {
             connection = new DBConnection();
         }
@@ -31,6 +31,28 @@ public class DBConnection {
         dataSource.setPassword("root");
         dataSource.setDatabaseName("trans_data");
         dataSource.setServerName("localhost");
+        Connection con = null;
+        try {
+            System.out.println("Test sql connection...!");
+            con = dataSource.getConnection();
+            if (con != null) {
+                System.out.println("Connection Successful...!");
+            } else {
+                System.out.println("Error in MySql Connection...!");
+                dataSource = null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            dataSource = null;
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public boolean isStable() {
@@ -41,6 +63,11 @@ public class DBConnection {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
+            synchronized (dataSource) {
+                if (dataSource == null) {
+                    return true;
+                }
+            }
             conn = dataSource.getConnection();
             long curTime = System.currentTimeMillis();
             long end = curTime + 1000;
@@ -69,6 +96,10 @@ public class DBConnection {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
+            if(dataSource == null)
+            {
+                return null;
+            }
             conn = dataSource.getConnection();
             System.out.println(deviceID);
             long curTime = System.currentTimeMillis();
@@ -108,10 +139,14 @@ public class DBConnection {
 
     public static void main(String[] args) {
         while (true) {
-            DataObject dataObjects = DBConnection.getConnection().getDataObject(
-                    48, DeviceType.BUS, StateType.FREQUENCY);
-            System.out.println(dataObjects.toString());
-            System.out.println("Stable=" + DBConnection.getConnection().isStable());
+            try {
+                DataObject dataObjects = DBConnection.getConnection().getDataObject(
+                        48, DeviceType.BUS, StateType.FREQUENCY);
+                System.out.println(dataObjects.toString());
+                System.out.println("Stable=" + DBConnection.getConnection().isStable());
+            } catch (Exception e) {
+                System.out.println("Error in MySQL connection...!");
+            }
             try {
                 Thread.sleep(10000);
             } catch (InterruptedException e) {

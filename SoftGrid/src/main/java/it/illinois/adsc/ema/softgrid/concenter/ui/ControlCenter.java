@@ -405,7 +405,7 @@ public class ControlCenter extends JFrame implements ActionListener, ControlCent
                     }
                     String[] args = {"-f", CONFIG_PEROPERTY_FILE, "CC", gatewayIP, String.valueOf(port)};
                     SmartPowerControler.initiate(args);
-                    controlCenterClient = ControlCenterClient.getInstance(ipPort);
+//                    controlCenterClient = ControlCenterClient.getInstance(ipPort);
                     controlCenterClient = ControlCenterClient.getInstance(ipPort);
                     if (controlCenterClient.getConnection() != null && !controlCenterClient.getConnection().isClosed()) {
                         controlCenterClient.setControlCenterGUI(ControlCenter.this);
