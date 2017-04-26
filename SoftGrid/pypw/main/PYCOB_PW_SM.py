@@ -6,6 +6,8 @@ import csv
 import shutil
 import time
 import datetime
+from datetime import datetime, timedelta
+import mysql_db
 
 csvpath = ""
 resultMainpath = ""
@@ -13,9 +15,11 @@ lib_path = os.path.abspath('..\\pypw')
 sys.path.append(lib_path)
 generate = 1
 summery = 1
-startTime = datetime.datetime.now()
+startTime = datetime.now()
 import pypwconst
 import pypw
+
+
 
 # This method will write the header and data sections to a given file.
 def writeToFile(fileName, Header, Data):
@@ -58,7 +62,7 @@ def processViolationCSV(type):
                                 value = ""
                                 for row in tempReader:
                                     x = time.strptime(row[0], '%S.%f')
-                                    newTime = startTime + datetime.timedelta(seconds=x.tm_sec)
+                                    newTime = startTime + timedelta(seconds=x.tm_sec)
                                     violatedValue = int(float(row[i]) * 100) / 100
                                     # if type is "UOF" and (float(str(row[i])) <= 59.5 or float(str(row[i])) >= 60.5):
                                     #     value = type + "," + str(row[i]) + "," +column +",Time" +"," + row[0]
@@ -102,7 +106,7 @@ def processViolationCSV(type):
                     os.remove(csvpath + filename)
 
 # Initialize basic configurations
-PW_FILE = "%s\\%s" % (os.getcwd(), "..\\..\\casefiles\\37Bus\\GSO_37Bus_dm.PWB")
+PW_FILE = "%s\\%s" % (os.getcwd(), "..\\..\\casefiles\\TempCaseFiles\\GSO_37Bus_dm.PWB")
 loadrank = []
 mainExperimentPath = "%s\\%s" % (os.getcwd(), "..\\..\\auxFile\\")
 logPath = "%s\\%s" % (os.getcwd(), "..\\..\\log\\")
@@ -119,12 +123,16 @@ if (os.path.exists(TEMP_PW_FILE)):
     os.remove(TEMP_PW_FILE)
 shutil.copy(PW_FILE, TEMP_PW_FILE)
 # Scan the mainExperimtnPath and process the transient state changes for commands executed
+start_time = time.time()
 while (1):
+
+    start_time = time.time()
     count = count + 1
     if (not os.path.exists(stateFile)):
         print "Python Exiting...!"
         break
     for dirs in os.listdir(mainExperimentPath):
+
         if (not os.path.exists(stateFile)):
             print "Python Exiting...!"
             break
@@ -139,6 +147,7 @@ while (1):
                 with open(resultPath, "w") as writeFile:
                     print "RESET : " + resultMainpath
             for file in os.listdir(mainExperimentPath + dirName):
+                start_time = time.time()
                 filename = str(file)
                 if filename.find("result") == -1 and \
                                 filename.find("csv") == -1 and \
@@ -146,34 +155,51 @@ while (1):
                                 filename[-3:].find("pwb") == -1 and \
                                 filename[-3:].find("PWB") == -1 and \
                                 filename.find("OPEN_ALL.aux") == -1:
-                    print filename
+                    # print filename
                     # AUX_FILE = "%s\\%s"%(os.getcwd(), mainExperimentPath+dirName+file)
                     AUX_FILE = "%s\\%s" % (mainExperimentPath, dirName + file)
                     TEMP_PW_FILE = AUX_FILE[:-4] + ".PWB"
                     if not os.path.exists(TEMP_PW_FILE):
-                        print "File " + TEMP_PW_FILE + " Does Not Exists...!"
+                        # print "File " + TEMP_PW_FILE + " Does Not Exists...!"
                         break
                     sa.openCaseFile(TEMP_PW_FILE)
-                    print "loading aux file..."
-                    startTime = datetime.datetime.now()
-                    print AUX_FILE
-                    # print sa.ProcessAuxFile(AUX_FILE)
-                    print "runing contingency..."
-                    print sa.runAndPause("OPEN_ALL", "10")
+                    # print "loading aux file..."
+                    startTime = datetime.now()
+                    # print AUX_FILE
+                    start_time = time.time()
+                    sa.processAuxScriptFile(AUX_FILE)
+                    aux_data = open(AUX_FILE, "r")
+                    duration = 60
+                    for line in aux_data:
+                        if "//%DURATION%=" in line:
+                            line.replace("//%DURATION%=", "")
+                            duration = int(60)
+                            break
+
+                    # print "runing contingency..."
+                    start_time = time.time()
+                    sa.ranContingencyAndPause("OPEN_ALL", "60")
+                    print("--- %s seconds ---" % (time.time() - start_time))
+
                     # Get average system frequency
                     # FieldList = ["Bus %d | Frequency" % 1]
                     # get the header and data for the generator fieldlist
                     # Header, Data = sa.TSGetContingencyResults(pypw.TS_DEFAULT_CTG,FieldList, str(Time[i]), str(Time[i+1]))
                     # file = file[:-4]
-                    print "loading Bus frequency data..."
+                    # print "loading Bus frequency data..."
                     FieldList = ["Plot \'BUS_FREQ\'"]
                     Header, Data = sa.getContingencyResults("OPEN_ALL", FieldList)
-                    writeToFile(file + "_BUS_FREQ.csv", Header, Data)
+                    print file + "_BUS_FREQ.csv"
+                    # writeToFile(file + "_BUS_FREQ.csv", Header, Data)
+                    mysql_db.saveData(startTime, Header, Data)
+                    olderTime = startTime - timedelta(seconds=10)
+                    mysql_db.deleteOlderData(olderTime)
+                    #
+                    # print "loading Bus voltage data..."
+                    # FieldList = ["Plot \'BUS_VOLT\'"]
+                    # Header, Data = sa.getContingencyResults("OPEN_ALL", FieldList)
+                    # writeToFile(file + "_BUS_VOLT.csv", Header, Data)
 
-                    print "loading Bus voltage data..."
-                    FieldList = ["Plot \'BUS_VOLT\'"]
-                    Header, Data = sa.getContingencyResults("OPEN_ALL", FieldList)
-                    writeToFile(file + "_BUS_VOLT.csv", Header, Data)
 
                     # print "loading Bus branch MW at To bus data..."
                     # FieldList = ["Plot \'BRANCH_MWTO\'"]
@@ -206,5 +232,6 @@ while (1):
             # processFrequencyCSV("Incomplete")
             # processFrequencyCSV("UnservedLoad")
     # print "new python iteration"
+    # print("--- %s seconds ---" % (time.time() - start_time))
     time.sleep(0.01)
 print "Python process killed...!"

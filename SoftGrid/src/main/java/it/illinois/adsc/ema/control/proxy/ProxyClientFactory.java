@@ -38,33 +38,34 @@ public class ProxyClientFactory {
     private static int startPort = 10003;
 
     public static void startNormalProxy(PWModelDetails modelDetails, String firstIP) throws ServiceError, IOException {
-        if (IEDDataSheetHandler.isProxyConnectionAllowed(modelDetails.getPortNumber())) {
-            if(ConfigUtil.MULTI_IP_IED_MODE_ENABLED) {
-                String[] ipParts = modelDetails.getIpAddress().split("\\.");
-                // each ip part should contain 3 characters. if not "0" will be added to fill the missing characters
-                for (int i = 2; i < 4; i++) {
-                    while (ipParts[i].length() < 3) {
-                        ipParts[i] = "0" + ipParts[i];
-                    }
-                }
-                int iedID = Integer.parseInt("1" + ipParts[2] + ipParts[3]);
-                ipParts = firstIP.split("\\.");
-                for (int i = 2; i < 4; i++) {
-                    while (ipParts[i].length() < 3) {
-                        ipParts[i] = "0" + ipParts[i];
-                    }
-                }
-                int startID = Integer.parseInt("1" + ipParts[2] + ipParts[3]);
-                substationProxyClient = new SubstationProxyClient( iedID - startID );
-            }
-            else
-            {
-                substationProxyClient = new SubstationProxyClient( modelDetails.getPortNumber() - startPort);
+        int startID = startPort;
+        int iedID = modelDetails.getPortNumber();
+
+        if (ConfigUtil.MULTI_IP_IED_MODE_ENABLED) {
+            startID = getIdofIP(firstIP);
+            iedID = getIdofIP(modelDetails.getIpAddress());
+        }
+
+        if (IEDDataSheetHandler.isProxyConnectionAllowed(ConfigUtil.MULTI_IP_IED_MODE_ENABLED ?
+                startPort + (iedID - startID) : modelDetails.getPortNumber())) {
+            if (ConfigUtil.MULTI_IP_IED_MODE_ENABLED) {
+                substationProxyClient = new SubstationProxyClient(iedID - startID);
+            } else {
+                substationProxyClient = new SubstationProxyClient(modelDetails.getPortNumber() - startPort);
             }
             substationProxyClient.init(ProxyType.NORMAL);
             substationProxyClient.startProxy(modelDetails);
-
         }
+    }
+
+    private static int getIdofIP(String firstIP) {
+        String[] ipParts = firstIP.split("\\.");
+        for (int i = 2; i < 4; i++) {
+            while (ipParts[i].length() < 3) {
+                ipParts[i] = "0" + ipParts[i];
+            }
+        }
+        return Integer.parseInt("1" + ipParts[2] + ipParts[3]);
     }
 
 

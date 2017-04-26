@@ -20,7 +20,6 @@
 */
 package it.illinois.adsc.ema.control.conf.generator;
 
-import it.illinois.adsc.ema.control.cid.*;
 import it.illinois.adsc.ema.control.conf.*;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
 
@@ -258,7 +257,7 @@ public class ConfigGenerator {
                     iedNodeType.setDevice("Branch");
                     iedNodeType.setReference(refPrefix + "LD1/");
                     addBranchKeys(fnameElements, parametersType);
-                    addBranchDatas(parametersType, CIRCUITE_BREAKER);
+                    addDatas(parametersType, CIRCUITE_BREAKER);
                     iedNodeType.setParameters(parametersType);
 //                  iedNodeType.setActive("false");
                     proxyNodeTypes.getIedNode().add(iedNodeType);
@@ -267,8 +266,8 @@ public class ConfigGenerator {
                     iedNodeType.setDevice("Transformer");
                     iedNodeType.setReference(refPrefix + "LD1/");
                     addBranchKeys(fnameElements, parametersType);
-                    addBranchDatas(parametersType, CIRCUITE_BREAKER);
-                    addBranchDatas(parametersType, TRANSFORMER);
+                    addDatas(parametersType, CIRCUITE_BREAKER);
+                    addDatas(parametersType, TRANSFORMER);
                     iedNodeType.setParameters(parametersType);
 //                  iedNodeType.setActive("false");
                     proxyNodeTypes.getIedNode().add(iedNodeType);
@@ -278,7 +277,7 @@ public class ConfigGenerator {
                     iedNodeType.setDevice("Gen");
                     iedNodeType.setReference(refPrefix + "LD1/");
                     addGeneratorKeys(fnameElements, parametersType);
-                    addBranchDatas(parametersType, GENERATOR);
+                    addDatas(parametersType, GENERATOR);
                     iedNodeType.setParameters(parametersType);
 //                  iedNodeType.setActive("false");
                     proxyNodeTypes.getIedNode().add(iedNodeType);
@@ -287,7 +286,7 @@ public class ConfigGenerator {
                     iedNodeType.setDevice("Load");
                     iedNodeType.setReference(refPrefix + "LD1/");
                     addLoadKeys(fnameElements, parametersType);
-                    addBranchDatas(parametersType, LOAD);
+                    addDatas(parametersType, LOAD);
                     iedNodeType.setParameters(parametersType);
 //                  iedNodeType.setActive("false");
                     proxyNodeTypes.getIedNode().add(iedNodeType);
@@ -296,7 +295,7 @@ public class ConfigGenerator {
                     iedNodeType.setDevice("Bus");
                     iedNodeType.setReference(refPrefix + "LD1/");
                     addBusKeys(fnameElements, parametersType);
-                    addBranchDatas(parametersType, BUS);
+                    addDatas(parametersType, BUS);
                     iedNodeType.setParameters(parametersType);
 //                  iedNodeType.setActive("false");
                     proxyNodeTypes.getIedNode().add(iedNodeType);
@@ -305,7 +304,7 @@ public class ConfigGenerator {
                     iedNodeType.setDevice("Shunt");
                     iedNodeType.setReference(refPrefix + "LD1/");
                     addShuntKeys(fnameElements, parametersType);
-                    addBranchDatas(parametersType, SHUNT);
+                    addDatas(parametersType, SHUNT);
                     iedNodeType.setParameters(parametersType);
 //                  iedNodeType.setActive("false");
                     proxyNodeTypes.getIedNode().add(iedNodeType);
@@ -314,7 +313,7 @@ public class ConfigGenerator {
                     iedNodeType.setDevice("PWCaseInformation");
                     iedNodeType.setReference(refPrefix + "LD1/");
 //                  addCaseKeys(fnameElements, parametersType);
-                    addBranchDatas(parametersType, PW_CASE_INFOR);
+                    addDatas(parametersType, PW_CASE_INFOR);
                     iedNodeType.setParameters(parametersType);
 //                  iedNodeType.setActive("false");
                     proxyNodeTypes.getIedNode().add(iedNodeType);
@@ -330,24 +329,24 @@ public class ConfigGenerator {
 //        DataType dataType = new DataType();
 //        dataType.setPwname("LineTap");
 //        dataType.setSclName(pwToSclMappingProperties.getProperty("LineTap"));
-//        parametersType.getData().add(dataType);
+//        parametersType.getDataObject().add(dataType);
 //    }
 
-    private static void addBranchDatas(ParametersType parametersType, String type) {
-        DataType dataType = new DataType();
+    private static void addDatas(ParametersType parametersType, String type) {
         String fieldList = iedTypeToFieldMappingProperties.getProperty(type);
         for (String field : fieldList.split(",")) {
+            DataType dataType = new DataType();
             dataType.setPwname(field);
             dataType.setSclName(pwToSclMappingProperties.getProperty(field));
+            parametersType.getData().add(dataType);
         }
-        parametersType.getData().add(dataType);
     }
 
 //    private static void addGeneratorDatas(ParametersType parametersType) {
 //        DataType dataType = new DataType();
 //        dataType.setPwname("GenMW");
 //        dataType.setSclName(pwToSclMappingProperties.getProperty("GenMW"));
-//        parametersType.getData().add(dataType);
+//        parametersType.getDataObject().add(dataType);
 //
 //    }
 //
@@ -355,7 +354,7 @@ public class ConfigGenerator {
 //        DataType dataType = new DataType();
 //        dataType.setPwname("LoadMW");
 //        dataType.setSclName(pwToSclMappingProperties.getProperty("LoadMW"));
-//        parametersType.getData().add(dataType);
+//        parametersType.getDataObject().add(dataType);
 //    }
 //
 //
@@ -363,25 +362,25 @@ public class ConfigGenerator {
 //        DataType dataType = new DataType();
 //        dataType.setPwname("OverloadRank");
 //        dataType.setSclName(pwToSclMappingProperties.getProperty("OverloadRank"));
-//        parametersType.getData().add(dataType);
+//        parametersType.getDataObject().add(dataType);
 //    }
 //
 //    private static void addBusDatas(ParametersType parametersType) {
 //        DataType dataType = new DataType();
 //        dataType.setSclName(pwToSclMappingProperties.getProperty("Frequency"));
 //        dataType.setPwname("Frequency");
-//        parametersType.getData().add(dataType);
+//        parametersType.getDataObject().add(dataType);
 //        dataType = new DataType();
 //        dataType.setSclName(pwToSclMappingProperties.getProperty("BusKVVolt"));
 //        dataType.setPwname("BusKVVolt");
-//        parametersType.getData().add(dataType);
+//        parametersType.getDataObject().add(dataType);
 //    }
 
 //    private static void addShuntDatas(ParametersType parametersType) {
 //        DataType dataType = new DataType();
 //        dataType.setPwname("SSNMVR");
 //        dataType.setSclName(pwToSclMappingProperties.getProperty("SSNMVR"));
-//        parametersType.getData().add(dataType);
+//        parametersType.getDataObject().add(dataType);
 //    }
 
     private static void addBusKeys(String[] fnameElements, ParametersType parametersType) {

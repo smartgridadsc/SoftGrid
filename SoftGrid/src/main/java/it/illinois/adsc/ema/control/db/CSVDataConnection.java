@@ -1,17 +1,11 @@
 package it.illinois.adsc.ema.control.db;
 
-import ch.qos.logback.core.db.dialect.DBUtil;
-import it.illinois.adsc.ema.control.ied.pw.PWModelDetails;
-import it.illinois.adsc.ema.control.proxy.util.DeviceType;
-import org.h2.tools.Csv;
-
-import java.io.IOException;
 import java.sql.*;
-import java.util.Properties;
 
 /**
  * Created by prageethmahendra on 13/4/2017.
  */
+@Deprecated
 public class CSVDataConnection {
     private static final DBType DB_TYPE = DBType.H2;
 
@@ -25,8 +19,8 @@ public class CSVDataConnection {
             Class.forName("org.h2.Driver");
             con = getConnection();
             stmt = con.createStatement();
-            stmt.executeUpdate("DROP TABLE " + H2DBUtil.TRANSIENT_TABLE_NAME);
-            stmt.executeUpdate("CREATE TABLE " + H2DBUtil.TRANSIENT_TABLE_NAME + " ( OBJ_ID INTEGER (50)," +
+            stmt.executeUpdate("DROP TABLE " + MYSQLDBUtil.TRANSIENT_TABLE_NAME);
+            stmt.executeUpdate("CREATE TABLE " + MYSQLDBUtil.TRANSIENT_TABLE_NAME + " ( OBJ_ID INTEGER (50)," +
                     " DEVICE_TYPE NUMBER ," +
                     " STATE_TYPE NUMBER ," +
                     " VALUE_TYPE NUMBER ," +
@@ -63,35 +57,7 @@ public class CSVDataConnection {
         }
     }
 
-    public void go() throws IOException, SQLException {
-        Connection con = null;
-        ResultSet rs = null;
-        System.out.println("Connected to database.");
-        Savepoint savept1 = null;
-        try {
-            con = getConnection();
-            con.setAutoCommit(false);
-            savept1 = con.setSavepoint();
-            Csv csv = new Csv();
-            rs = csv.read("file name", null, "");
-            while (rs.next()) {
-                DataObject dataObject = new DataObject();
-                dataObject.init();
-                dataObject.setObjID(DataObject._getNextID());
-                dataObject.save(con, SavableStatus.INSERT);
-            }
-            con.commit();
-            con.releaseSavepoint(savept1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            if (con != null) {
-                con.rollback(savept1);
-            }
-        } finally {
-            H2DBUtil.closeConnection(con);
-            H2DBUtil.closeResultSet(rs);
-        }
-    }
+
 
     // todo remove this after testing
     public static void main(String[] args) {

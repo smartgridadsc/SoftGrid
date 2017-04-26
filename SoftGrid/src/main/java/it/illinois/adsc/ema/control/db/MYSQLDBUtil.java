@@ -8,7 +8,7 @@ import java.sql.Statement;
 /**
  * Created by prageethmahendra on 13/4/2017.
  */
-public class H2DBUtil {
+public class MYSQLDBUtil {
     public static final String TRANSIENT_TABLE_NAME = "TRANSIENT_DATA";
 
     public static void closeConnection(Connection con)

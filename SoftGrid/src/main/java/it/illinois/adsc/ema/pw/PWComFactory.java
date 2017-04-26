@@ -30,7 +30,7 @@ import it.illinois.adsc.ema.pw.ied.pwcom.PWComAPI;
 public class PWComFactory {
 
     public static PWComAPI getSingletonPWComInstance() {
-        return getSingletonPWComInstance(PWComType.COM4J);
+        return getSingletonPWComInstance(PWComType.DUMMY);
     }
 
     private static PWComAPI getSingletonPWComInstance(PWComType pwcomType) {
@@ -39,6 +39,8 @@ public class PWComFactory {
                 return PWCom_com4j.getInstance();
             case JACOB:
                 return PWCom.getInstance();
+            case DUMMY:
+                return DummyAPI.getInstance();
             default:
                 return null;
         }
