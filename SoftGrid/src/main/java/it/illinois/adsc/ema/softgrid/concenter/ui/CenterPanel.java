@@ -25,6 +25,9 @@ import com.l2fprod.common.propertysheet.Property;
 import com.l2fprod.common.propertysheet.PropertySheetPanel;
 import it.illinois.adsc.ema.softgrid.concenter.Experiment;
 import it.illinois.adsc.ema.softgrid.concenter.MainPanel;
+import it.illinois.adsc.ema.softgrid.concenter.gatewaymap.GatewayMapFactory;
+import it.illinois.adsc.ema.softgrid.concenter.gatewaymap.GatewayType;
+import it.illinois.adsc.ema.softgrid.concenter.gatewaymap.IEDType;
 import it.illinois.adsc.ema.softgrid.concenter.service.ISoftGridService;
 import it.illinois.adsc.ema.softgrid.concenter.service.ServiceFactory;
 import it.illinois.adsc.ema.common.webservice.*;
@@ -41,7 +44,9 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
+
 
 /**
  * Created by prageethmahendra on 30/8/2016.
@@ -125,10 +130,48 @@ public class CenterPanel extends JPanel implements ExperimentListener, PropertyC
         }
     }
 
+    private ArrayList<String> decomposeCommandString(String command) {
+        ArrayList<String> newCommands = new ArrayList<>();
+        String[] tokens = command.trim().split(" ");
+        if (tokens[0].equalsIgnoreCase("INTERROGATION")) {
+            if (tokens[1].contains("-")) {
+                String range[] = tokens[1].split("-");
+                if (range.length == 2) {
+                    for (int i = Integer.parseInt(range[0]); i < Integer.parseInt(range[1]); i++) {
+                        ArrayList<GatewayType> gatewayTypes = GatewayMapFactory.getInstance().loadGatewayMap();
+                        if(gatewayTypes == null || gatewayTypes.isEmpty())
+                        {
+                            break;
+                        }
+                        boolean found = false;
+                        for (GatewayType gatewayType : gatewayTypes) {
+                            found = false;
+                            for (IEDType iedType : gatewayType.getIED()) {
+                                if(iedType.getId().equals(String.valueOf(i))) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if(found)
+                            {
+                                newCommands.add("interrogation " + i + " > " + gatewayType._getSocketString());
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (newCommands.isEmpty()) {
+            newCommands.add(command);
+        }
+        return newCommands;
+    }
+
     private void handleCommand() {
-        final String command = commandFeild.getText().trim();
+        final String coposedCommand = commandFeild.getText().trim();
         boolean scriptCommand = false;
-        if (command.isEmpty()) {
+        if (coposedCommand.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter a valid command...!");
             return;
         }
@@ -137,7 +180,7 @@ public class CenterPanel extends JPanel implements ExperimentListener, PropertyC
             return;
         }
         final Experiment experiment = LeftPanel.getInstance().getSelectedExperiment();
-        if (command.equalsIgnoreCase("run script")) {
+        if (coposedCommand.equalsIgnoreCase("run script")) {
             scriptCommand = true;
         }
 
@@ -145,73 +188,76 @@ public class CenterPanel extends JPanel implements ExperimentListener, PropertyC
         SwingWorker swingWorker = new SwingWorker() {
             @Override
             protected Object doInBackground() throws Exception {
-                try {
-                    int port = ConfigUtil.GATEWAY_CC_PORT;
-                    String ip = ConfigUtil.IP;
-                    if (command.contains(">") && command.split(">").length >= 2) {
-                        try {
-                            ip = command.split(">")[1].trim().split(":")[0].trim();
-                            port = Integer.parseInt(command.split(">")[1].trim().split(":")[1].trim());
-                        } catch (Exception e) {
-                            System.out.println("Invalid Command...!");
-                            e.printStackTrace();
-                            return null;
+                ArrayList<String> decomposedCommands = decomposeCommandString(coposedCommand);
+                for (String command : decomposedCommands) {
+                    try {
+                        int port = ConfigUtil.GATEWAY_CC_PORT;
+                        String ip = ConfigUtil.IP;
+                        if (command.contains(">") && command.split(">").length >= 2) {
+                            try {
+                                ip = command.split(">")[1].trim().split(":")[0].trim();
+                                port = Integer.parseInt(command.split(">")[1].trim().split(":")[1].trim());
+                            } catch (Exception e) {
+                                System.out.println("Invalid Command...!");
+                                e.printStackTrace();
+                                return null;
+                            }
                         }
-                    }
-                    final ISoftGridService softGridService = ServiceFactory.getServiceConnection();
-                    final ExperimentRequest experimentRequest = new ExperimentRequest();
-                    experimentRequest.setEntity("CC");
-                    MainPanel.getInstance().getCenterPanel().logMessage("Checking Control Center Status...!");
-                    experimentRequest.setGatewayPort(port);
-                    experimentRequest.setGatewayIP(ip);
-                    ExperimentStatus experimentStatus = getCCStatus(experimentRequest, true);
-                    if (experimentStatus != ExperimentStatus.STARTED) {
-                        MainPanel.getInstance().getCenterPanel().logMessage("Control Center Status = " + experimentStatus.name());
-                        MainPanel.getInstance().getCenterPanel().logMessage("Starting Control Center...!");
-                        experimentRequest.setExperimentType(ExperimentType.SETUP);
-                        experimentRequest.setServerName("My Service");
-                        ExperimentResponse experimentResponse = softGridService.changeExperimentState(experimentRequest);
-                        MainPanel.getInstance().getCenterPanel().logMessage("experimentResponse = " + experimentResponse);
-                        MainPanel.getInstance().getCenterPanel().logMessage("Starting", false);
-                    }
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            runStatusWorker(experimentRequest, true);
+                        final ISoftGridService softGridService = ServiceFactory.getServiceConnection();
+                        final ExperimentRequest experimentRequest = new ExperimentRequest();
+                        experimentRequest.setEntity("CC");
+                        MainPanel.getInstance().getCenterPanel().logMessage("Checking Control Center Status...!");
+                        experimentRequest.setGatewayPort(port);
+                        experimentRequest.setGatewayIP(ip);
+                        ExperimentStatus experimentStatus = getCCStatus(experimentRequest, true);
+                        if (experimentStatus != ExperimentStatus.STARTED) {
+                            MainPanel.getInstance().getCenterPanel().logMessage("Control Center Status = " + experimentStatus.name());
+                            MainPanel.getInstance().getCenterPanel().logMessage("Starting Control Center...!");
+                            experimentRequest.setExperimentType(ExperimentType.SETUP);
+                            experimentRequest.setServerName("My Service");
+                            ExperimentResponse experimentResponse = softGridService.changeExperimentState(experimentRequest);
+                            MainPanel.getInstance().getCenterPanel().logMessage("experimentResponse = " + experimentResponse);
+                            MainPanel.getInstance().getCenterPanel().logMessage("Starting", false);
                         }
-                    });
-                    int count = 0;
-                    while (!serverStarted) {
-                        count++;
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                runStatusWorker(experimentRequest, true);
+                            }
+                        });
+                        int count = 0;
+                        while (!serverStarted) {
+                            count++;
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e1) {
+                                e1.printStackTrace();
+                            }
+                            if (count == 50) {
+                                break;
+                            }
+                        }
+
+                        if (experiment != null && command.equalsIgnoreCase("run script")) {
+                            MainPanel.getInstance().getCenterPanel().logMessage("Transfering Script File : " + experiment.getScriptFilePath());
+                            TransferResults transferResults = softGridService.transferFile(experiment.getScriptFilePath(), FileType.COMMAND_FILE);
+                        }
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e1) {
                             e1.printStackTrace();
                         }
-                        if (count == 50) {
-                            break;
-                        }
-                    }
+                        experimentRequest.setExperimentType(ExperimentType.RUN);
+                        experimentRequest.setCommand(command);
+                        experimentRequest.setGatewayIP(ip);
+                        experimentRequest.setGatewayPort(port);
+                        ExperimentResponse experimentResponse = softGridService.changeExperimentState(experimentRequest);
+                        MainPanel.getInstance().getCenterPanel().logMessage("Command :" + commandFeild.getText());
+                        MainPanel.getInstance().getCenterPanel().logMessage("Command Executed...!");
 
-                    if (experiment != null && command.equalsIgnoreCase("run script")) {
-                        MainPanel.getInstance().getCenterPanel().logMessage("Transfering Script File : " + experiment.getScriptFilePath());
-                        TransferResults transferResults = softGridService.transferFile(experiment.getScriptFilePath(), FileType.COMMAND_FILE);
-                    }
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e1) {
+                    } catch (Exception e1) {
                         e1.printStackTrace();
                     }
-                    experimentRequest.setExperimentType(ExperimentType.RUN);
-                    experimentRequest.setCommand(command);
-                    experimentRequest.setGatewayIP(ip);
-                    experimentRequest.setGatewayPort(port);
-                    ExperimentResponse experimentResponse = softGridService.changeExperimentState(experimentRequest);
-                    MainPanel.getInstance().getCenterPanel().logMessage("Command :" + commandFeild.getText());
-                    MainPanel.getInstance().getCenterPanel().logMessage("Command Executed...!");
-
-                } catch (Exception e1) {
-                    e1.printStackTrace();
                 }
                 return null;
             }
