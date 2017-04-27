@@ -169,6 +169,18 @@ public class ConfigReader {
             case "ConfigFilePath":
                 ConfigUtil.CONFIG_FILE_PATH = value;
                 break;
+            case "Transient_MYSQL_HOST":
+                ConfigUtil.CONFIG_FILE_PATH = value;
+                break;
+            case "Transient_MYSQL_USERNAME":
+                ConfigUtil.CONFIG_FILE_PATH = value;
+                break;
+            case "Transient_MYSQL_PASSWORD":
+                ConfigUtil.CONFIG_FILE_PATH = value;
+                break;
+            case "GATEWAY_IED_MAPING_FILE":
+                ConfigUtil.GATEWAY_IED_MAPING_FILE = value;
+                break;
         }
 
     }

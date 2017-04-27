@@ -63,6 +63,10 @@ public class ConfigUtil {
     public static int GATEWAY_CC_PORT = -1;
     public static boolean MULTI_IP_IED_MODE_ENABLED = false;
     public static String DEFAULT_IED_PORT = "102";
+    public static String TRANSIENT_MYSQL_HOST = "localhost";
+    public static String TRANSIENT_MYSQL_USERNAME = "root";
+    public static String TRANSIENT_MYSQL_PASSWORD = "root";
+    public static String GATEWAY_IED_MAPING_FILE = "GatewayIEDmap.xml";
 
     public static boolean init() {
         CONFIG_INITIALISED = true;
