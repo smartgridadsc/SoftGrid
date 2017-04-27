@@ -21,6 +21,7 @@
 package it.illinois.adsc.ema.softgrid.monitoring;
 
 import it.illinois.adsc.ema.softgrid.concenter.ui.CCControler;
+import it.illinois.adsc.ema.softgrid.concenter.ui.ControlCenter;
 import it.illinois.adsc.ema.softgrid.monitoring.ui.IEDControler;
 import it.illinois.adsc.ema.softgrid.monitoring.ui.SPMainFrame;
 import it.illinois.adsc.ema.softgrid.concenter.ui.ControlCenter;
