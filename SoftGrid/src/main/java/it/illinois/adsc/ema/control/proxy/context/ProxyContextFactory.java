@@ -20,7 +20,7 @@
 */
 package it.illinois.adsc.ema.control.proxy.context;
 
-import it.illinois.adsc.ema.control.proxy.client.PowerProxyClient;
+import it.illinois.adsc.ema.control.proxy.client.ProxyClientAPI;
 import it.illinois.adsc.ema.control.proxy.server.handlers.ICommandHandler;
 
 /**
@@ -56,7 +56,7 @@ public class ProxyContextFactory {
         return proxyContext;
     }
 
-    public ProxyClientContext getProxyContext(int iedID, PowerProxyClient proxyClient) {
+    public ProxyClientContext getProxyContext(int iedID, ProxyClientAPI proxyClient) {
         if (proxyContext != null) {
             proxyContext.registerProxyClient(iedID, proxyClient);
         }

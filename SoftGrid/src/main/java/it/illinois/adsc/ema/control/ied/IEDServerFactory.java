@@ -31,7 +31,7 @@ import java.util.HashMap;
  */
 public class IEDServerFactory {
     // todo replace this with the property definitino
-    public static SmartPowerIEDServer getIedServer(PWModelDetails pwModelDetails) {
+    public static SoftGridIEDServer getIedServer(PWModelDetails pwModelDetails) {
         if (pwModelDetails == null) {
             return null;
         }
@@ -77,6 +77,6 @@ public class IEDServerFactory {
                 stringFcHashMap.put(reference + "MMXU1.pwMv.overloadRank", Fc.MX);
                 break;
         }
-        return new SmartPowerIEDServer(stringFcHashMap);
+        return new SoftGridIEDServer(stringFcHashMap);
     }
 }

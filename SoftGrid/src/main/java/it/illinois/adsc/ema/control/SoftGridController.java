@@ -23,9 +23,9 @@ package it.illinois.adsc.ema.control;
 
 import it.illinois.adsc.ema.control.center.ControlCenterClient;
 import it.illinois.adsc.ema.control.conf.generator.ConfigGenerator;
-import it.illinois.adsc.ema.control.ied.SmartPowerIEDServer;
+import it.illinois.adsc.ema.control.ied.SoftGridIEDServer;
 import it.illinois.adsc.ema.control.ied.StatusHandler;
-import it.illinois.adsc.ema.control.ied.pw.IEDServerFactory;
+import it.illinois.adsc.ema.control.ied.pw.ModuleFactory;
 import it.illinois.adsc.ema.control.proxy.server.ProxyServer;
 import it.illinois.adsc.ema.pw.ConfigReader;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
@@ -36,7 +36,7 @@ import java.io.*;
 /**
  * Created by prageethmahendra on 3/2/2016.
  */
-public class SmartPowerControler {
+public class SoftGridController {
 
     public static void main(final String[] args) {
         initiate(args);
@@ -69,7 +69,7 @@ public class SmartPowerControler {
             try {
                 ConfigGenerator.generateConfigXml(ConfigUtil.SCL_PATH, ConfigUtil.CONFIG_PEROPERTY_FILE, ConfigUtil.IP);
                 System.out.println("Starting server/client threads...");
-                IEDServerFactory.createAndStartIEDServer(ConfigUtil.CONFIG_PEROPERTY_FILE, ConfigUtil.SERVER_TYPE, ConfigUtil.CC_CONSOLE_INTERACTIVE);
+                ModuleFactory.createAndStartIEDServer(ConfigUtil.CONFIG_PEROPERTY_FILE, ConfigUtil.SERVER_TYPE, ConfigUtil.CC_CONSOLE_INTERACTIVE);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ServiceError e) {
@@ -83,11 +83,11 @@ public class SmartPowerControler {
     }
 
     public static void killAll() {
-        IEDServerFactory.killAll();
+        ModuleFactory.killAll();
     }
 
     public static void setIEDLogEventListener(LogEventListener iedLogEventListener) {
-        SmartPowerIEDServer.setCommonIEDEventListener(iedLogEventListener);
+        SoftGridIEDServer.setCommonIEDEventListener(iedLogEventListener);
     }
 
     public static void setPRXLogEventListener(LogEventListener iedLogEventListener) {
@@ -95,7 +95,7 @@ public class SmartPowerControler {
     }
 
     public static ControlCenterClient getControlCenterClient() {
-        return IEDServerFactory.controlCenterClient;
+        return ModuleFactory.controlCenterClient;
     }
 
 }

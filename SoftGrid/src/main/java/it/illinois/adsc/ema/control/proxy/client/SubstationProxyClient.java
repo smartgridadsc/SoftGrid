@@ -43,7 +43,7 @@ import java.util.List;
 /**
  * @author Prageeth Mahendra
  */
-public class SubstationProxyClient implements ClientEventListener, PowerProxyClient {
+public class SubstationProxyClient implements ClientEventListener, ProxyClientAPI {
     private final static Logger logger = LoggerFactory.getLogger(SubstationProxyClient.class);
     private PWModelDetails modelDetails;
     private static ProxyClientContext proxyClientContext = null;

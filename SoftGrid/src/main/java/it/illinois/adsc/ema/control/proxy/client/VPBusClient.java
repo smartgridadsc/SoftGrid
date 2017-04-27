@@ -32,11 +32,11 @@ import java.util.List;
  * Created by prageethmahendra on 2/3/2016.
  */
 public class VPBusClient {
-    List<PowerProxyClient> powerProxyClients = new ArrayList<PowerProxyClient>();
+    List<ProxyClientAPI> powerProxyClients = new ArrayList<ProxyClientAPI>();
     private static float baseline_frequency = 60;
 
-    public VPBusClient(HashMap<Integer, PowerProxyClient> proxyClientHashMap) {
-        for (PowerProxyClient powerProxyClient : proxyClientHashMap.values()) {
+    public VPBusClient(HashMap<Integer, ProxyClientAPI> proxyClientHashMap) {
+        for (ProxyClientAPI powerProxyClient : proxyClientHashMap.values()) {
             if (powerProxyClient.isConnectedToBus()) {
                 powerProxyClients.add(powerProxyClient);
             }
@@ -46,7 +46,7 @@ public class VPBusClient {
     public List<ProxyInformation> getResults() {
         List<ProxyInformation> proxyInformation = new ArrayList<ProxyInformation>();
         int violationCount = 0;
-        for (PowerProxyClient powerProxyClient : powerProxyClients) {
+        for (ProxyClientAPI powerProxyClient : powerProxyClients) {
             List<ProxyInformation> subInfor = powerProxyClient.interrogationRequest(powerProxyClient.getIedID());
             for (ProxyInformation information : subInfor) {
                 if (information.getParameter() != null && information.getParameter().equalsIgnoreCase("frequency")) {

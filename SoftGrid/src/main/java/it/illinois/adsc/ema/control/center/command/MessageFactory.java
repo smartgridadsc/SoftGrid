@@ -25,7 +25,7 @@ import it.illinois.adsc.ema.control.center.ControlCenterClient;
 import it.illinois.adsc.ema.control.center.ControlCenterClient_Attacker;
 import it.illinois.adsc.ema.control.center.ControlCenterContext;
 import it.illinois.adsc.ema.control.center.experiments.CCMessageCounter;
-import it.illinois.adsc.ema.control.ied.pw.IEDServerFactory;
+import it.illinois.adsc.ema.control.ied.pw.ModuleFactory;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
 import it.illinois.adsc.ema.softgrid.concenter.ui.ControlCenterGUI;
 import org.openmuc.j60870.*;
@@ -93,7 +93,7 @@ public class MessageFactory {
                 try {
                     ControlCenterClient_Attacker.getInstance(new ControlCenterContext(ConfigUtil.CONFIG_PEROPERTY_FILE)).setControlCenterGUI(controlCenterGUI);
                     ControlCenterClient_Attacker.getInstance(null).startClient(
-                            IEDServerFactory.proxyIpPorts,
+                            ModuleFactory.proxyIpPorts,
                             command.getIEDType(),
                             command.getFeild(),
                             command.getValue(),

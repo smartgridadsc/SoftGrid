@@ -23,7 +23,6 @@ package it.illinois.adsc.ema.control.proxy.context;
 import it.illinois.adsc.ema.control.proxy.client.VPBusClient;
 import it.illinois.adsc.ema.control.proxy.util.DeviceType;
 import it.illinois.adsc.ema.control.proxy.client.ProxyClientAPI;
-import it.illinois.adsc.ema.control.proxy.client.ProxyClientAPI;
 import it.illinois.adsc.ema.control.proxy.infor.ProxyInformation;
 import it.illinois.adsc.ema.control.proxy.server.handlers.ICommandHandler;
 

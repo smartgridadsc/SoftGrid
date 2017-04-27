@@ -30,7 +30,7 @@ public class Launcher {
             System.out.println("arg = " + arg);
         }
         try {
-            SmartPowerControler.initiate(args);
+            SoftGridController.initiate(args);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -20,7 +20,7 @@
 */
 package it.illinois.adsc.ema.softgrid.concenter.ui;
 
-import it.illinois.adsc.ema.control.SmartPowerControler;
+import it.illinois.adsc.ema.control.SoftGridController;
 import it.illinois.adsc.ema.control.center.ControlCenterClient;
 import it.illinois.adsc.ema.control.ied.StatusHandler;
 import com.sun.jna.*;
@@ -404,7 +404,7 @@ public class ControlCenter extends JFrame implements ActionListener, ControlCent
                         }
                     }
                     String[] args = {"-f", CONFIG_PEROPERTY_FILE, "CC", gatewayIP, String.valueOf(port)};
-                    SmartPowerControler.initiate(args);
+                    SoftGridController.initiate(args);
 //                    controlCenterClient = ControlCenterClient.getInstance(ipPort);
                     controlCenterClient = ControlCenterClient.getInstance(ipPort);
                     if (controlCenterClient.getConnection() != null && !controlCenterClient.getConnection().isClosed()) {
