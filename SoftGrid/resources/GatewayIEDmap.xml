@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Gied>
+    <Gateway Ip="192.168.0.175" port="2404" id="1">
+        <IED id="1"/>
+        <IED id="2"/>
+        <IED id="3"/>
+        <IED id="4"/>
+        <IED id="5"/>
+        <IED id="6"/>
+        <IED id="7"/>
+    </Gateway>
+</Gied>

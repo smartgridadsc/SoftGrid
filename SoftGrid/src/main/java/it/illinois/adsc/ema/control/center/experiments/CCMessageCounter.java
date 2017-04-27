@@ -66,7 +66,8 @@ public class CCMessageCounter {
         }
 
         if (aSdu != null) {
-            if ("INTERROGATED_BY_STATION".equalsIgnoreCase(aSdu.getCauseOfTransmission().name())){//aSdu.getTypeId().name().equals("M_ST_NA_1") || aSdu.getTypeId().name().startsWith("M_ST")) {
+//            if ("INTERROGATED_BY_STATION".equalsIgnoreCase(aSdu.getCauseOfTransmission().name())){//aSdu.getTypeId().name().equals("M_ST_NA_1") || aSdu.getTypeId().name().startsWith("M_ST")) {
+            if (aSdu.getTypeId().name().equals("M_ME_NC_1")){// || aSdu.getTypeId().name().startsWith("M_ST")) {
 //               synchronized (addressCount) {
 //                   String IOA = String.valueOf(aSdu.getCommonAddress());
 //                   if (addressCount.get(IOA) == null) {

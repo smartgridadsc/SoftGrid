@@ -39,6 +39,8 @@ public class PWComFactory {
                 return PWCom_com4j.getInstance();
             case JACOB:
                 return PWCom.getInstance();
+            case DUMMY:
+                return DummyAPI.getInstance();
             default:
                 return null;
         }

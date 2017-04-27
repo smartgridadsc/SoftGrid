@@ -104,6 +104,11 @@
             <artifactId>jersey-container-grizzly2-http</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.194</version>
+        </dependency>
+        <dependency>
             <groupId>net.sf.jacob-project</groupId>
             <artifactId>jacob</artifactId>
         </dependency>
@@ -119,6 +124,11 @@
         <!--<groupId>org.glassfish.jersey.media</groupId>-->
         <!--<artifactId>jersey-media-moxy</artifactId>-->
         <!--</dependency>-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.6</version>
+        </dependency>
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna-platform</artifactId>

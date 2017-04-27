@@ -24,5 +24,16 @@ package it.illinois.adsc.ema.control.proxy.util;
  * Created by prageethmahendra on 2/2/2016.
  */
 public enum DeviceType {
-    ROOT,CIRCUITE_BREACKER, GENERATOR, TRANSFORMER, SHUNT, BUS, BRANCH, LOAD, MONITOR
+    ROOT(0),CIRCUITE_BREACKER(1), GENERATOR(2), TRANSFORMER(3), SHUNT(4), BUS(5), BRANCH(6), LOAD(7), MONITOR(8);
+
+    int value = 0;
+
+    private DeviceType(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
 }

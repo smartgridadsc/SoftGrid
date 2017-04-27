@@ -20,7 +20,6 @@
 */
 package it.illinois.adsc.ema.control.conf.generator;
 
-import it.illinois.adsc.ema.control.cid.*;
 import it.illinois.adsc.ema.control.conf.*;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
 
@@ -330,7 +329,7 @@ public class ConfigGenerator {
 //        DataType dataType = new DataType();
 //        dataType.setPwname("LineTap");
 //        dataType.setSclName(pwToSclMappingProperties.getProperty("LineTap"));
-//        parametersType.getData().add(dataType);
+//        parametersType.getDataObject().add(dataType);
 //    }
 
     private static void addDatas(ParametersType parametersType, String type) {
@@ -347,7 +346,7 @@ public class ConfigGenerator {
 //        DataType dataType = new DataType();
 //        dataType.setPwname("GenMW");
 //        dataType.setSclName(pwToSclMappingProperties.getProperty("GenMW"));
-//        parametersType.getData().add(dataType);
+//        parametersType.getDataObject().add(dataType);
 //
 //    }
 //
@@ -355,7 +354,7 @@ public class ConfigGenerator {
 //        DataType dataType = new DataType();
 //        dataType.setPwname("LoadMW");
 //        dataType.setSclName(pwToSclMappingProperties.getProperty("LoadMW"));
-//        parametersType.getData().add(dataType);
+//        parametersType.getDataObject().add(dataType);
 //    }
 //
 //
@@ -363,25 +362,25 @@ public class ConfigGenerator {
 //        DataType dataType = new DataType();
 //        dataType.setPwname("OverloadRank");
 //        dataType.setSclName(pwToSclMappingProperties.getProperty("OverloadRank"));
-//        parametersType.getData().add(dataType);
+//        parametersType.getDataObject().add(dataType);
 //    }
 //
 //    private static void addBusDatas(ParametersType parametersType) {
 //        DataType dataType = new DataType();
 //        dataType.setSclName(pwToSclMappingProperties.getProperty("Frequency"));
 //        dataType.setPwname("Frequency");
-//        parametersType.getData().add(dataType);
+//        parametersType.getDataObject().add(dataType);
 //        dataType = new DataType();
 //        dataType.setSclName(pwToSclMappingProperties.getProperty("BusKVVolt"));
 //        dataType.setPwname("BusKVVolt");
-//        parametersType.getData().add(dataType);
+//        parametersType.getDataObject().add(dataType);
 //    }
 
 //    private static void addShuntDatas(ParametersType parametersType) {
 //        DataType dataType = new DataType();
 //        dataType.setPwname("SSNMVR");
 //        dataType.setSclName(pwToSclMappingProperties.getProperty("SSNMVR"));
-//        parametersType.getData().add(dataType);
+//        parametersType.getDataObject().add(dataType);
 //    }
 
     private static void addBusKeys(String[] fnameElements, ParametersType parametersType) {

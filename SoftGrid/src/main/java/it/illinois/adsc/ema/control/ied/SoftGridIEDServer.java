@@ -175,8 +175,13 @@ public class SoftGridIEDServer implements ServerEventListener {
                         e.printStackTrace();
                     }
                 }
+
                 elements = parameterGenerator.loadDataValues(paramPack);
                 if (elements == null) {
+                    if(type.name().equals("BUS"))
+                    {
+                        System.out.println("BUS");
+                    }
                     continue;
                 }
                 sb.append("Type:").append(type.name());

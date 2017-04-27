@@ -34,7 +34,7 @@ public class ConfigReader {
 
     public static Properties getAllProperties(File file) {
         if (file != null && file.exists() && file.isDirectory()) {
-            file = new File(file.getAbsolutePath() + "\\" + defaultConfigFileName);
+            file = new File(file.getAbsolutePath() + File.separator + defaultConfigFileName);
         }
         if (file != null && file.exists()) {
             configFile = file;
