@@ -72,7 +72,7 @@ public class ConfigReader {
     public static void updateConfigUtils(final String keyString, final String value) {
         switch (keyString) {
             case "MULTI_IP_IED_MODE_ENABLED":
-                ConfigUtil.MULTI_IP_IED_MODE_ENABLED =  value != null && (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("yes"));
+                ConfigUtil.MULTI_IP_IED_MODE_ENABLED = value != null && (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("yes"));
                 break;
             case "ConfFile":
                 ConfigUtil.CONFIG_PEROPERTY_FILE = value;
@@ -180,6 +180,19 @@ public class ConfigReader {
                 break;
             case "GATEWAY_IED_MAPING_FILE":
                 ConfigUtil.GATEWAY_IED_MAPING_FILE = value;
+                break;
+            case "PHYSICAL_SIMMULATOR_API":
+                switch (value.trim().toUpperCase()) {
+                    case "POWERWORLD":
+                        ConfigUtil.PHYSICAL_SIMMULATOR_API = PWComType.COM4J;
+                        break;
+                    case "DUMMY":
+                        ConfigUtil.PHYSICAL_SIMMULATOR_API = PWComType.DUMMY;
+                        break;
+                    default:
+                        ConfigUtil.PHYSICAL_SIMMULATOR_API = PWComType.COM4J;
+                        break;
+                }
                 break;
         }
 

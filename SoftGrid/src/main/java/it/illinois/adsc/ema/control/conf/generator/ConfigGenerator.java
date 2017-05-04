@@ -333,12 +333,17 @@ public class ConfigGenerator {
 //    }
 
     private static void addDatas(ParametersType parametersType, String type) {
-        String fieldList = iedTypeToFieldMappingProperties.getProperty(type);
-        for (String field : fieldList.split(",")) {
-            DataType dataType = new DataType();
-            dataType.setPwname(field);
-            dataType.setSclName(pwToSclMappingProperties.getProperty(field));
-            parametersType.getData().add(dataType);
+        try {
+            String fieldList = iedTypeToFieldMappingProperties.getProperty(type);
+            for (String field : fieldList.split(",")) {
+                DataType dataType = new DataType();
+                dataType.setPwname(field);
+                dataType.setSclName(pwToSclMappingProperties.getProperty(field));
+                parametersType.getData().add(dataType);
+            }
+        } catch (Exception e) {
+            System.out.println("Error in loading IED mapping properties...!");
+            e.printStackTrace();
         }
     }
 

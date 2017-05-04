@@ -64,6 +64,7 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
     private ChartPanel chartPanel;
     private XYSeriesCollection dataset = new XYSeriesCollection();
     private JPanel alertPanel = new JPanel();
+    private JPanel transientPanel = new JPanel();
     private JSplitPane splitPane = new JSplitPane();
     private JTabbedPane resultTabbedPane = new JTabbedPane();
     private JTabbedPane mainTabbedPane = new JTabbedPane();
@@ -117,6 +118,10 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
         alertPanel.setMinimumSize(new Dimension(200, 700));
         alertPanel.setMaximumSize(new Dimension(200, 700));
 
+        transientPanel.setPreferredSize(new Dimension(200, 700));
+        transientPanel.setMinimumSize(new Dimension(200, 700));
+        transientPanel.setMaximumSize(new Dimension(200, 700));
+
         queryTextArea.setPreferredSize(new Dimension(300, 100));
         queryTextArea.setMinimumSize(new Dimension(300, 100));
         queryTextArea.setMaximumSize(new Dimension(300, 100));
@@ -142,6 +147,7 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
         runButton.setToolTipText("Initialize the server...!");
 
         alertPanel.setLayout(new VerticalFlowLayout());
+        transientPanel.setLayout(new BorderLayout());
 //      System.out.println("new File(\"../MonitorEngine/Images/execute-xxl.png\").exists() = " + new File("../MonitorEngine/Images/execute-xxl.png").exists());
 //      System.out.println("execute-xxl.png = " + new File("execute-xxl.png").exists());
 //      System.out.println("new File().getAbsolutePath() = " + new File("openmuc.jar").getAbsolutePath());
@@ -164,9 +170,7 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
         newimg = img.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
         icon = new ImageIcon(newimg);
         runButton.setIcon(icon);
-
         altertScrolPane.getViewport().add(alertPanel, null);
-
         altertScrolPane.setBorder(BorderFactory.createEtchedBorder());
         logAreaScrollPane.getViewport().add(logTextArea, null);
         logAreaScrollPane.setBorder(BorderFactory.createEtchedBorder());
