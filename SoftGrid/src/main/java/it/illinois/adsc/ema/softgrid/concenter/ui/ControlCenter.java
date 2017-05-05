@@ -397,7 +397,7 @@ public class ControlCenter extends JFrame implements ActionListener, ControlCent
                     ControlCenter.getInstance().addLogMessage("Starting Control Center Client...!");
                     File file = new File(CONFIG_PEROPERTY_FILE);
                     if (!file.exists()) {
-                        CONFIG_PEROPERTY_FILE = "config\\config.properties";
+                        CONFIG_PEROPERTY_FILE = "config"+File.separator+"config.properties";
                         file = new File(CONFIG_PEROPERTY_FILE);
                         if (!file.exists()) {
                             System.out.println("Control Center config.properties file not found at\n" + file.getAbsolutePath());
