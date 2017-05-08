@@ -255,7 +255,7 @@ public class ServerSap {
 	 *             if any kind of error occures while creating the server socket.
 	 */
 	public void startListening() throws IOException {
-		serverThread = new ServerThread(serverSocketFactory.createServerSocket(port, backlog, bindAddr), settings,
+		serverThread = new ServerThread(serverSocketFactory.createServerSocket(port, backlog, null), settings,
 				maxConnections, connectionListener);
 		serverThread.start();
 	}

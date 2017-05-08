@@ -20,12 +20,9 @@
 */
 package it.illinois.adsc.ema.control.ied;
 
-import it.illinois.adsc.ema.IEDLoggerFactory;
 import it.illinois.adsc.ema.control.LogEventListener;
 import it.illinois.adsc.ema.control.ied.pw.PWModelDetails;
 import it.illinois.adsc.ema.pw.ied.IedControlerFactory;
-import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
-import it.illinois.adsc.ema.softgrid.common.IEDLogFormatter;
 import it.illinois.adsc.ema.softgrid.common.ied.IedControlAPI;
 import it.illinois.adsc.ema.softgrid.common.ied.data.ParameterGenerator;
 import org.apache.log4j.Logger;
@@ -42,7 +39,7 @@ import java.util.List;
  * @author Prageeth Mahendra
  *         This is the IED Server. this server supports only one socket address
  */
-public class SmartPowerIEDServer implements ServerEventListener {
+public class SoftGridIEDServer implements ServerEventListener {
     private static Logger logger = null;
     private static LogEventListener logEventListener = null;
     private ServerSap serverSap = null;
@@ -58,12 +55,12 @@ public class SmartPowerIEDServer implements ServerEventListener {
     private boolean serverStarted = false;
 
 
-    public SmartPowerIEDServer(HashMap<String, Fc> stringFcHashMap) {
+    public SoftGridIEDServer(HashMap<String, Fc> stringFcHashMap) {
         super();
         this.iedRefFcHashMap = stringFcHashMap;
         synchronized (this) {
             if (logger == null) {
-                logger = Logger.getLogger(SmartPowerIEDServer.class);
+                logger = Logger.getLogger(SoftGridIEDServer.class);
             }
         }
     }
@@ -127,7 +124,7 @@ public class SmartPowerIEDServer implements ServerEventListener {
             ServerModel serverModel = serverSap.getModelCopy();
 //          create a SampleServer instance that can be passed as a callback object to startListening() and
 //          SmartPowerIEDServer sampleServer = new SmartPowerIEDServer();
-            SmartPowerIEDServer sampleServer = this;
+            SoftGridIEDServer sampleServer = this;
 //          Open MUC initialization
             List<BasicDataAttribute> branchCircuitBreakerVals = new ArrayList<BasicDataAttribute>(3);
             for (String reference : iedRefFcHashMap.keySet()) {
@@ -178,8 +175,13 @@ public class SmartPowerIEDServer implements ServerEventListener {
                         e.printStackTrace();
                     }
                 }
+
                 elements = parameterGenerator.loadDataValues(paramPack);
                 if (elements == null) {
+                    if(type.name().equals("BUS"))
+                    {
+                        System.out.println("BUS");
+                    }
                     continue;
                 }
                 sb.append("Type:").append(type.name());

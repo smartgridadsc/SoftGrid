@@ -23,6 +23,7 @@ package it.illinois.adsc.ema.control.proxy;
 import it.illinois.adsc.ema.control.IEDDataSheetHandler;
 import it.illinois.adsc.ema.control.ied.pw.PWModelDetails;
 import it.illinois.adsc.ema.control.proxy.client.SubstationProxyClient;
+import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
 import org.openmuc.openiec61850.ServiceError;
 
 import java.io.IOException;
@@ -33,21 +34,40 @@ import java.io.IOException;
 public class ProxyClientFactory {
     private static int proxyClientAddressCount = 1;
     private static SubstationProxyClient substationProxyClient = null;
+    // todo this is a hardcoden port number
+    private static int startPort = 10003;
 
-    public static void startNormalProxy(PWModelDetails modelDetails) throws ServiceError, IOException {
-        if (IEDDataSheetHandler.isProxyConnectionAllowed(modelDetails.getPortNumber())) {
-            substationProxyClient = new SubstationProxyClient(modelDetails.getPortNumber() - 10003);
+    public static void startNormalProxy(PWModelDetails modelDetails, String firstIP) throws ServiceError, IOException {
+        int startID = startPort;
+        int iedID = modelDetails.getPortNumber();
+
+        if (ConfigUtil.MULTI_IP_IED_MODE_ENABLED) {
+            startID = getIdofIP(firstIP);
+            iedID = getIdofIP(modelDetails.getIpAddress());
+        }
+
+        if (IEDDataSheetHandler.isProxyConnectionAllowed(ConfigUtil.MULTI_IP_IED_MODE_ENABLED ?
+                startPort + (iedID - startID) : modelDetails.getPortNumber())) {
+            if (ConfigUtil.MULTI_IP_IED_MODE_ENABLED) {
+                substationProxyClient = new SubstationProxyClient(iedID - startID);
+            } else {
+                substationProxyClient = new SubstationProxyClient(modelDetails.getPortNumber() - startPort);
+            }
             substationProxyClient.init(ProxyType.NORMAL);
             substationProxyClient.startProxy(modelDetails);
         }
     }
 
-    public static void startSecurityEnabledProxy(PWModelDetails modelDetails) throws ServiceError, IOException {
-        substationProxyClient = new SubstationProxyClient(modelDetails.getPortNumber() - 10003);
-        substationProxyClient.init(ProxyType.SECURITY_ENABLED);
-
-        substationProxyClient.startProxy(modelDetails);
+    private static int getIdofIP(String firstIP) {
+        String[] ipParts = firstIP.split("\\.");
+        for (int i = 2; i < 4; i++) {
+            while (ipParts[i].length() < 3) {
+                ipParts[i] = "0" + ipParts[i];
+            }
+        }
+        return Integer.parseInt("1" + ipParts[2] + ipParts[3]);
     }
+
 
     public static void killAll() {
         if (substationProxyClient != null) {

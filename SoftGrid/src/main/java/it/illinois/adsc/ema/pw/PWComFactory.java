@@ -23,6 +23,7 @@ package it.illinois.adsc.ema.pw;
 import it.illinois.adsc.ema.pw.com4j.PWCom_com4j;
 import it.illinois.adsc.ema.pw.ied.pwcom.PWCom;
 import it.illinois.adsc.ema.pw.ied.pwcom.PWComAPI;
+import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
 
 /**
  * Created by prageethmahendra on 9/6/2016.
@@ -30,7 +31,7 @@ import it.illinois.adsc.ema.pw.ied.pwcom.PWComAPI;
 public class PWComFactory {
 
     public static PWComAPI getSingletonPWComInstance() {
-        return getSingletonPWComInstance(PWComType.COM4J);
+        return getSingletonPWComInstance(ConfigUtil.PHYSICAL_SIMMULATOR_API);
     }
 
     private static PWComAPI getSingletonPWComInstance(PWComType pwcomType) {
@@ -39,6 +40,8 @@ public class PWComFactory {
                 return PWCom_com4j.getInstance();
             case JACOB:
                 return PWCom.getInstance();
+            case DUMMY:
+                return DummyAPI.getInstance();
             default:
                 return null;
         }

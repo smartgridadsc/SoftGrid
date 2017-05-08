@@ -20,12 +20,11 @@
 */
 package it.illinois.adsc.ema.control.center.command;
 
-import it.illinois.adsc.ema.control.center.CCTimeLoger;
 import it.illinois.adsc.ema.control.center.ControlCenterClient;
 import it.illinois.adsc.ema.control.center.ControlCenterClient_Attacker;
 import it.illinois.adsc.ema.control.center.ControlCenterContext;
 import it.illinois.adsc.ema.control.center.experiments.CCMessageCounter;
-import it.illinois.adsc.ema.control.ied.pw.IEDServerFactory;
+import it.illinois.adsc.ema.control.ied.pw.ModuleFactory;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
 import it.illinois.adsc.ema.softgrid.concenter.ui.ControlCenterGUI;
 import org.openmuc.j60870.*;
@@ -50,7 +49,6 @@ public class MessageFactory {
         }
         switch (command.getCommandType()) {
             case INTERROGATION:
-                CCTimeLoger.resetStartTime("interrogation");
 //                clientConnection.interrogation(command.getSubtationAddressSpace(),
 //                        CauseOfTransmission.ACTIVATION,
 //                        new IeQualifierOfInterrogation(20));
@@ -60,7 +58,6 @@ public class MessageFactory {
                                 new InformationElement[][]{{new IeQualifierOfInterrogation(20)}})});
                 break;
             case SINGLE_COMMAND:
-                CCTimeLoger.resetStartTime("singleCommand");
 //                clientConnection.singleCommand(command.getSubtationAddressSpace(),
 //                        command.getObjectAddress(),
 //                        new IeSingleCommand(getValue(command), command.getFeildQualifier(), true));
@@ -77,7 +74,6 @@ public class MessageFactory {
                                 new InformationElement[][]{{singleCommand}})});
                 break;
             case SET_SHORT_FLOAT:
-                CCTimeLoger.resetStartTime("set short float command");
 //                clientConnection.setShortFloatCommand(command.getSubtationAddressSpace(),
 //                        CauseOfTransmission.REQUEST, command.getObjectAddress(),
 //                        new IeShortFloat(Float.parseFloat(command.getValue())),
@@ -89,11 +85,10 @@ public class MessageFactory {
                                         new IeQualifierOfSetPointCommand(command.getFeildQualifier(), true)}})});
                 break;
             case ATTACK:
-                CCTimeLoger.resetStartTime("executeWithDelay Attack Command");
                 try {
                     ControlCenterClient_Attacker.getInstance(new ControlCenterContext(ConfigUtil.CONFIG_PEROPERTY_FILE)).setControlCenterGUI(controlCenterGUI);
                     ControlCenterClient_Attacker.getInstance(null).startClient(
-                            IEDServerFactory.proxyIpPorts,
+                            ModuleFactory.proxyIpPorts,
                             command.getIEDType(),
                             command.getFeild(),
                             command.getValue(),
@@ -103,7 +98,6 @@ public class MessageFactory {
                 }
                 break;
             case CANCEL:
-                CCTimeLoger.resetStartTime("Cancel All the Commands in the queue");
                 try {
 //                    clientConnection.resetProcessCommand(command.getSubtationAddressSpace(),
 //                            new IeQualifierOfResetProcessCommand(command.getSubtationAddressSpace()));

@@ -22,6 +22,7 @@ package it.illinois.adsc.ema.softgrid.concenter;
 
 import it.illinois.adsc.ema.softgrid.concenter.config.ExpConfigManager;
 
+import java.io.File;
 import java.util.Properties;
 
 /**
@@ -51,7 +52,7 @@ public class Experiment {
     }
 
     public String getConfigFilePath() {
-        return configPath + "\\config.properties";
+        return configPath + File.separator +"config.properties";
     }
 
     public void setConfigPath(String configPath) {
@@ -64,15 +65,15 @@ public class Experiment {
     }
 
     public String getScriptFilePath() {
-        return configPath + "\\" + properties.get(ExpConfigManager.CONFIG_CMD_FILE_PATH);
+        return configPath + File.separator + properties.get(ExpConfigManager.CONFIG_CMD_FILE_PATH);
     }
 
     public String getDownloadPath() {
-        return configPath + "\\logs_downloaded\\";
+        return configPath + File.separator + "logs_downloaded" + File.separator;
     }
 
     public String getCaseFilePath() {
-        return configPath + "\\" + properties.getProperty(ExpConfigManager.CONFIG_CASE_FILE);
+        return configPath + File.separator + properties.getProperty(ExpConfigManager.CONFIG_CASE_FILE);
     }
 
     public void setProperties(Properties properties) {

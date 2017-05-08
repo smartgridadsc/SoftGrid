@@ -21,14 +21,14 @@
 
 package it.illinois.adsc.ema.pw.ied;
 
+import it.illinois.adsc.ema.control.db.*;
+import it.illinois.adsc.ema.control.proxy.util.DeviceType;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
 import it.illinois.adsc.ema.pw.PWComFactory;
 import it.illinois.adsc.ema.pw.ied.pwcom.PWComAPI;
-import it.illinois.adsc.ema.pw.log.PWLogFormatter;
 import it.illinois.adsc.ema.softgrid.common.ied.IedControlAPI;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,9 +42,11 @@ public class IedControler implements IedControlAPI {
     private static Logger logger = null;
     private static HashMap<Long, List<String>> logDataMap = new HashMap<Long, List<String>>();
     public static List<String> LOG_DATA = new ArrayList<String>();
+    public static List<String> OLD_LOG_DATA = new ArrayList<String>();
     private PWComAPI pwComBridge;
-    private static long START_TIME = System.currentTimeMillis();
-    public static boolean RESET_TIME = false;
+    private DBAPI dbapi;
+    public static long START_TIME = System.currentTimeMillis();
+    public static boolean RESTART_TIMER = false;
     boolean closed = false;
 
     private IedControler() {
@@ -55,6 +57,7 @@ public class IedControler implements IedControlAPI {
     public void init() {
         if (pwComBridge == null) {
             pwComBridge = PWComFactory.getSingletonPWComInstance();
+            dbapi = TransientController.getInstance();
             logger = Logger.getLogger(IedControler.class);
             closed = false;
         }
@@ -73,12 +76,9 @@ public class IedControler implements IedControlAPI {
     }
 
     private void log(String objectType, String[] paramList, String[] valueList) {
-        synchronized (this) {
-            if (RESET_TIME) {
-                START_TIME = System.currentTimeMillis();
-                logDataMap.put(START_TIME, LOG_DATA = new ArrayList<String>());
-                RESET_TIME = false;
-            }
+        if (RESTART_TIMER) {
+            logDataMap.put(START_TIME, LOG_DATA = new ArrayList<String>());
+            RESTART_TIMER = false;
         }
         long time = System.currentTimeMillis() - START_TIME;
         double seconds = ((double) time) / 1000.00;
@@ -99,6 +99,7 @@ public class IedControler implements IedControlAPI {
         String command = sb.toString();
         LOG_DATA.add(command);
         logger.info(command);
+        AUXGenerator.startThread();
     }
 
     private String[] getKeyList(String objectType) {
@@ -162,7 +163,12 @@ public class IedControler implements IedControlAPI {
     public String[] getParametersSingleElement(String objectType, String[] paramList, String[] values) {
         String[] result = null;
         if (!closed) {
+            // get data from com interface
             result = pwComBridge.getParametersSingleElement(objectType, paramList, values);
+            if(result != null && result.length == paramList.length) {
+                // get data from the database
+                result = dbapi.getParametersSingleElement(objectType, paramList, result);
+            }
             return result;
         } else {
             String[] closed = {"Closed"};

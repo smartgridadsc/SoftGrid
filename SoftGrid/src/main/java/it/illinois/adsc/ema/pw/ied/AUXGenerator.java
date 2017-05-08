@@ -20,13 +20,17 @@
 */
 package it.illinois.adsc.ema.pw.ied;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
+import com.alee.utils.FileUtils;
+import it.illinois.adsc.ema.control.db.DBConnection;
 import it.illinois.adsc.ema.pw.PWComFactory;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static it.illinois.adsc.ema.pw.ied.IedControler.LOG_DATA;
+import static it.illinois.adsc.ema.pw.ied.IedControler.OLD_LOG_DATA;
 
 /**
  * Created by prageethmahendra on 17/5/2016.
@@ -44,36 +48,66 @@ public class AUXGenerator implements Runnable {
         File file = new File(ConfigUtil.LIMIT_VIOLATION_CSV_PATH);
         String auxFilePath = file.getAbsolutePath().replace(file.getName(), "");
         if (new File(auxFilePath).exists()) {
-            NEW_AUX_FILE = auxFilePath +"\\"+ NEW_AUX_FILE;
-            AUX_FILE = auxFilePath +"\\resources\\"+ AUX_FILE;
+            NEW_AUX_FILE = auxFilePath + "\\" + NEW_AUX_FILE;
+            AUX_FILE = auxFilePath + "\\resources\\" + AUX_FILE;
         }
     }
 
     @Override
     public void run() {
         clearVioloationCounts();
-        boolean fileCreated = false;
-        while (true) {
+        do {
+            long spentTime = 0;
+            // Aux files are generated only if there is a control command.
+            // control commands executed within last 8 seconds will be added to the aux file
+//            do {
             try {
-                Thread.sleep(8000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            List<String> LOG_DATA = IedControler.LOG_DATA;
-            if (LOG_DATA.size() > 0 || fileCreated) {
-                // run extra empty command aux file to generate additional data ( if in-case)
-                fileCreated = LOG_DATA.size() > 0;
-                IedControler.LOG_DATA = new ArrayList<String>();
-                IedControler.RESET_TIME = true;
-                count++;
-                File oldPWB = new File(NEW_AUX_FILE + (count) % rotation_count + ".PWB");
-                File newPWB = new File(NEW_AUX_FILE + (count + 1) % rotation_count + ".PWB");
+            if (LOG_DATA.isEmpty()) {
+//                    spentTime = 0;
+                continue;
+            }
+//            }
+//            while (spentTime < 8000);
+            try {
+                generateAuxFile(DBConnection.getConnection().isStable());
+            } catch (Exception e) {
+                System.out.println("Error in generating contingency analysis AUX file.");
+            }
+        } while (true);
+    }
+
+    private void generateAuxFile(boolean caseFileReset) {
+        if (LOG_DATA.size() > 0) {
+            // run extra empty command aux file to generate additional data ( if in-case)
+            OLD_LOG_DATA.addAll(LOG_DATA);
+            LOG_DATA = new ArrayList<String>();
+            count++;
+            File oldPWB = new File(NEW_AUX_FILE + (count) % rotation_count + ".PWB");
+            File newPWB = new File(NEW_AUX_FILE + (count + 1) % rotation_count + ".PWB");
+            long duration = 60 + System.currentTimeMillis()/1000 - IedControler.START_TIME/1000;
+            if (caseFileReset) {
+                IedControler.RESTART_TIMER = true;
+                IedControler.START_TIME = System.currentTimeMillis();
+                duration = 60 + System.currentTimeMillis()/1000 - IedControler.START_TIME/1000;
                 PWComFactory.getSingletonPWComInstance().saveState();
                 PWComFactory.getSingletonPWComInstance().saveCase(newPWB.getAbsolutePath(), ConfigUtil.CASE_FILE_TYPE, true);
-                if (oldPWB.exists()) {
-                    writeToAux(new File(NEW_AUX_FILE + count % rotation_count + ".aux"), LOG_DATA);
-                    fileCreated = true;
-                }
+            } else {
+                FileUtils.copyFile(oldPWB, newPWB);
+            }
+            if(duration > 60)
+            {
+                System.out.println("proceeding...!");
+            }
+            if (oldPWB.exists()) {
+                writeToAux(new File(NEW_AUX_FILE + count % rotation_count + ".aux"), OLD_LOG_DATA, duration);
+            }
+            if (caseFileReset) {
+                OLD_LOG_DATA = new ArrayList<>();
+                caseFileReset = false;
             }
         }
     }
@@ -92,7 +126,7 @@ public class AUXGenerator implements Runnable {
         }
     }
 
-    private void writeToAux(File auxFile, List<String> log_data) {
+    private void writeToAux(File auxFile, List<String> log_data, long duration) {
         File templateFile = new File(AUX_FILE);
         try {
             auxFile.createNewFile();
@@ -105,6 +139,10 @@ public class AUXGenerator implements Runnable {
                 BufferedReader reader = new BufferedReader(new FileReader(templateFile));
                 String line;
                 while ((line = reader.readLine()) != null) {
+                    if(line.contains("<$DURATION$>"))
+                    {
+                        line = line.replace("<$DURATION$>", String.valueOf(duration) + ".0");
+                    }
                     if (line.equals("<$OPEN_ALL$>")) {
                         break;
                     }

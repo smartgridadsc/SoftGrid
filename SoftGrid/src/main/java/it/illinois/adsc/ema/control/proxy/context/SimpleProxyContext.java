@@ -22,7 +22,7 @@ package it.illinois.adsc.ema.control.proxy.context;
 
 import it.illinois.adsc.ema.control.proxy.client.VPBusClient;
 import it.illinois.adsc.ema.control.proxy.util.DeviceType;
-import it.illinois.adsc.ema.control.proxy.client.PowerProxyClient;
+import it.illinois.adsc.ema.control.proxy.client.ProxyClientAPI;
 import it.illinois.adsc.ema.control.proxy.infor.ProxyInformation;
 import it.illinois.adsc.ema.control.proxy.server.handlers.ICommandHandler;
 
@@ -35,8 +35,8 @@ import java.util.List;
  */
 public class SimpleProxyContext implements ProxyServerContext, ProxyClientContext {
     private ICommandHandler icommandHandler = null;
-    private PowerProxyClient powerProxyClient = null;
-    private HashMap<Integer, PowerProxyClient> iedClientMap = new HashMap<Integer, PowerProxyClient>();
+    private ProxyClientAPI powerProxyClient = null;
+    private HashMap<Integer, ProxyClientAPI> iedClientMap = new HashMap<Integer, ProxyClientAPI>();
 
     // This method will register the proxyserver and keep its reference to maintain the bridge
     @Override
@@ -45,7 +45,7 @@ public class SimpleProxyContext implements ProxyServerContext, ProxyClientContex
     }
 
     @Override
-    public void registerProxyClient(int iedID, PowerProxyClient proxyClient) {
+    public void registerProxyClient(int iedID, ProxyClientAPI proxyClient) {
         iedClientMap.put(iedID, proxyClient);
     }
 
@@ -57,7 +57,7 @@ public class SimpleProxyContext implements ProxyServerContext, ProxyClientContex
     @Override
     public boolean handleControlCommand(int iedID, int qualifier, Object valueObject) {
         boolean result = true;
-        for (PowerProxyClient proxyClient : getClients(iedID)) {
+        for (ProxyClientAPI proxyClient : getClients(iedID)) {
             result = proxyClient.handleControlCommand(qualifier, valueObject) && result;
         }
         return result;
@@ -75,12 +75,28 @@ public class SimpleProxyContext implements ProxyServerContext, ProxyClientContex
             if (commonAddress == 65534) {
                 // vertual IED address
                 VPBusClient vpBusClient = getVirtualClient(commonAddress);
-                List<ProxyInformation> proxyInterrogations  = vpBusClient.getResults();
+                List<ProxyInformation> proxyInterrogations = vpBusClient.getResults();
                 proxyInformation.getDeviceInfor().addAll(proxyInterrogations);
                 proxyInformation.setIedId(commonAddress);
             } else {
-                System.out.println("iedClientMap = " + iedClientMap.size());
-                for (PowerProxyClient proxyClient : getClients(commonAddress)) {
+                System.out.println("iedClientMap Count = " + iedClientMap.size());
+                List<ProxyClientAPI> proxyClients = getClients(commonAddress);
+                System.out.println("requested Address = " + commonAddress + (proxyClients.size() > 0 ? " Valid" : " Invalid"));
+                if (proxyClients.isEmpty()) {
+                    System.out.print("Valied IED ID list : ");
+                    int count = 0;
+                    for (Integer integer : iedClientMap.keySet()) {
+                        count++;
+                        System.out.print(integer + ",");
+                        if (count % 25 == 0) {
+                            System.out.println();
+                            count = 0;
+                        }
+                    }
+                    System.out.println();
+                }
+
+                for (ProxyClientAPI proxyClient : proxyClients) {
                     List<ProxyInformation> proxyInterrogations = proxyClient.interrogationRequest(commonAddress);
                     if (proxyInterrogations != null) {
                         for (ProxyInformation proxyInterrogation : proxyInterrogations) {
@@ -89,9 +105,7 @@ public class SimpleProxyContext implements ProxyServerContext, ProxyClientContex
                         }
                         proxyInformation.getDeviceInfor().addAll(proxyInterrogations);
                         proxyInformation.setIedId(commonAddress);
-                    }
-                    else
-                    {
+                    } else {
                         System.out.println("proxyInterrogations = " + proxyInterrogations);
                     }
                 }
@@ -100,13 +114,13 @@ public class SimpleProxyContext implements ProxyServerContext, ProxyClientContex
         }
     }
 
-    private List<PowerProxyClient> getClients(int addresses) {
-        List<PowerProxyClient> powerProxyClients = new ArrayList<PowerProxyClient>();
+    private List<ProxyClientAPI> getClients(int addresses) {
+        List<ProxyClientAPI> powerProxyClients = new ArrayList<ProxyClientAPI>();
         if (iedClientMap != null) {
 //            int count = 0;
             for (Integer ied : iedClientMap.keySet()) {
-                if ( addresses != 65535) {
-                    PowerProxyClient powerProxyClient = iedClientMap.get(addresses);
+                if (addresses != 65535) {
+                    ProxyClientAPI powerProxyClient = iedClientMap.get(addresses);
                     if (powerProxyClient != null) {
                         powerProxyClients.add(powerProxyClient);
                         break;

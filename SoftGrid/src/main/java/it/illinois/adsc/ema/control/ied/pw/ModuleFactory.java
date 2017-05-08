@@ -36,7 +36,7 @@ import java.util.*;
 /**
  * Created by prageethmahendra on 15/2/2016.n
  */
-public class IEDServerFactory {
+public class ModuleFactory {
     final static List<IEDWorkerThread> iedWorkerThreads = new ArrayList<IEDWorkerThread>();
     public static final HashMap<String, Integer> proxyIpPorts = new HashMap<String, Integer>();
     public static ControlCenterClient controlCenterClient = null;
@@ -91,9 +91,13 @@ public class IEDServerFactory {
                 System.out.println("All IED threads Executed");
             } else if (serverType.equals("PRX")) {
                 Collections.sort(iedConfigDetails);
+                String firstIP = null;
                 for (PWModelDetails iedConfigDetail : iedConfigDetails) {
+                    if (firstIP == null) {
+                        firstIP = iedConfigDetail.getIpAddress();
+                    }
                     try {
-                        ProxyClientFactory.startNormalProxy(iedConfigDetail);
+                        ProxyClientFactory.startNormalProxy(iedConfigDetail, firstIP);
                     } catch (ServiceError serviceError) {
                         serviceError.printStackTrace();
                     } catch (IOException e) {
@@ -107,7 +111,7 @@ public class IEDServerFactory {
                     ControlCenterContext controlCenterContext = new ControlCenterContext(consoleInteractive, confFileName);
                     String ipPort = "";
                     for (String s : proxyIpPorts.keySet()) {
-                        ipPort = s+":"+ ConfigUtil.GATEWAY_CC_PORT;
+                        ipPort = s + ":" + ConfigUtil.GATEWAY_CC_PORT;
                     }
                     controlCenterClient = ControlCenterClient.getInstance(controlCenterContext, ipPort);
                     controlCenterClient.startClient();

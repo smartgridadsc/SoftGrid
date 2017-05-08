@@ -32,7 +32,7 @@ import java.util.Map;
 public class IEDWorkerThread implements Runnable, Comparable {
 
     private PWModelDetails pwModelDetails;
-    private SmartPowerIEDServer smartPowerIEDServer = null;
+    private SoftGridIEDServer smartPowerIEDServer = null;
 
     public IEDWorkerThread(PWModelDetails s) {
         this.pwModelDetails = s;
@@ -59,7 +59,7 @@ public class IEDWorkerThread implements Runnable, Comparable {
         }
     }
 
-    public SmartPowerIEDServer getSmartPowerIEDServer() {
+    public SoftGridIEDServer getSmartPowerIEDServer() {
         return smartPowerIEDServer;
     }
 

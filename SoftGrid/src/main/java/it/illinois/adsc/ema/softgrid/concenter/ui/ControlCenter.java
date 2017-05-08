@@ -20,7 +20,7 @@
 */
 package it.illinois.adsc.ema.softgrid.concenter.ui;
 
-import it.illinois.adsc.ema.control.SmartPowerControler;
+import it.illinois.adsc.ema.control.SoftGridController;
 import it.illinois.adsc.ema.control.center.ControlCenterClient;
 import it.illinois.adsc.ema.control.ied.StatusHandler;
 import com.sun.jna.*;
@@ -397,15 +397,15 @@ public class ControlCenter extends JFrame implements ActionListener, ControlCent
                     ControlCenter.getInstance().addLogMessage("Starting Control Center Client...!");
                     File file = new File(CONFIG_PEROPERTY_FILE);
                     if (!file.exists()) {
-                        CONFIG_PEROPERTY_FILE = "config\\config.properties";
+                        CONFIG_PEROPERTY_FILE = "config"+File.separator+"config.properties";
                         file = new File(CONFIG_PEROPERTY_FILE);
                         if (!file.exists()) {
                             System.out.println("Control Center config.properties file not found at\n" + file.getAbsolutePath());
                         }
                     }
                     String[] args = {"-f", CONFIG_PEROPERTY_FILE, "CC", gatewayIP, String.valueOf(port)};
-                    SmartPowerControler.initiate(args);
-                    controlCenterClient = ControlCenterClient.getInstance(ipPort);
+                    SoftGridController.initiate(args);
+//                    controlCenterClient = ControlCenterClient.getInstance(ipPort);
                     controlCenterClient = ControlCenterClient.getInstance(ipPort);
                     if (controlCenterClient.getConnection() != null && !controlCenterClient.getConnection().isClosed()) {
                         controlCenterClient.setControlCenterGUI(ControlCenter.this);

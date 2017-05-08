@@ -27,7 +27,7 @@ import it.illinois.adsc.ema.control.LogEventListener;
 import it.illinois.adsc.ema.softgrid.monitoring.ui.config.ConfigPanel;
 import it.illinois.adsc.ema.softgrid.monitoring.ui.alerts.MainAlert;
 import it.illinois.adsc.ema.softgrid.monitoring.ui.message.MessageUIHandler;
-import it.illinois.adsc.ema.control.SmartPowerControler;
+import it.illinois.adsc.ema.control.SoftGridController;
 import it.illinois.adsc.scl.SclGenerator;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
 import org.jfree.chart.ChartFactory;
@@ -64,6 +64,7 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
     private ChartPanel chartPanel;
     private XYSeriesCollection dataset = new XYSeriesCollection();
     private JPanel alertPanel = new JPanel();
+    private JPanel transientPanel = new JPanel();
     private JSplitPane splitPane = new JSplitPane();
     private JTabbedPane resultTabbedPane = new JTabbedPane();
     private JTabbedPane mainTabbedPane = new JTabbedPane();
@@ -117,6 +118,10 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
         alertPanel.setMinimumSize(new Dimension(200, 700));
         alertPanel.setMaximumSize(new Dimension(200, 700));
 
+        transientPanel.setPreferredSize(new Dimension(200, 700));
+        transientPanel.setMinimumSize(new Dimension(200, 700));
+        transientPanel.setMaximumSize(new Dimension(200, 700));
+
         queryTextArea.setPreferredSize(new Dimension(300, 100));
         queryTextArea.setMinimumSize(new Dimension(300, 100));
         queryTextArea.setMaximumSize(new Dimension(300, 100));
@@ -142,6 +147,7 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
         runButton.setToolTipText("Initialize the server...!");
 
         alertPanel.setLayout(new VerticalFlowLayout());
+        transientPanel.setLayout(new BorderLayout());
 //      System.out.println("new File(\"../MonitorEngine/Images/execute-xxl.png\").exists() = " + new File("../MonitorEngine/Images/execute-xxl.png").exists());
 //      System.out.println("execute-xxl.png = " + new File("execute-xxl.png").exists());
 //      System.out.println("new File().getAbsolutePath() = " + new File("openmuc.jar").getAbsolutePath());
@@ -164,9 +170,7 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
         newimg = img.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
         icon = new ImageIcon(newimg);
         runButton.setIcon(icon);
-
         altertScrolPane.getViewport().add(alertPanel, null);
-
         altertScrolPane.setBorder(BorderFactory.createEtchedBorder());
         logAreaScrollPane.getViewport().add(logTextArea, null);
         logAreaScrollPane.setBorder(BorderFactory.createEtchedBorder());
@@ -351,11 +355,11 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
                 String[] args = {"-f", ConfigUtil.CONFIG_PEROPERTY_FILE, ConfigUtil.SERVER_TYPE, "local"};
                 mainTabbedPane.add(altertScrolPane, "Transient Monitor");
                 monitorButton.setVisible(true);
-                SmartPowerControler.setIEDLogEventListener(SPMainFrame.this);
+                SoftGridController.setIEDLogEventListener(SPMainFrame.this);
                 executeMonitorQuery();
                 startPython();
                 System.out.println("All Init Operations are executed...!");
-                SmartPowerControler.initiate(args);
+                SoftGridController.initiate(args);
                 try {
                     dataFileWriter = new BufferedWriter(new FileWriter(new File(ConfigUtil.EXP_DATA_FILE)));
                 } catch (IOException e) {
@@ -385,7 +389,7 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
                 messageHandler.addLogMessage("exit IED server...!");
                 setVisible(false);
                 messageHandler.addLogMessage("Stop all IED threads...!");
-                SmartPowerControler.killAll();
+                SoftGridController.killAll();
                 System.exit(0);
                 return null;
             }
@@ -407,8 +411,8 @@ public class SPMainFrame extends JFrame implements ActionListener, WindowListene
                 }
                 if (ConfigUtil.SERVER_TYPE.equals("PRX")) {
                     String[] args = {"-f", ConfigUtil.CONFIG_PEROPERTY_FILE, ConfigUtil.SERVER_TYPE, "local"};
-                    SmartPowerControler.setPRXLogEventListener(SPMainFrame.this);
-                    SmartPowerControler.initiate(args);
+                    SoftGridController.setPRXLogEventListener(SPMainFrame.this);
+                    SoftGridController.initiate(args);
                 } else if (ConfigUtil.SERVER_TYPE.equals("ACM")) {
                     String[] args = {ConfigUtil.SERVER_TYPE};
 //                    IEC60870104Server.main(args);

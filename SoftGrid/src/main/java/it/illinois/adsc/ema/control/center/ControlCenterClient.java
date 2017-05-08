@@ -55,7 +55,7 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
     private boolean securityEnabled = false;
     private static CCMessageCounter ccMessageCounter = new CCMessageCounter();
     private Connection clientConnection;
-    public static boolean manualExperimentMode = true;
+    public static boolean manualExperimentMode = false;
     private String IP_ADDRESS = "192.168.0.173";
     private int PORT = 2404;
 
@@ -226,24 +226,34 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
     }
 
     String commandString = "";
+
     public void runCommand(String commandString) throws IOException {
-//        if(commandString.contains("test throughput"))
-//        {
-//            periodicInterrogation();
-//            return;
-//        }
+        if (commandString.contains("test throughput")) {
+            String[] tokens = commandString.split(" ");
+            if (tokens.length > 4) {
+                try {
+                    periodicInterrogation(Long.parseLong(tokens[2].trim()), Long.parseLong(tokens[3].trim()));
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid delay duration..! " +
+                            "\nCorrect format : test throughput <Init Delay> <Gap Delay>");
+                }
+            } else {
+                periodicInterrogation();
+            }
+            return;
+        }
         this.commandString = commandString;
-            Command command = CommandParser.parseCommandString(commandString);
+        Command command = CommandParser.parseCommandString(commandString);
 //        if (command.getCommandType().equals(CommandType.ATTACK)) {
 //            periodicInterrogation();
 //            CCUserGenerator.main(null);
 //            return;
 //        }
-            for (String clientAddress : PROXY_CONNECTION_MAP.keySet()) {
-                if (command != null && controlCenterContext.validate(command)) {
-                    MessageFactory.sendCommand(command, PROXY_CONNECTION_MAP.get(clientAddress), controlCenterGUI, ccMessageCounter);
-                }
+        for (String clientAddress : PROXY_CONNECTION_MAP.keySet()) {
+            if (command != null && controlCenterContext.validate(command)) {
+                MessageFactory.sendCommand(command, PROXY_CONNECTION_MAP.get(clientAddress), controlCenterGUI, ccMessageCounter);
             }
+        }
 
     }
 
@@ -261,7 +271,6 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
     @Override
     public void newASdu(ASdu aSdu) {
         System.out.println(this.getClass().toString() + "\nReceived ASDU:" + System.nanoTime() + "\n" + aSdu.toString().replace('\n', ','));
-        CCTimeLoger.logDuration(aSdu.getTypeIdentification().name());
         if (controlCenterGUI != null) {
             controlCenterGUI.newASdu(aSdu.toString());
         }
@@ -305,28 +314,32 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
     }
 
     private void periodicInterrogation() {
+        periodicInterrogation(5000, 500);
+    }
+
+    private void periodicInterrogation(long initDelay, long gapDelay) {
         CCMessageCounter.SLOW = false;
         Timer uploadCheckerTimer = new Timer(true);
         uploadCheckerTimer.schedule(
                 new TimerTask() {
                     public void run() {
-//                        try {
+                        try {
                             Random random = new Random();
 
                             CCMessageCounter.SENT++;
 //                            String IOA = String.valueOf(CCMessageCounter.SENT % 7000);
-                            String IOA = "1";//String.valueOf(Math.abs(random.nextLong() % 110));
+                            String IOA = String.valueOf(Math.abs(random.nextLong() % 150));
                             if (!CCMessageCounter.SLOW) {
-//                                runCommand("interrogation " + IOA);
+                                runCommand("interrogation " + IOA);
                             }
 
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
 //                }, 5000, 300); // 66 MPS
 //                }, 5000 200); // 100 MPS
-                }, 5000, 500); // 33 MPS
+                }, initDelay, gapDelay); // 33 MPS
     }
 
     public Connection getConnection() {

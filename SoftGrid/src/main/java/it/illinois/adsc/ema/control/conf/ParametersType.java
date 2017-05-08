@@ -99,7 +99,7 @@ public class ParametersType {
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getData().add(newItem);
+     *    getDataObject().add(newItem);
      * </pre>
      * 
      * 

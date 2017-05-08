@@ -1,3 +1,4 @@
+//%DURATION%=<$DURATION$>
 DATA (MACHINEMODEL_GENSAL, [BusNum,GenID,TSDeviceStatus,TSH,TSD,TSRa,TSXd,TSXq,TSXd:1,TSXd:2,TSXl,TSTdo,
    TSTdo:1,TSTqo:1,TSS1,TSS1:1,TSRcomp,TSXcomp])
 {
@@ -167,8 +168,9 @@ DATA (TSCONTINGENCY, [TSCTGName,Category,StartTime,EndTime,UseCyclesForTimeStep,
    CTGProc,CTGSolved,ReasonNotSolved,CTGViol,TSTotalLoadMWTripped,
    TSTotalGenMWTripped,PLVisible,PLColor,PLThickness,SODashed,SymbolType],AUXDEF,YES)
 {
+
 //"OPEN_ALL" ""  0.000 60.000 "NO "  0.008 "NO " "NO " "NO " "" 0  0.000  0.000 "YES" -1 Default "Default" "Default"
-"OPEN_ALL" ""  0.000 10.000 "YES"  0.500 "NO " "NO " "NO " "" 0  0.000  0.000 "YES" -1 Default "Default" "Default"
+"OPEN_ALL" ""  0.000 <$DURATION$> "YES"  0.500 "NO " "NO " "NO " "" 0  0.000  0.000 "YES" -1 Default "Default" "Default"
 }
 
 DATA (TSCONTINGENCYELEMENT, [TSCTGName,TSTimeInSeconds,WhoAmI,TSEventString,Enabled,FilterName],AUXDEF,YES)

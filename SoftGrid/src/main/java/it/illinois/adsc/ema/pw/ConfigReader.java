@@ -34,7 +34,7 @@ public class ConfigReader {
 
     public static Properties getAllProperties(File file) {
         if (file != null && file.exists() && file.isDirectory()) {
-            file = new File(file.getAbsolutePath() + "\\" + defaultConfigFileName);
+            file = new File(file.getAbsolutePath() + File.separator + defaultConfigFileName);
         }
         if (file != null && file.exists()) {
             configFile = file;
@@ -71,6 +71,9 @@ public class ConfigReader {
 
     public static void updateConfigUtils(final String keyString, final String value) {
         switch (keyString) {
+            case "MULTI_IP_IED_MODE_ENABLED":
+                ConfigUtil.MULTI_IP_IED_MODE_ENABLED = value != null && (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("yes"));
+                break;
             case "ConfFile":
                 ConfigUtil.CONFIG_PEROPERTY_FILE = value;
                 break;
@@ -165,6 +168,31 @@ public class ConfigReader {
                 break;
             case "ConfigFilePath":
                 ConfigUtil.CONFIG_FILE_PATH = value;
+                break;
+            case "Transient_MYSQL_HOST":
+                ConfigUtil.CONFIG_FILE_PATH = value;
+                break;
+            case "Transient_MYSQL_USERNAME":
+                ConfigUtil.CONFIG_FILE_PATH = value;
+                break;
+            case "Transient_MYSQL_PASSWORD":
+                ConfigUtil.CONFIG_FILE_PATH = value;
+                break;
+            case "GATEWAY_IED_MAPING_FILE":
+                ConfigUtil.GATEWAY_IED_MAPING_FILE = value;
+                break;
+            case "PHYSICAL_SIMMULATOR_API":
+                switch (value.trim().toUpperCase()) {
+                    case "POWERWORLD":
+                        ConfigUtil.PHYSICAL_SIMMULATOR_API = PWComType.COM4J;
+                        break;
+                    case "DUMMY":
+                        ConfigUtil.PHYSICAL_SIMMULATOR_API = PWComType.DUMMY;
+                        break;
+                    default:
+                        ConfigUtil.PHYSICAL_SIMMULATOR_API = PWComType.COM4J;
+                        break;
+                }
                 break;
         }
 
