@@ -35,6 +35,7 @@ import it.illinois.adsc.ema.control.proxy.server.handlers.ICommandHandler;
 import it.illinois.adsc.ema.control.proxy.util.DeviceType;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
 import it.illinois.adsc.ema.softgrid.concenter.ui.ControlCenter;
+import it.illinois.adsc.ema.interceptor.*;  //new classes implementing interceptor
 import org.openmuc.j60870.*;
 
 import java.io.EOFException;
@@ -54,6 +55,8 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
 //  private SecurityHandler securityHandler;
     private static LogEventListener logEventListener;
 
+    InterceptorContainer container; //class to initialize and execute interceptors on ASDu package
+
     protected ProxyServer() {
         init();
     }
@@ -66,6 +69,10 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
 
     private void init() {
         proxyContext = ProxyContextFactory.getInstance().getProxyContext(this);
+
+        //init interceptor container
+        container = new InterceptorContainer();
+
         LOCAL_API_MODE = ConfigUtil.PROXY_SERVER_LOCAL_API_MODE;
 //      TODO : security is not needed in the ProxyServer
         if (!LOCAL_API_MODE) {
@@ -94,6 +101,7 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
     public void readyToExecute(ASdu aSdu, int qualifier, Object newState) {
         boolean result = true;
         logEvent(aSdu.toString());
+
         if (newState instanceof Boolean) {
             result = proxyContext.handleControlCommand(aSdu.getCommonAddress(), qualifier, (boolean) newState);
         } else {
@@ -144,6 +152,9 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
     @Override
     public void newASdu(ASdu aSdu) {
         try {
+            //running interceptor in ASdu before passing it into IED server
+            aSdu = container.RunInterceptors(aSdu);
+
             switch (aSdu.getTypeIdentification()) {
                 //  interrogation command
                 //  There are two type of interrorgation commands
@@ -321,4 +332,5 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
     public static void setPRXEventListener(LogEventListener proxyLogEventListener) {
         logEventListener = proxyLogEventListener;
     }
+
 }

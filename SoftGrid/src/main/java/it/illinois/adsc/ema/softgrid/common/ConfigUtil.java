@@ -41,7 +41,7 @@ public class ConfigUtil {
     public static String POWER_WORLD_CLSID = "";
     public static String CONFIG_PEROPERTY_FILE = "";
     public static String SERVER_TYPE = "";
-    public static String IP = "";
+    public static String IP = "192.168.1.93";
     public static String CASE_FILE_PATH = "..\\SoftGrid\\casefiles\\TempCaseFiles\\";
     public static String CASE_FILE_NAME = "CaseFile.PWB";
     public static String CASE_FILE_TEMP = "";

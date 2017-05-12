@@ -60,6 +60,7 @@ public class SubstationProxyClient implements ClientEventListener, ProxyClientAP
     public void init(ProxyType proxyType) {
         proxyClientContext = ProxyContextFactory.getInstance().getProxyContext(iedID, this);
         ProxyServer.getInstance().start();
+
     }
 
     @Override
