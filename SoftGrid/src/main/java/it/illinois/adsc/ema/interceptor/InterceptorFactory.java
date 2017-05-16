@@ -4,6 +4,9 @@ import java.io.File;
 import java.lang.ClassLoader;
 import java.net.*;
 
+import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
+import jdk.nashorn.internal.runtime.regexp.joni.Config;
+
 /**
  * Created by prageethmahendra on 5/5/2017.
  *
@@ -13,15 +16,26 @@ import java.net.*;
 public class InterceptorFactory {
 
     //The root folder to put all interceptor classes which implemented Interceptor interface
-    static String configPath = "C:\\Users\\Edwin\\Desktop\\Softgrid_NoPW\\SoftGrid\\SoftGrid\\InterceptorClasses\\";
+    static String configPath = null;
 
     //List of interceptor class names to construct sequence of InterceptorNode
-    static String[] interceptorClasses = {
-            "it.edu.adsc.softgrid.WatermarkInterceptor",
-            "it.edu.adsc.softgrid.EncryptionInterceptor"
-    };
+    static String[] interceptorClasses = null;
 
-    public static InterceptorListObject initInterceptors(){
+    public InterceptorFactory() {
+        try {
+            configPath = ConfigUtil.INTERCEPTOR_ROOT;
+
+            interceptorClasses = new String[ConfigUtil.INTERCEPTOR_CLASSES.length];
+
+            for (int i = 0; i < ConfigUtil.INTERCEPTOR_CLASSES.length; i++) {
+                interceptorClasses[i] = ConfigUtil.INTERCEPTOR_PACKAGE + "." + ConfigUtil.INTERCEPTOR_CLASSES[i];
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public InterceptorListObject initInterceptors(){
 
 
         // Create a File object on the root of the directory containing the class file

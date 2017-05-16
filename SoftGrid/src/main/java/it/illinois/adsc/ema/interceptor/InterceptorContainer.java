@@ -11,15 +11,33 @@ import org.openmuc.j60870.ASdu;
  */
 public class InterceptorContainer {
 
-    InterceptorListObject currentNode;
+    private static InterceptorContainer curContainer = null;
 
-    public ASdu RunInterceptors(ASdu aSdu) {
+    private static InterceptorFactory curFactory = null;
+
+    private InterceptorListObject currentNode;
+
+    public static InterceptorContainer getInstance() {
+        if (curContainer == null) {
+            curContainer = new InterceptorContainer();
+        }
+        return curContainer;
+    }
+
+    private InterceptorContainer() {
+        //Set the configuration parameter
+        curFactory = new InterceptorFactory();
 
         //Initialize interceptors and return the reference to first interceptor
-        currentNode = InterceptorFactory.initInterceptors();
+        currentNode = curFactory.initInterceptors();
+    }
+
+    public synchronized ASdu RunInterceptors(ASdu aSdu) {
 
         //Run interceptor on the root, the root will call next interceptor recursively
-        aSdu = currentNode.intercepts(aSdu);
+        if (currentNode != null) {
+            aSdu = currentNode.intercepts(aSdu);
+        }
 
         return aSdu;
     }

@@ -72,6 +72,12 @@ public class ConfigUtil {
     public static String GATEWAY_IED_MAPING_FILE = "GatewayIEDmap.xml";
     public static PWComType PHYSICAL_SIMMULATOR_API = PWComType.COM4J;
 
+    //Added by Edwin on 12 May 2017
+    public static String INTERCEPTOR_CONFIG = "interceptor.properties";
+    public static String INTERCEPTOR_ROOT = "";
+    public static String INTERCEPTOR_PACKAGE = "";
+    public static String[] INTERCEPTOR_CLASSES;
+
     public static boolean init() {
         CONFIG_INITIALISED = true;
         if (CASE_FILE_PATH.length() == 0) {
