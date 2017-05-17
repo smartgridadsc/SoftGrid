@@ -40,7 +40,10 @@ import org.openmuc.j60870.*;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.*;
 
 public class ProxyServer implements ServerSapListener, ConnectionEventListener, ICommandHandler, SecurityEventListener {
@@ -55,8 +58,8 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
 //  private SecurityHandler securityHandler;
     private static LogEventListener logEventListener;
 
-    InterceptorContainer container; //class to initialize and execute interceptors on ASDu package
-    ExecutorService executorService; //class to implement thread pool for ASdu packages
+    //List of ASdu listener. InterceptorContainer is one of them
+    private static Set<ASduListener> aSduListenerList = new HashSet<>();
 
     protected ProxyServer() {
         init();
@@ -71,11 +74,6 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
     private void init() {
         proxyContext = ProxyContextFactory.getInstance().getProxyContext(this);
 
-        //init interceptor container
-        container = InterceptorContainer.getInstance();
-
-        //init executor service
-        executorService = Executors.newFixedThreadPool(100);
 
         LOCAL_API_MODE = ConfigUtil.PROXY_SERVER_LOCAL_API_MODE;
 //      TODO : security is not needed in the ProxyServer
@@ -157,9 +155,7 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
     public void newASdu(ASdu aSdu) {
         try {
             //running interceptor in ASdu before passing it into IED server
-            ASduThread curASduThread = new ASduThread(aSdu, container);
-            Future<ASdu> fASdu = executorService.submit(curASduThread);
-            aSdu = fASdu.get();
+            fireASduListeners(aSdu);
 
             switch (aSdu.getTypeIdentification()) {
                 //  interrogation command
@@ -194,10 +190,6 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
             logEvent("Will quit listening for commands on connection (" + connectionId + ") because socket was closed.");
         } catch (IOException e) {
             logEvent("Will quit listening for commands on connection (" + connectionId + ") because of error: \"" + e.getMessage() + "\".");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
         }
     }
 
@@ -323,7 +315,6 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
         if (serverSap != null) {
             try {
                 serverSap.stopListening();
-                executorService.shutdown(); //terminating executor service
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -342,6 +333,18 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
 
     public static void setPRXEventListener(LogEventListener proxyLogEventListener) {
         logEventListener = proxyLogEventListener;
+    }
+
+    public void addASduListeners(ASduListener aSduListener) {
+
+        if (aSduListener != null)
+            aSduListenerList.add(aSduListener);
+    }
+
+    private void fireASduListeners(ASdu aSdu) {
+        for (ASduListener aSduListener : aSduListenerList) {
+            aSduListener.ASduReceived(aSdu);
+        }
     }
 
 }

@@ -29,6 +29,7 @@ import it.illinois.adsc.ema.control.proxy.infor.ProxyVariant;
 import it.illinois.adsc.ema.control.proxy.server.ProxyServer;
 import it.illinois.adsc.ema.control.proxy.util.ProxyClientUtil;
 import it.illinois.adsc.ema.control.proxy.util.ProxyTimeLoger;
+import it.illinois.adsc.ema.interceptor.InterceptorContainer;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
 import org.openmuc.openiec61850.*;
 import org.slf4j.Logger;
@@ -60,6 +61,7 @@ public class SubstationProxyClient implements ClientEventListener, ProxyClientAP
     public void init(ProxyType proxyType) {
         proxyClientContext = ProxyContextFactory.getInstance().getProxyContext(iedID, this);
         ProxyServer.getInstance().start();
+        InterceptorContainer.getInstance().init();
 
     }
 

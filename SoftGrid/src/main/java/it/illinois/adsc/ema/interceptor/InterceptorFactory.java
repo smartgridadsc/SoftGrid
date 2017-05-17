@@ -28,7 +28,11 @@ public class InterceptorFactory {
             interceptorClasses = new String[ConfigUtil.INTERCEPTOR_CLASSES.length];
 
             for (int i = 0; i < ConfigUtil.INTERCEPTOR_CLASSES.length; i++) {
-                interceptorClasses[i] = ConfigUtil.INTERCEPTOR_PACKAGE + "." + ConfigUtil.INTERCEPTOR_CLASSES[i];
+
+                if (ConfigUtil.INTERCEPTOR_PACKAGE != "")
+                    interceptorClasses[i] = ConfigUtil.INTERCEPTOR_PACKAGE + "." + ConfigUtil.INTERCEPTOR_CLASSES[i];
+                else
+                    interceptorClasses[i] = ConfigUtil.INTERCEPTOR_CLASSES[i];
             }
         } catch (Exception e) {
             e.printStackTrace();

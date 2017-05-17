@@ -10,17 +10,21 @@ import java.util.concurrent.Callable;
 public class ASduThread implements Callable {
     ASdu curASdu;
 
-    InterceptorContainer curContainer;
+    InterceptorListObject curNode;
 
-    public ASduThread(ASdu curASdu, InterceptorContainer curContainer){
+    public ASduThread(ASdu curASdu, InterceptorListObject curNode){
         this.curASdu = curASdu;
-        this.curContainer = curContainer;
+        this.curNode = curNode;
     }
 
 
     @Override
     public ASdu call() throws Exception {
-        curASdu = curContainer.RunInterceptors(curASdu);
+
+        //Run interceptor on the root, the root will call next interceptor recursively
+        if (curNode != null) {
+            curASdu = curNode.intercepts(curASdu);
+        }
 
         return curASdu;
     }
