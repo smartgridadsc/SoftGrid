@@ -31,6 +31,7 @@ import java.util.Properties;
  * Created by prageethmahendra on 4/8/2016.
  * This class read the configuration file
  */
+@Deprecated
 public class ConfigManager {
     private static Properties properties;
     private static Properties securityProerties;
