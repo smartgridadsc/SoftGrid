@@ -35,12 +35,16 @@ import it.illinois.adsc.ema.control.proxy.server.handlers.ICommandHandler;
 import it.illinois.adsc.ema.control.proxy.util.DeviceType;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
 import it.illinois.adsc.ema.softgrid.concenter.ui.ControlCenter;
+import it.illinois.adsc.ema.interceptor.*;  //new classes implementing interceptor
 import org.openmuc.j60870.*;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
+import java.util.Set;
+import java.util.concurrent.*;
 
 public class ProxyServer implements ServerSapListener, ConnectionEventListener, ICommandHandler, SecurityEventListener {
     private static int connectionIdCounter = 1;
@@ -54,6 +58,9 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
 //  private SecurityHandler securityHandler;
     private static LogEventListener logEventListener;
 
+    //List of ASdu listener. InterceptorContainer is one of them
+    private static Set<ASduListener> aSduListenerList = new HashSet<>();
+
     protected ProxyServer() {
         init();
     }
@@ -66,6 +73,8 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
 
     private void init() {
         proxyContext = ProxyContextFactory.getInstance().getProxyContext(this);
+
+
         LOCAL_API_MODE = ConfigUtil.PROXY_SERVER_LOCAL_API_MODE;
 //      TODO : security is not needed in the ProxyServer
         if (!LOCAL_API_MODE) {
@@ -94,6 +103,7 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
     public void readyToExecute(ASdu aSdu, int qualifier, Object newState) {
         boolean result = true;
         logEvent(aSdu.toString());
+
         if (newState instanceof Boolean) {
             result = proxyContext.handleControlCommand(aSdu.getCommonAddress(), qualifier, (boolean) newState);
         } else {
@@ -144,6 +154,9 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
     @Override
     public void newASdu(ASdu aSdu) {
         try {
+            //running interceptor in ASdu before passing it into IED server
+            fireASduListeners(aSdu);
+
             switch (aSdu.getTypeIdentification()) {
                 //  interrogation command
                 //  There are two type of interrorgation commands
@@ -321,4 +334,17 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
     public static void setPRXEventListener(LogEventListener proxyLogEventListener) {
         logEventListener = proxyLogEventListener;
     }
+
+    public void addASduListeners(ASduListener aSduListener) {
+
+        if (aSduListener != null)
+            aSduListenerList.add(aSduListener);
+    }
+
+    private void fireASduListeners(ASdu aSdu) {
+        for (ASduListener aSduListener : aSduListenerList) {
+            aSduListener.ASduReceived(aSdu);
+        }
+    }
+
 }
