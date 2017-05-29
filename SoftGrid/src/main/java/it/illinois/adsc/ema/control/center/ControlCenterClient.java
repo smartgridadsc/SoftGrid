@@ -273,7 +273,6 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
     @Override
     public void newASdu(ASdu aSdu) {
         System.out.println(this.getClass().toString() + "\nReceived ASDU:" + System.nanoTime() + "\n" + aSdu.toString().replace('\n', ','));
-        CCTimeLoger.logDuration(aSdu.getTypeIdentification().name());
         if (controlCenterGUI != null) {
             controlCenterGUI.newASdu(aSdu.toString());
         }

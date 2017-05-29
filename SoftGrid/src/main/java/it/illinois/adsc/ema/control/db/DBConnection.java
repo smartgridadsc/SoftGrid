@@ -2,6 +2,7 @@ package it.illinois.adsc.ema.control.db;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import it.illinois.adsc.ema.control.proxy.util.DeviceType;
+import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -27,10 +28,10 @@ public class DBConnection {
     }
 
     private void init() {
-        dataSource.setUser("root");
-        dataSource.setPassword("root");
+        dataSource.setUser(ConfigUtil.TRANSIENT_MYSQL_USERNAME);
+        dataSource.setPassword(ConfigUtil.TRANSIENT_MYSQL_PASSWORD);
         dataSource.setDatabaseName("trans_data");
-        dataSource.setServerName("localhost");
+        dataSource.setServerName(ConfigUtil.TRANSIENT_MYSQL_HOST);
         Connection con = null;
         try {
             System.out.println("Test sql connection...!");

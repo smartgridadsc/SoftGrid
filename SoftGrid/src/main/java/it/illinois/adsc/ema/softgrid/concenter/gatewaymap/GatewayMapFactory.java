@@ -1,6 +1,7 @@
 package it.illinois.adsc.ema.softgrid.concenter.gatewaymap;
 
 import it.illinois.adsc.ema.control.conf.PWModelType;
+import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
 
 import javax.xml.bind.*;
 import javax.xml.transform.stream.StreamSource;
@@ -27,7 +28,12 @@ public class GatewayMapFactory {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance("it.illinois.adsc.ema.softgrid.concenter.gatewaymap");
             Unmarshaller jaxbMarshaller = jaxbContext.createUnmarshaller();
-            File mappingFile = new File(".." + File.separator + "SoftGrid" + File.separator + "resources" + File.separator + "GatewayIEDmap.xml");
+            String fileName = ConfigUtil.GATEWAY_IED_MAPING_FILE;
+            if (fileName == null || fileName.isEmpty()) {
+                fileName = ".." + File.separator + "SoftGrid" + File.separator + "resources" + File.separator + "GatewayIEDmap.xml";
+            }
+
+            File mappingFile = new File(fileName);
             if (mappingFile.exists()) {
                 Object obj = jaxbMarshaller.unmarshal(mappingFile);
                 if (obj != null) {

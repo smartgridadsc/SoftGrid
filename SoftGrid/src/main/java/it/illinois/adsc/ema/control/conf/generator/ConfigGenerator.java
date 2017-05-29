@@ -173,6 +173,11 @@ public class ConfigGenerator {
                 }
                 OutputStream xmlout = null;
                 try {
+                    File file = new File(configFileName);
+                    if(!file.exists())
+                    {
+                        System.out.println("File Not Exists ...... > configFileName = " + configFileName);
+                    }
                     System.out.println(configFileName);
                     xmlout = new FileOutputStream(configFileName);
                     marshaller.marshal(pwModelType, xmlout);
@@ -333,12 +338,25 @@ public class ConfigGenerator {
 //    }
 
     private static void addDatas(ParametersType parametersType, String type) {
-        String fieldList = iedTypeToFieldMappingProperties.getProperty(type);
-        for (String field : fieldList.split(",")) {
-            DataType dataType = new DataType();
-            dataType.setPwname(field);
-            dataType.setSclName(pwToSclMappingProperties.getProperty(field));
-            parametersType.getData().add(dataType);
+        try {
+            if(iedTypeToFieldMappingProperties == null)
+            {
+                iedTypeToFieldMappingProperties = new Properties();
+            }
+            String fieldList = iedTypeToFieldMappingProperties.getProperty(type);
+            if(fieldList == null)
+            {
+                return;
+            }
+            for (String field : fieldList.split(",")) {
+                DataType dataType = new DataType();
+                dataType.setPwname(field);
+                dataType.setSclName(pwToSclMappingProperties.getProperty(field));
+                parametersType.getData().add(dataType);
+            }
+        } catch (Exception e) {
+            System.out.println("Error in loading IED mapping properties...!");
+            e.printStackTrace();
         }
     }
 
