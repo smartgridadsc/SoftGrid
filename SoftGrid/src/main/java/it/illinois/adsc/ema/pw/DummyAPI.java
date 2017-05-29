@@ -1,7 +1,7 @@
 package it.illinois.adsc.ema.pw;
 
 import com.jacob.com.Variant;
-import it.illinois.adsc.ema.pw.ied.pwcom.PWComAPI;
+import it.illinois.adsc.ema.pw.ied.pwcom.SoftGridComAPI;
 
 import java.util.List;
 import java.util.Random;
@@ -9,7 +9,7 @@ import java.util.Random;
 /**
  * Created by prageethmahendra on 26/4/2017.
  */
-public class DummyAPI implements PWComAPI {
+public class DummyAPI implements SoftGridComAPI {
 
     private static DummyAPI instance;
 

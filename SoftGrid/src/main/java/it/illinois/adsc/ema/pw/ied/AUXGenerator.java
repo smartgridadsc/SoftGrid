@@ -22,7 +22,7 @@ package it.illinois.adsc.ema.pw.ied;
 
 import com.alee.utils.FileUtils;
 import it.illinois.adsc.ema.control.db.DBConnection;
-import it.illinois.adsc.ema.pw.PWComFactory;
+import it.illinois.adsc.ema.pw.SoftGridComFactory;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
 
 import java.io.*;
@@ -93,8 +93,8 @@ public class AUXGenerator implements Runnable {
                 IedControler.RESTART_TIMER = true;
                 IedControler.START_TIME = System.currentTimeMillis();
                 duration = 60 + System.currentTimeMillis()/1000 - IedControler.START_TIME/1000;
-                PWComFactory.getSingletonPWComInstance().saveState();
-                PWComFactory.getSingletonPWComInstance().saveCase(newPWB.getAbsolutePath(), ConfigUtil.CASE_FILE_TYPE, true);
+                SoftGridComFactory.getSingletonPWComInstance().saveState();
+                SoftGridComFactory.getSingletonPWComInstance().saveCase(newPWB.getAbsolutePath(), ConfigUtil.CASE_FILE_TYPE, true);
             } else {
                 FileUtils.copyFile(oldPWB, newPWB);
             }

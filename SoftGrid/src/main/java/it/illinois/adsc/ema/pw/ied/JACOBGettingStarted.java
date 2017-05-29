@@ -28,8 +28,8 @@ package it.illinois.adsc.ema.pw.ied;
         import com.jacob.activeX.ActiveXComponent;
         import com.jacob.com.LibraryLoader;
         import com.jacob.com.Variant;
+        import it.illinois.adsc.ema.pw.ied.pwcom.SoftGridCom;
         import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
-        import it.illinois.adsc.ema.pw.ied.pwcom.PWCom;
 
         import java.io.File;
         import java.io.FileInputStream;
@@ -46,8 +46,8 @@ package it.illinois.adsc.ema.pw.ied;
 public class JACOBGettingStarted {
 
     public static void main(String[] args) {
-        PWCom.getInstance().openCase(ConfigUtil.CASE_FILE_NAME);
-        PWCom.getInstance().closeCase();
+        SoftGridCom.getInstance().openCase(ConfigUtil.CASE_FILE_NAME);
+        SoftGridCom.getInstance().closeCase();
         /**
          * `System.getProperty("os.arch")`
          * It'll tell us on which platform Java Program is executing. Based on that we'll load respective DLL file.

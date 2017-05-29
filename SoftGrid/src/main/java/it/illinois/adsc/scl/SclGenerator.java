@@ -21,8 +21,8 @@
 package it.illinois.adsc.scl;
 
 import com.alee.utils.FileUtils;
+import it.illinois.adsc.ema.pw.com4j.SoftGridCom_com4J;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
-import it.illinois.adsc.ema.pw.com4j.PWCom_com4j;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -92,7 +92,7 @@ public class SclGenerator {
 
             // Load scl file
             System.out.println("Connecting to PowerWorld...!");
-            if (PWCom_com4j.getInstance() != null) {
+            if (SoftGridCom_com4J.getInstance() != null) {
                 System.out.println("SUCCESS");
             } else {
                 System.out.println("Error in connecting PowerWorld...!");
@@ -102,21 +102,21 @@ public class SclGenerator {
 
             for (String deviceType : deviceTypes) {
                 System.out.println("Opening case file...!" + caseFilePath);
-                Object res = PWCom_com4j.getInstance().openCase(caseFilePath, false);
+                Object res = SoftGridCom_com4J.getInstance().openCase(caseFilePath, false);
                 if (res != null && res.toString().isEmpty()) {
                     System.out.println("Successfully opened the case file.");
                 }
 
                     loadKeyValueParameters(deviceType, caseFilePath, newInputDirectory.getAbsolutePath());
                 System.out.println("Closing case file...!");
-                res = PWCom_com4j.getInstance().closeCase();
+                res = SoftGridCom_com4J.getInstance().closeCase();
                 if (res != null && res.toString().isEmpty()) {
                     System.out.println("Successfully closed the case file.");
                 }
             }
 
             System.out.println("Closing PowerWorld Connection...!");
-            PWCom_com4j.getInstance().stop();
+            SoftGridCom_com4J.getInstance().stop();
             System.out.println("PowerWorld meta data loaded...!");
             generateSCL(newInputDirectory.getAbsolutePath() + File.separator, outputFileDirectory.getAbsolutePath() + File.separator);
             copySCLToWorkingDirector(outputFileDirectory.getAbsolutePath() + File.separator);
@@ -136,7 +136,7 @@ public class SclGenerator {
     private static void loadKeyValueParameters(String deviceType, String caseFilePath, String newInputDirectoryPath) {
 
 
-        String str = PWCom_com4j.getInstance().getFeildValues(deviceType);
+        String str = SoftGridCom_com4J.getInstance().getFeildValues(deviceType);
         if (str != null) {
             System.out.println("SUCCESS");
         } else {

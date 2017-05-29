@@ -21,7 +21,7 @@
 package it.illinois.adsc.ema.pw.com4j;
 
 import com.jacob.com.PWVariantUtil;
-import it.illinois.adsc.ema.pw.ied.pwcom.PWComAPI;
+import it.illinois.adsc.ema.pw.ied.pwcom.SoftGridComAPI;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
 
 import java.util.List;
@@ -29,22 +29,22 @@ import java.util.List;
 /**
  * Created by prageethmahendra on 9/6/2016.
  */
-public class PWCom_com4j implements PWComAPI {
+public class SoftGridCom_com4J implements SoftGridComAPI {
     private ISimulatorAuto simulatorAuto = null;
     private Thread contingencyThread = null;
     private Thread savingThread = null;
-    private static PWCom_com4j instance = null;
+    private static SoftGridCom_com4J instance = null;
     volatile static boolean caseOpened = false;
     volatile static String lock = "LOCK";
 
-    private PWCom_com4j() {
+    private SoftGridCom_com4J() {
         init();
     }
 
-    public static PWCom_com4j getInstance() {
+    public static SoftGridCom_com4J getInstance() {
         synchronized (lock) {
             if (instance == null) {
-                instance = new PWCom_com4j();
+                instance = new SoftGridCom_com4J();
             }
         }
         return instance;
@@ -340,21 +340,21 @@ public class PWCom_com4j implements PWComAPI {
     }
 
     public static void main(String[] args) {
-//        PWCom_com4j.getInstance().openCase(ConfigUtil.CASE_FILE_NAME);
-//        PWCom_com4j.getInstance().openCase(ConfigUtil.CASE_FILE_NAME);
+//        SoftGridCom_com4J.getInstance().openCase(ConfigUtil.CASE_FILE_NAME);
+//        SoftGridCom_com4J.getInstance().openCase(ConfigUtil.CASE_FILE_NAME);
 ////        String[] param = {"BusNum", "BusNum:1", "LineCircuit", "LineStatus"};
 ////        String[] values = {"1", "31", "1", ""};
-////        System.out.println(PWCom_com4j.getInstance().getParametersSingleElement("Branch", param, values));
-////        System.out.println(PWCom_com4j.getInstance().getParametersSingleElement("Branch", param, values));
-////        System.out.println(PWCom_com4j.getInstance().getParametersSingleElement("Branch", param, values));
-////        System.out.println(PWCom_com4j.getInstance().getParametersSingleElement("Branch", param, values));
+////        System.out.println(SoftGridCom_com4J.getInstance().getParametersSingleElement("Branch", param, values));
+////        System.out.println(SoftGridCom_com4J.getInstance().getParametersSingleElement("Branch", param, values));
+////        System.out.println(SoftGridCom_com4J.getInstance().getParametersSingleElement("Branch", param, values));
+////        System.out.println(SoftGridCom_com4J.getInstance().getParametersSingleElement("Branch", param, values));
 //        String[] param = {"BusNum", "BusKVVolt", "Frequency"};
 //        int count = 0;
 //        while (true) {
 //            count++;
 //            String[] values = {count + "", "", ""};
 //            try {
-//                for (String bus : PWCom_com4j.getInstance().getParametersSingleElement("Bus", param, values)) {
+//                for (String bus : SoftGridCom_com4J.getInstance().getParametersSingleElement("Bus", param, values)) {
 //                    System.out.print("bus = " + bus);
 //                }
 //            } catch (Exception e) {

@@ -184,13 +184,13 @@ public class ConfigReader {
             case "PHYSICAL_SIMMULATOR_API":
                 switch (value.trim().toUpperCase()) {
                     case "POWERWORLD":
-                        ConfigUtil.PHYSICAL_SIMMULATOR_API = PWComType.COM4J;
+                        ConfigUtil.PHYSICAL_SIMMULATOR_API = SoftGridComType.COM4J_PW;
                         break;
                     case "DUMMY":
-                        ConfigUtil.PHYSICAL_SIMMULATOR_API = PWComType.DUMMY;
+                        ConfigUtil.PHYSICAL_SIMMULATOR_API = SoftGridComType.DUMMY;
                         break;
                     default:
-                        ConfigUtil.PHYSICAL_SIMMULATOR_API = PWComType.COM4J;
+                        ConfigUtil.PHYSICAL_SIMMULATOR_API = SoftGridComType.COM4J_PW;
                         break;
                 }
                 break;

@@ -20,9 +20,30 @@
 */
 package it.illinois.adsc.ema.pw;
 
+import it.illinois.adsc.ema.pw.com4j.SoftGridCom_com4J;
+import it.illinois.adsc.ema.pw.ied.pwcom.SoftGridCom;
+import it.illinois.adsc.ema.pw.ied.pwcom.SoftGridComAPI;
+import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
+
 /**
  * Created by prageethmahendra on 9/6/2016.
  */
-public enum PWComType {
-    DUMMY, COM4J, @Deprecated JACOB
+public class SoftGridComFactory {
+
+    public static SoftGridComAPI getSingletonPWComInstance() {
+        return getSingletonPWComInstance(ConfigUtil.PHYSICAL_SIMMULATOR_API);
+    }
+
+    private static SoftGridComAPI getSingletonPWComInstance(SoftGridComType pwcomType) {
+        switch (pwcomType) {
+            case COM4J_PW:
+                return SoftGridCom_com4J.getInstance();
+            case JACOB:
+                return SoftGridCom.getInstance();
+            case DUMMY:
+                return DummyAPI.getInstance();
+            default:
+                return null;
+        }
+    }
 }

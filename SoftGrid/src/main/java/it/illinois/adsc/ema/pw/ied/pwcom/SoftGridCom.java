@@ -22,22 +22,10 @@ package it.illinois.adsc.ema.pw.ied.pwcom;
 
 import com.jacob.activeX.ActiveXComponent;
 import com.jacob.com.*;
-import com.jacob.activeX.ActiveXComponent;
 import com.jacob.com.Variant;
-import com4j.*;
-import it.illinois.adsc.ema.pw.PWComFactory;
-import it.illinois.adsc.ema.pw.ied.pwcom.PWComAPI;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
-import sun.nio.ch.FileLockImpl;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.nio.channels.FileLock;
-import java.nio.file.CopyOption;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,21 +33,21 @@ import java.util.List;
 * Created by prageethmahendra on 20/1/2016.
 */
 @Deprecated
-public class PWCom extends ActiveXComponent implements PWComAPI {
+public class SoftGridCom extends ActiveXComponent implements SoftGridComAPI {
     public static final String PROGRAME_ID = "pwrworld.SimulatorAuto";
-    private static PWCom instance;
+    private static SoftGridCom instance;
     private boolean caseOpen = false;
     private Thread contingencyThread = null;
     private Thread savingThread = null;
 
-    private PWCom(String programId) {
+    private SoftGridCom(String programId) {
         super(programId);
     }
 
-    public static synchronized PWCom getInstance() {
+    public static synchronized SoftGridCom getInstance() {
         if (instance == null) {
             init();
-            instance = new PWCom(PROGRAME_ID);
+            instance = new SoftGridCom(PROGRAME_ID);
         }
         return instance;
     }

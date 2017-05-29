@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Created by prageethmahendra on 20/1/2016.
  */
-public interface PWComAPI {
+public interface SoftGridComAPI {
     @Deprecated
     public Variant changeParameters(String objectType, Variant paramList, Variant values);
     public String changeParametersSingleElement(String objectType, String[] paramList, String[] valueList);
