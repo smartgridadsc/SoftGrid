@@ -95,6 +95,7 @@ public class AUXGenerator implements Runnable {
                 duration = 60 + System.currentTimeMillis()/1000 - IedControler.START_TIME/1000;
                 SoftGridComFactory.getSingletonPWComInstance().saveState();
                 SoftGridComFactory.getSingletonPWComInstance().saveCase(newPWB.getAbsolutePath(), ConfigUtil.CASE_FILE_TYPE, true);
+                oldPWB = newPWB;
             } else {
                 FileUtils.copyFile(oldPWB, newPWB);
             }
@@ -159,6 +160,7 @@ public class AUXGenerator implements Runnable {
                 }
                 writer.flush();
                 writer.close();
+                reader.close();
             } else {
                 System.out.println("File not exists");
             }

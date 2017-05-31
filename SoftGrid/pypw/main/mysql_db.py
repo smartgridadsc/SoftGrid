@@ -100,12 +100,13 @@ except MySQLdb.Error, e:
 print 'Creating new table : TRANS_DATA...!'
 try:
     sql = 'CREATE TABLE TRANS_DATA (' \
+      'DATA_ID int(11) NOT NULL AUTO_INCREMENT,'\
       'SAVE_COUNT INTEGER NOT NULL,' \
       'START_TIME TIMESTAMP(6) NOT NULL,' \
       'TIME_IN_SEC FLOAT NOT NULL,' \
       'DEVICE_ID VARCHAR(100) NOT NULL,' \
       'MVALUE FLOAT NULL,' \
-      'PRIMARY KEY (SAVE_COUNT, START_TIME, TIME_IN_SEC, DEVICE_ID))'
+      'PRIMARY KEY (DATA_ID))'
     cur.execute(sql)
 except MySQLdb.Error, e:
     print e

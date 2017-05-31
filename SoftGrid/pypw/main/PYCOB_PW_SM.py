@@ -175,7 +175,7 @@ while (1):
                             line.replace("//%DURATION%=", "")
                             duration = int(60)
                             break
-
+                    aux_data.close()
                     # print "runing contingency..."
                     start_time = time.time()
                     sa.ranContingencyAndPause("OPEN_ALL", "60")

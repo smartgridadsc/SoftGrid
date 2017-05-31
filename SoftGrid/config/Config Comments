@@ -1,0 +1,21 @@
+For config.properties I have added this
+Parameter : GATEWAY_IED_MAPING_FILE=..\\SoftGrid\\resources\\GatewayIEDmap.xml
+Note : This xml file should contain the substation socket details with the IED address numbers.
+
+
+
+For ied.properties I have added this
+Parameter : PHYSICAL_SIMMULATOR_API=POWERWORLD
+Note : To setup the API type. Either DUMMY or POWERWORLD
+
+Parameters : Transient_MYSQL_PASSWORD=root
+             Transient_MYSQL_USERNAME=root
+             Transient_MYSQL_HOST=localhost
+
+Note : this is the credentials for the My SQL Database connection
+
+for proxy.properties I have adeded this
+Parameter : MULTI_IP_IED_MODE_ENABLED=false
+Note : To define the Socket generation mode of the IEDS. i.e. Multiple IP , same port (true) or single IP multiple Port (false)
+
+NOTE : ACM_SECURITY_PROPERTY_FILE not in use
