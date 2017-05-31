@@ -22,10 +22,9 @@
 package it.illinois.adsc.ema.pw.ied;
 
 import it.illinois.adsc.ema.control.db.*;
-import it.illinois.adsc.ema.control.proxy.util.DeviceType;
+import it.illinois.adsc.ema.pw.ied.pwcom.SoftGridComAPI;
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
-import it.illinois.adsc.ema.pw.PWComFactory;
-import it.illinois.adsc.ema.pw.ied.pwcom.PWComAPI;
+import it.illinois.adsc.ema.pw.SoftGridComFactory;
 import it.illinois.adsc.ema.softgrid.common.ied.IedControlAPI;
 import org.apache.log4j.Logger;
 
@@ -43,7 +42,7 @@ public class IedControler implements IedControlAPI {
     private static HashMap<Long, List<String>> logDataMap = new HashMap<Long, List<String>>();
     public static List<String> LOG_DATA = new ArrayList<String>();
     public static List<String> OLD_LOG_DATA = new ArrayList<String>();
-    private PWComAPI pwComBridge;
+    private SoftGridComAPI pwComBridge;
     private DBAPI dbapi;
     public static long START_TIME = System.currentTimeMillis();
     public static boolean RESTART_TIMER = false;
@@ -56,7 +55,7 @@ public class IedControler implements IedControlAPI {
 
     public void init() {
         if (pwComBridge == null) {
-            pwComBridge = PWComFactory.getSingletonPWComInstance();
+            pwComBridge = SoftGridComFactory.getSingletonPWComInstance();
             dbapi = TransientController.getInstance();
             logger = Logger.getLogger(IedControler.class);
             closed = false;

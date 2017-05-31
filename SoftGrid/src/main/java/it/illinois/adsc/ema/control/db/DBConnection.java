@@ -60,7 +60,9 @@ public class DBConnection {
     public boolean isStable() {
         String stbQuery = "SELECT 1 as stable FROM dual " +
                 "WHERE (select MAX(MVALUE) from TRANS_DATA WHERE START_TIME > NOW()) -" +
-                " (select MIN(MVALUE) from TRANS_DATA WHERE START_TIME > NOW()) < 0.1";
+                " (select MIN(MVALUE) from TRANS_DATA WHERE START_TIME > NOW()) < 0.1"+
+                " OR " +
+                " (select COUNT(*) from TRANS_DATA) = 0";
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -76,9 +78,11 @@ public class DBConnection {
             stmt = conn.prepareStatement(stbQuery);
             rs = stmt.executeQuery();
             // todo no need to return a list. should get only the first object and return
-            if (rs.next()) {
+            if(rs.next())
+            {
                 return true;
             }
+            // return true if no error in accessing the table
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

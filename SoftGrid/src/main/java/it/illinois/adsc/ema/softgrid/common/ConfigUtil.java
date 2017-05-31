@@ -18,8 +18,7 @@
 */
 package it.illinois.adsc.ema.softgrid.common;
 
-import it.illinois.adsc.ema.pw.PWComType;
-import it.illinois.adsc.ema.pw.ied.pwcom.PWComAPI;
+import it.illinois.adsc.ema.pw.SoftGridComType;
 
 import javax.swing.*;
 import java.io.File;
@@ -70,7 +69,7 @@ public class ConfigUtil {
     public static String TRANSIENT_MYSQL_USERNAME = "root";
     public static String TRANSIENT_MYSQL_PASSWORD = "root";
     public static String GATEWAY_IED_MAPING_FILE = "GatewayIEDmap.xml";
-    public static PWComType PHYSICAL_SIMMULATOR_API = PWComType.COM4J;
+    public static SoftGridComType PHYSICAL_SIMMULATOR_API = SoftGridComType.COM4J_PW;
 
     //Added by Edwin on 12 May 2017
     public static String INTERCEPTOR_CONFIG = "interceptor.properties";

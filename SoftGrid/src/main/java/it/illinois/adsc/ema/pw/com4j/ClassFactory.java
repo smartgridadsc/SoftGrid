@@ -39,6 +39,6 @@ public abstract class ClassFactory {
     }
 
 //  public static it.illinois.adsc.ema.pw.com4j.IPowerWorldInternal createPowerWorldInternal() {
-//    return COM4J.createInstance( it.illinois.adsc.ema.pw.com4j.IPowerWorldInternal.class, "{07FB16B5-5B5C-4703-B5D5-33D874C02493}" );
+//    return COM4J_PW.createInstance( it.illinois.adsc.ema.pw.com4j.IPowerWorldInternal.class, "{07FB16B5-5B5C-4703-B5D5-33D874C02493}" );
 //  }
 }
