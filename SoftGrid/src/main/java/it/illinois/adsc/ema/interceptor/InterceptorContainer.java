@@ -24,6 +24,7 @@ package it.illinois.adsc.ema.interceptor;
 import it.illinois.adsc.ema.control.proxy.server.ProxyServer;
 import org.openmuc.j60870.ASdu;
 
+import java.util.HashSet;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -31,12 +32,12 @@ import java.util.concurrent.Future;
 
 /**
  * Created by Edwin on 11-May-17.
- *
+ * <p>
  * This class is container which will initialize list of interceptors defined in config file
  * and running them in the sequence defined in InterceptorFactory class. Processed ASdu package
  * will be returned to caller class
  */
-public class InterceptorContainer implements ASduListener {
+public class InterceptorContainer implements ASduListener, InterceptorListener {
 
     private static InterceptorContainer curContainer = null;
 
@@ -46,14 +47,14 @@ public class InterceptorContainer implements ASduListener {
 
     private static InterceptorListObject currentNode = null;
 
+    private HashSet<ASduEndpoint> aSduEndpoints = new HashSet<>();
+
     private InterceptorContainer() {
-
-
         //Set the configuration parameter
         curFactory = new InterceptorFactory();
-
         //Initialize interceptors and return the reference to first interceptor
         currentNode = curFactory.initInterceptors();
+
     }
 
     public void init() {
@@ -69,21 +70,33 @@ public class InterceptorContainer implements ASduListener {
     }
 
     @Override
-    public ASdu ASduReceived(ASdu aSdu) {
-        try {
-            ASduThread curASduThread = new ASduThread(aSdu, currentNode);
-            Future<ASdu> fASdu = executorService.submit(curASduThread);
-            aSdu = fASdu.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+    public void interceptCompleted(ASdu aSdu, ASduThread aSduThread) {
+        ASduThreadFactory.returnExecutedThreads(aSduThread);
+        for (ASduEndpoint aSduEndpoint : aSduEndpoints) {
+            aSduEndpoint.validForExecution(aSdu);
         }
-
-
-
-        return aSdu;
     }
 
+    public void addEndPoint(ASduEndpoint aSduEndpoint) {
+        if (aSduEndpoint != null) {
+            aSduEndpoints.add(aSduEndpoint);
+        }
+    }
+
+    @Override
+    public void ASduReceived(ASdu aSdu, ASduEndpoint aSduEndpoint) {
+        if (aSduEndpoint != null) {
+            aSduEndpoints.add(aSduEndpoint);
+        }
+        ASduThread aSduThread = ASduThreadFactory.createThread();
+        aSduThread.setAsdu(aSdu);
+        aSduThread.setCurrentNode(currentNode);
+        aSduThread.addInterceptorListener(this);
+        try {
+            executorService.execute(aSduThread);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

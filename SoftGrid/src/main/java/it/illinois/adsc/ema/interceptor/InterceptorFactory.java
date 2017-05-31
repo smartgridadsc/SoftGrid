@@ -26,11 +26,11 @@ import java.lang.ClassLoader;
 import java.net.*;
 
 import it.illinois.adsc.ema.softgrid.common.ConfigUtil;
-import jdk.nashorn.internal.runtime.regexp.joni.Config;
+import org.eclipse.persistence.dynamic.DynamicClassLoader;
 
 /**
  * Created by prageethmahendra on 5/5/2017.
- *
+ * <p>
  * This class will create linked list of InterceptorListObject by loading the interceptor class
  * put under specified configuration path under sequence defined by its global array list
  */
@@ -45,7 +45,6 @@ public class InterceptorFactory {
     public InterceptorFactory() {
         try {
             configPath = ConfigUtil.INTERCEPTOR_ROOT;
-
             interceptorClasses = new String[ConfigUtil.INTERCEPTOR_CLASSES.length];
 
             for (int i = 0; i < ConfigUtil.INTERCEPTOR_CLASSES.length; i++) {
@@ -60,7 +59,7 @@ public class InterceptorFactory {
         }
     }
 
-    public InterceptorListObject initInterceptors(){
+    public InterceptorListObject initInterceptors() {
 
 
         // Create a File object on the root of the directory containing the class file
@@ -78,44 +77,42 @@ public class InterceptorFactory {
 
             // Create a new class loader with the directory
             ClassLoader cl = new URLClassLoader(urls);
-
+            LoggingInterceptor2 defaultInterceptor = new LoggingInterceptor2();
+            currentNode = new InterceptorNode();
+            rootNode = currentNode;
+            currentNode.setCurInterceptor(defaultInterceptor);
+            previousNode = currentNode;
 
             // to create linked list of InterceptorNode by setting previous and next node
             for (int i = 0; i < interceptorClasses.length; i++) {
-
-                currentNode = new InterceptorNode();
-
-                if (rootNode == null) {
-                    rootNode = currentNode;
+                if (interceptorClasses[i].isEmpty() || interceptorClasses[i].endsWith(".")) {
+                    continue;
                 }
-
                 try {
                     Class cls = cl.loadClass(interceptorClasses[i]);
                     curObj = cls.getConstructor().newInstance();
+                    currentNode = new InterceptorNode();
+                    if (rootNode == null) {
+                        rootNode = currentNode;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     continue;
                 }
-
                 currentNode.setCurInterceptor((Interceptor) curObj);
-
                 //set previous and next node of each InterceptorNode
-                if(previousNode != null) {
-                    currentNode.setPreviousInterceptor(previousNode);
-                    previousNode.setNextInterceptor(currentNode);
-                }
-
-                previousNode = currentNode;
-
+                 currentNode.setPreviousInterceptor(previousNode);
+                 previousNode.setNextInterceptor(currentNode);
+                 previousNode = currentNode;
             }
-
+            if (previousNode == null) {
+                currentNode = new InterceptorNode();
+                previousNode = currentNode;
+            }
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
         // return reference to root node (first node)
         return rootNode;
     }
-
-
 }

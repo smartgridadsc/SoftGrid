@@ -55,7 +55,7 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
     private boolean securityEnabled = false;
     private static CCMessageCounter ccMessageCounter = new CCMessageCounter();
     private Connection clientConnection;
-    public static boolean manualExperimentMode = false;
+    public static boolean manualExperimentMode = true;
     private String IP_ADDRESS = "192.168.0.173";
     private int PORT = 2404;
 
@@ -163,6 +163,8 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
                     PROXY_CONNECTION_MAP.put(IP_ADDRESS.split("\\.")[3], clientConnection);
                 } catch (IOException e) {
                     System.out.println("Unable To Connect To Remote Host: " + IP_ADDRESS + "." + ConfigUtil.GATEWAY_CC_PORT);
+                    System.out.println("Another Attempt");
+                    startClient();
                     error = true;
                     try {
                         clientConnection.close();
@@ -328,7 +330,7 @@ public class ControlCenterClient implements ConnectionEventListener, Runnable {
 
                             CCMessageCounter.SENT++;
 //                            String IOA = String.valueOf(CCMessageCounter.SENT % 7000);
-                            String IOA = String.valueOf(Math.abs(random.nextLong() % 150));
+                            String IOA = String.valueOf(Math.abs(random.nextLong() % 1));
                             if (!CCMessageCounter.SLOW) {
                                 runCommand("interrogation " + IOA);
                             }
