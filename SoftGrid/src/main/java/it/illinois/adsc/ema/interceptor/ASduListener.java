@@ -31,5 +31,5 @@ import org.openmuc.j60870.ASdu;
  *
  */
 public interface ASduListener {
-    public ASdu ASduReceived(ASdu aSdu);
+    public void ASduReceived(ASdu aSdu,  ASduEndpoint aSduEndpoint);
 }

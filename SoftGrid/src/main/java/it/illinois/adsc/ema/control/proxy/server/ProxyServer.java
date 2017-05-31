@@ -46,7 +46,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.*;
 
-public class ProxyServer implements ServerSapListener, ConnectionEventListener, ICommandHandler, SecurityEventListener {
+public class ProxyServer implements ServerSapListener, ConnectionEventListener, ICommandHandler, SecurityEventListener, ASduEndpoint {
     private static int connectionIdCounter = 1;
     public static boolean LOCAL_API_MODE = false;
     protected static ProxyServer instance;
@@ -55,7 +55,7 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
     protected int connectionId;
     private ProxyServerContext proxyContext;
     private ServerSap serverSap;
-//  private SecurityHandler securityHandler;
+    //  private SecurityHandler securityHandler;
     private static LogEventListener logEventListener;
 
     //List of ASdu listener. InterceptorContainer is one of them
@@ -153,43 +153,11 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
 
     @Override
     public void newASdu(ASdu aSdu) {
+        //running interceptor in ASdu before passing it into IED server
         try {
-            //running interceptor in ASdu before passing it into IED server
             fireASduListeners(aSdu);
-
-            switch (aSdu.getTypeIdentification()) {
-                //  interrogation command
-                //  There are two type of interrorgation commands
-                //  substation system interrogation and group interrogation
-                //  01. substation system interrogation : to get the complete data set of the substation
-                //  02. group interrogation : to get the specific data set of the substation
-                case C_IC_NA_1:
-                    sendToCC(aSdu, true);
-                    logEvent("Got Interrogation Command. Will send circuit breaker status value.\n");
-                    sendInterrogationResults(aSdu);
-                    break;
-                case C_SC_NA_1:
-                    sendToCC(aSdu, true);
-                    logEvent("Single Command Received.\n");
-                    hanldeSingleCommand(aSdu);
-                    break;
-                case C_SE_NC_1:
-                    sendToCC(aSdu, true);
-                    logEvent("Single Command Received.\n");
-                    handleSetShortFloatCommand(aSdu);
-                    break;
-                case C_RP_NA_1:
-                    sendToCC(aSdu, true);
-                    logEvent("Reset Process Command.\n");
-                    handleResetProcessCommand(aSdu);
-                    break;
-                default:
-                    logEvent("Got unknown request: " + aSdu + ". Will not confirm it.\n");
-            }
-        } catch (EOFException e) {
-            logEvent("Will quit listening for commands on connection (" + connectionId + ") because socket was closed.");
-        } catch (IOException e) {
-            logEvent("Will quit listening for commands on connection (" + connectionId + ") because of error: \"" + e.getMessage() + "\".");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -197,7 +165,7 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
         if (aSdu.getInformationObjects() != null && aSdu.getInformationObjects()[0] != null && aSdu.getInformationObjects()[0].getInformationElements() != null
                 && aSdu.getInformationObjects()[0].getInformationElements()[0] != null &&
                 aSdu.getInformationObjects()[0].getInformationElements()[0][0] != null) {
-              IeQualifierOfResetProcessCommand ieQualifierOfResetProcessCommand = (IeQualifierOfResetProcessCommand) aSdu.getInformationObjects()[0].getInformationElements()[0][0];
+            IeQualifierOfResetProcessCommand ieQualifierOfResetProcessCommand = (IeQualifierOfResetProcessCommand) aSdu.getInformationObjects()[0].getInformationElements()[0][0];
 //            if (securityHandler != null && ieQualifierOfResetProcessCommand.getValue() == 255) {
 //                securityHandler.resetAll();
 //            }
@@ -343,8 +311,47 @@ public class ProxyServer implements ServerSapListener, ConnectionEventListener, 
 
     private void fireASduListeners(ASdu aSdu) {
         for (ASduListener aSduListener : aSduListenerList) {
-            aSduListener.ASduReceived(aSdu);
+            aSduListener.ASduReceived(aSdu, this);
         }
     }
 
+    @Override
+    public void validForExecution(ASdu aSdu) {
+        try {
+            //running interceptor in ASdu before passing it into IED server
+            switch (aSdu.getTypeIdentification()) {
+                //  interrogation command
+                //  There are two type of interrorgation commands
+                //  substation system interrogation and group interrogation
+                //  01. substation system interrogation : to get the complete data set of the substation
+                //  02. group interrogation : to get the specific data set of the substation
+                case C_IC_NA_1:
+                    sendToCC(aSdu, true);
+                    logEvent("Got Interrogation Command. Will send circuit breaker status value.\n");
+                    sendInterrogationResults(aSdu);
+                    break;
+                case C_SC_NA_1:
+                    sendToCC(aSdu, true);
+                    logEvent("Single Command Received.\n");
+                    hanldeSingleCommand(aSdu);
+                    break;
+                case C_SE_NC_1:
+                    sendToCC(aSdu, true);
+                    logEvent("Single Command Received.\n");
+                    handleSetShortFloatCommand(aSdu);
+                    break;
+                case C_RP_NA_1:
+                    sendToCC(aSdu, true);
+                    logEvent("Reset Process Command.\n");
+                    handleResetProcessCommand(aSdu);
+                    break;
+                default:
+                    logEvent("Got unknown request: " + aSdu + ". Will not confirm it.\n");
+            }
+        } catch (EOFException e) {
+            logEvent("Will quit listening for commands on connection (" + connectionId + ") because socket was closed.");
+        } catch (IOException e) {
+            logEvent("Will quit listening for commands on connection (" + connectionId + ") because of error: \"" + e.getMessage() + "\".");
+        }
+    }
 }
