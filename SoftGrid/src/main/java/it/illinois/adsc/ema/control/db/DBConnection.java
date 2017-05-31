@@ -56,6 +56,7 @@ public class DBConnection {
         }
     }
 
+    // returns true if the frequency is stable?
     public boolean isStable() {
         String stbQuery = "SELECT 1 as stable FROM dual " +
                 "WHERE (select MAX(MVALUE) from TRANS_DATA WHERE START_TIME > NOW()) -" +

@@ -40,7 +40,7 @@ public class ConfigUtil {
     public static String POWER_WORLD_CLSID = "";
     public static String CONFIG_PEROPERTY_FILE = "";
     public static String SERVER_TYPE = "";
-    public static String IP = "";
+    public static String IP = "192.168.1.93";
     public static String CASE_FILE_PATH = "..\\SoftGrid\\casefiles\\TempCaseFiles\\";
     public static String CASE_FILE_NAME = "CaseFile.PWB";
     public static String CASE_FILE_TEMP = "";
@@ -70,6 +70,12 @@ public class ConfigUtil {
     public static String TRANSIENT_MYSQL_PASSWORD = "root";
     public static String GATEWAY_IED_MAPING_FILE = "GatewayIEDmap.xml";
     public static SoftGridComType PHYSICAL_SIMMULATOR_API = SoftGridComType.COM4J_PW;
+
+    //Added by Edwin on 12 May 2017
+    public static String INTERCEPTOR_CONFIG = "interceptor.properties";
+    public static String INTERCEPTOR_ROOT = "";
+    public static String INTERCEPTOR_PACKAGE = "";
+    public static String[] INTERCEPTOR_CLASSES;
 
     public static boolean init() {
         CONFIG_INITIALISED = true;

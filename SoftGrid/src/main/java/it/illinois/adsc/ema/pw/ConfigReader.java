@@ -194,6 +194,21 @@ public class ConfigReader {
                         break;
                 }
                 break;
+
+            case "INTERCEPTOR_CONFIG":
+                ConfigUtil.INTERCEPTOR_CONFIG = value;
+                File file = new File(value);
+                getAllProperties(file);
+                break;
+            case "INTERCEPTOR_ROOT":
+                ConfigUtil.INTERCEPTOR_ROOT = value;
+                break;
+            case "INTERCEPTOR_PACKAGE":
+                ConfigUtil.INTERCEPTOR_PACKAGE = value;
+                break;
+            case "INTERCEPTOR_CLASSES":
+                ConfigUtil.INTERCEPTOR_CLASSES = value.split(";");
+                break;
         }
 
     }

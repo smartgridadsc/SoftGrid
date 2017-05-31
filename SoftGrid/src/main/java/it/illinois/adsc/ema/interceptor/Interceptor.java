@@ -24,17 +24,13 @@ package it.illinois.adsc.ema.interceptor;
 import org.openmuc.j60870.ASdu;
 
 /**
- * Created by prageethmahendra on 5/5/2017.
+ * Created by prageeth.g on 10/4/2017.
  *
- * This class is interface for individual interceptor object in the linked list.
- * Developer need to implement this interface to create node
+ * This class is interface of the Interceptor. Interceptor will receive ASdu package,
+ * doing package processing (adding delay, logging, etc) and then returned processed ASDu
+ * before being passed into substation IED server
  */
-public interface InterceptorListObject {
-    InterceptorListObject getNextInterceptor();
-    InterceptorListObject getPreviousInterceptor();
 
-    void setNextInterceptor(InterceptorListObject next);
-    void setPreviousInterceptor(InterceptorListObject prev);
-
-    ASdu intercepts(ASdu aSdu);
+public interface Interceptor {
+    public ASdu intercept(ASdu aSdu);
 }

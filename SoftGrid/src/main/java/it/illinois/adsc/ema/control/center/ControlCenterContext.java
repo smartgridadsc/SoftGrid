@@ -61,9 +61,11 @@ public class ControlCenterContext {
          */
         try {
             PWModelType pwModelType = ConfigGenerator.deserializeConfigXml(this.configFileName);
-            for (IedNodeType ied : pwModelType.getProxyNode().get(0).getIedNode()) {
-                int port = Integer.parseInt(ied.getPort());
-                iedVariableMap.put(port - portoffset, ied);
+            if(pwModelType != null) {
+                for (IedNodeType ied : pwModelType.getProxyNode().get(0).getIedNode()) {
+                    int port = Integer.parseInt(ied.getPort());
+                    iedVariableMap.put(port - portoffset, ied);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -90,7 +92,7 @@ public class ControlCenterContext {
             }
         }
         System.out.println("Invalid IED-ID...!");
-        return false;
+        return true;
     }
 
     public HashMap<Integer, IedNodeType> getIedVariableMap() {
